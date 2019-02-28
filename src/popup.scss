@@ -1,0 +1,12 @@
+// body {
+//   width: 550px;
+//   height: auto;
+//   min-height: none;
+// }
+
+@import './scss/variables';
+@import './scss/core';
+
+// Components
+@import './scss/components/header';
+@import './scss/components/accordion';

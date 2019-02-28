@@ -1,0 +1,54 @@
+.popup-container {
+  width: 450px;
+  min-height: 100vh;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: #364049;
+  border-radius: 6.5px;
+  background-color: #e3ebf2;
+  box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
+}
+
+.Popup__Header {
+  padding: 26px;
+}
+
+.Popup__Header .Header__Title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.Popup__Header .Header__Subtitle-wrapper {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+}
+
+.Popup__Header .Header__Subtitle {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.4px;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.Popup__Header .Header__Subtitle small {
+  font-size: 12px;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  color: #879aab;
+  margin-left: 10px;
+}
+
+.Popup__Header .Header__Subtitle--subdued {
+  font-size: 18px;
+  font-style: italic;
+  color: #879aab;
+}
+/*# sourceMappingURL=popup.css.map */
