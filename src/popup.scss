@@ -1,10 +1,9 @@
-// body {
-//   width: 550px;
-//   height: auto;
-//   min-height: none;
-// }
+body {
+  max-height: 100vh;
+}
 
 @import './scss/variables';
+@import './scss/mixins';
 @import './scss/core';
 
 // Components

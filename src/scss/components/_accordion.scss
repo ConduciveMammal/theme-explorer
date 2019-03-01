@@ -1,0 +1,63 @@
+.Accordion__Container {
+  margin-bottom: 5px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  .Accordion__Header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    background-color: $neutral-200;
+    transition: background-color .2s ease-in;
+    padding-right: 10px;
+    cursor: pointer;
+    .Accordion__Icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $primary-500;
+      margin-right: 10px;
+      height: 50px;
+      max-width: 50px;
+      flex: 0 0 50px;
+      .Accordion__Icon {
+        height: 30px;
+        fill: #fff;
+      }
+    }
+    .Accordion__Title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      color: $primary-600;
+      @include text-overflow;
+      flex: 0 1 100%;
+    }
+    &.is-active, &:hover {
+      background-color: $neutral-400;
+    }
+  }
+  .Accordion__Body {
+    display: none;
+    padding: 10px 15px;
+    background-color: $neutral-100;
+    .Accordion__Detail {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-top: 0;
+      margin-bottom: 5px;
+      .Accordion__Label {
+        color: $neutral-800;
+      }
+      .Accordion__Value {
+        color: $neutral-600;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

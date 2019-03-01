@@ -1,3 +1,7 @@
+body {
+  max-height: 100vh;
+}
+
 .popup-container {
   width: 450px;
   min-height: 100vh;
@@ -50,5 +54,81 @@
   font-size: 18px;
   font-style: italic;
   color: #879aab;
+}
+
+.Accordion__Container {
+  margin-bottom: 5px;
+}
+
+.Accordion__Container:last-child {
+  margin-bottom: 0;
+}
+
+.Accordion__Container .Accordion__Header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 50px;
+  background-color: #eff3f6;
+  transition: background-color .2s ease-in;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.Accordion__Container .Accordion__Header .Accordion__Icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4d52bf;
+  margin-right: 10px;
+  height: 50px;
+  max-width: 50px;
+  flex: 0 0 50px;
+}
+
+.Accordion__Container .Accordion__Header .Accordion__Icon-container .Accordion__Icon {
+  height: 30px;
+  fill: #fff;
+}
+
+.Accordion__Container .Accordion__Header .Accordion__Title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #4247a6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 0 1 100%;
+}
+
+.Accordion__Container .Accordion__Header.is-active, .Accordion__Container .Accordion__Header:hover {
+  background-color: #dbe0eb;
+}
+
+.Accordion__Container .Accordion__Body {
+  display: none;
+  padding: 10px 15px;
+  background-color: #f5f7fa;
+}
+
+.Accordion__Container .Accordion__Body .Accordion__Detail {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.Accordion__Container .Accordion__Body .Accordion__Detail .Accordion__Label {
+  color: #364049;
+}
+
+.Accordion__Container .Accordion__Body .Accordion__Detail .Accordion__Value {
+  color: #879aab;
+}
+
+.Accordion__Container .Accordion__Body .Accordion__Detail:last-child {
+  margin-bottom: 0;
 }
 /*# sourceMappingURL=popup.css.map */

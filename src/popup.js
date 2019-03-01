@@ -1,8 +1,8 @@
 import browser from 'webextension-polyfill'
 import $ from 'jquery'
-import Polaris from './polaris'
+import Accordion from './js/modules/accordion'
 
-// const polaris = new Polaris()
+const accordion = new Accordion()
 
 
 chrome.tabs.getSelected(null, function (tab) {

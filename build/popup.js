@@ -11654,45 +11654,40 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/polaris.js":
-/*!************************!*\
-  !*** ./src/polaris.js ***!
-  \************************/
+/***/ "./src/js/modules/accordion.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/accordion.js ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-class Polaris {
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+
+class Accordion {
   constructor() {
-    this.polaris();
+    this.accordion();
   }
 
-  polaris() {
-    const cardHeaderActions = `<div style="--top-bar-background:#00848e; --top-bar-color:#f9fafb; --top-bar-background-darker:#006d74; --top-bar-background-lighter:#1d9ba4;">
-    <div class="Polaris-Card">
-      <div class="Polaris-Card__Header">
-        <div class="Polaris-Stack Polaris-Stack--alignmentBaseline">
-          <div class="Polaris-Stack__Item Polaris-Stack__Item--fill">
-            <h2 class="Polaris-Heading">${themeName}</h2>
-          </div>
-          <div class="Polaris-Stack__Item">
-            <div class="Polaris-ButtonGroup">
-              <div class="Polaris-ButtonGroup__Item Polaris-ButtonGroup__Item--plain"><button type="button" class="Polaris-Button Polaris-Button--plain"><span class="Polaris-Button__Content"><span class="Polaris-Button__Text"><a href="https://google.com" target="_blank">Preview</a></span></span></button></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="Polaris-Card__Section">
-        <p>Theme ID: <strong>${themeId}</strong></p>
-      </div>
-    </div>
-    </div>`;
+  accordion() {
+    document.addEventListener('DOMContentLoaded', function () {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').click(function () {
+        const thisTab = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('is-active');
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).next('[data-accordion-body]').slideToggle(200);
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').not(thisTab).removeClass('is-active');
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').not(thisTab).next('[data-accordion-body]').slideUp(200);
+      });
+    });
   }
 
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Polaris);
+;
+/* harmony default export */ __webpack_exports__["default"] = (Accordion);
 
 /***/ }),
 
@@ -11709,11 +11704,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _polaris__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./polaris */ "./src/polaris.js");
+/* harmony import */ var _js_modules_accordion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/modules/accordion */ "./src/js/modules/accordion.js");
 
 
- // const polaris = new Polaris()
 
+const accordion = new _js_modules_accordion__WEBPACK_IMPORTED_MODULE_2__["default"]();
 chrome.tabs.getSelected(null, function (tab) {
   const tabUrl = tab.url;
   const adminUrl = tabUrl.split('/admin');
