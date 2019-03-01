@@ -8,7 +8,7 @@ class Accordion {
   accordion() {
     document.addEventListener('DOMContentLoaded', function () {
       $('[data-accordion-toggle]').click(function () {
-        const thisTab = $(this);
+        const thisTab = $(this)
         $(this).toggleClass('is-active')
         $(this).next('[data-accordion-body]')
           .slideToggle(200)

@@ -7,7 +7,7 @@ const accordion = new Accordion()
 
 chrome.tabs.getSelected(null, function (tab) {
   const tabUrl = tab.url
-  const adminUrl = tabUrl.split('/admin');
+  const adminUrl = tabUrl.split('/admin')
   const adminPath = `${adminUrl[0]}/admin`
   const permUrl = '.myshopify.com/admin'
   const themeUrl = `${adminPath}/themes.json`
@@ -93,7 +93,7 @@ chrome.tabs.getSelected(null, function (tab) {
 })
 
 $('body').on('click', 'a[target="_blank"]', function (e) {
-  e.preventDefault();
+  e.preventDefault()
   chrome.tabs.create({
     url: $(this).prop('href'),
     active: false,
