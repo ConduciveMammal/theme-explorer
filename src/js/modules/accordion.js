@@ -6,7 +6,7 @@ class Accordion {
   }
 
   accordion() {
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('themeBuild', function () {
       $('[data-accordion-toggle]').click(function () {
         const thisTab = $(this)
         $(this).toggleClass('is-active')

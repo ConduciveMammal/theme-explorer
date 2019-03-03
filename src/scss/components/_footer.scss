@@ -1,0 +1,57 @@
+.Popup__Footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
+  background-color: $neutral-200;
+  .Nav__List {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0;
+    padding: 10px;
+    .List__Item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20%;
+    }
+    .Nav__Button {
+      @include size(50px);
+      padding: 0;
+      border-radius: 50%;
+      border: 5px solid $neutral-200;
+      background: none;
+      appearance: none;
+      cursor: pointer;
+      transition: .2s ease-in;
+      box-sizing: content-box;
+      svg {
+        width: 30px;
+        transition: fill .2s ease-in;
+      }
+      &:hover {
+        background-color: $primary-500;
+        svg {
+          fill: #fff;
+        }
+      }
+      &:focus {
+        outline: 0;
+      }
+
+      &.Nav__Button--active {
+        position: absolute;
+        @include size(70px);
+        transform: translateY(-35px);
+        background-color: $primary-500;
+        svg {
+          fill: #fff;
+        }
+      }
+    }
+  }
+}

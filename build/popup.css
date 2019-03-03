@@ -1,8 +1,18 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
+  position: relative;
+  min-height: 500px;
   max-height: 100vh;
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
 }
 
 .popup-container {
+  position: relative;
   width: 450px;
   min-height: 100vh;
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
@@ -10,6 +20,36 @@ body {
   border-radius: 6.5px;
   background-color: #e3ebf2;
   box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
+  padding-bottom: 100px;
+}
+
+.Preload__Screen {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #e3ebf2;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease-in-out;
+}
+
+.Preload__Screen .Preload__Spinner {
+  width: 150px;
+  height: auto;
+  -moz-user-select: none;
+       user-select: none;
+}
+
+.Preload__Screen.is-shown {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .2s ease-in-out;
 }
 
 .Popup__Header {
@@ -102,6 +142,22 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 0 1 100%;
+  padding-right: 10px;
+}
+
+.Accordion__Container .Accordion__Header .Accordion__Link {
+  letter-spacing: 0.3px;
+  text-align: right;
+  transition: .2s ease-in;
+}
+
+.Accordion__Container .Accordion__Header .Accordion__Link a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.Accordion__Container .Accordion__Header .Accordion__Link:hover {
+  color: #4d52bf;
 }
 
 .Accordion__Container .Accordion__Header.is-active, .Accordion__Container .Accordion__Header:hover {
@@ -132,5 +188,75 @@ body {
 
 .Accordion__Container .Accordion__Body .Accordion__Detail:last-child {
   margin-bottom: 0;
+}
+
+.Popup__Footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
+  background-color: #eff3f6;
+}
+
+.Popup__Footer .Nav__List {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 10px;
+}
+
+.Popup__Footer .Nav__List .List__Item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+}
+
+.Popup__Footer .Nav__List .Nav__Button {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border-radius: 50%;
+  border: 5px solid #eff3f6;
+  background: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: pointer;
+  transition: .2s ease-in;
+  box-sizing: content-box;
+}
+
+.Popup__Footer .Nav__List .Nav__Button svg {
+  width: 30px;
+  transition: fill .2s ease-in;
+}
+
+.Popup__Footer .Nav__List .Nav__Button:hover {
+  background-color: #4d52bf;
+}
+
+.Popup__Footer .Nav__List .Nav__Button:hover svg {
+  fill: #fff;
+}
+
+.Popup__Footer .Nav__List .Nav__Button:focus {
+  outline: 0;
+}
+
+.Popup__Footer .Nav__List .Nav__Button.Nav__Button--active {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  transform: translateY(-35px);
+  background-color: #4d52bf;
+}
+
+.Popup__Footer .Nav__List .Nav__Button.Nav__Button--active svg {
+  fill: #fff;
 }
 /*# sourceMappingURL=popup.css.map */
