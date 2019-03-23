@@ -4,7 +4,7 @@ import Accordion from './js/modules/accordion'
 import Preload from './js/modules/preload'
 
 import getThemes from './js/modules/themes'
-// import getShop from './js/modules/shop'
+import getShop from './js/modules/shop'
 
 const accordion = new Accordion()
 const preload = new Preload()
