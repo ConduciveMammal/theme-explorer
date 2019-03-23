@@ -11673,14 +11673,12 @@ class Accordion {
   }
 
   accordion() {
-    document.addEventListener('themeBuild', function () {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').click(function () {
-        const thisTab = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('is-active');
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).next('[data-accordion-body]').slideToggle(200);
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').not(thisTab).removeClass('is-active');
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').not(thisTab).next('[data-accordion-body]').slideUp(200);
-      });
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '.Accordion__Header', function () {
+      const thisTab = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('is-active');
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).next('[data-accordion-body]').slideToggle(200);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').not(thisTab).removeClass('is-active');
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-accordion-toggle]').not(thisTab).next('[data-accordion-body]').slideUp(200);
     });
   }
 
@@ -11752,19 +11750,13 @@ __webpack_require__.r(__webpack_exports__);
     const tabUrl = tab.url;
     const adminUrl = tabUrl.split('/admin');
     const adminPath = `${adminUrl[0]}/admin`;
-    const permUrl = '.myshopify.com/admin';
-    const jsonUrl = {
-      shop: `${adminPath}/shop.json`,
-      theme: `${adminPath}/themes.json`,
-      products: `${adminPath}/products.json`,
-      collections: `${adminPath}/collections.json`
-    };
+    const shopUrl = `${adminPath}/shop.json`;
     const themeUrl = `${adminPath}/themes.json`;
     let shop;
     let shopArr;
     jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
       type: 'GET',
-      url: jsonUrl.shop,
+      url: shopUrl,
       data: 'json',
       async: false,
       success: function (shops) {
@@ -11780,20 +11772,18 @@ __webpack_require__.r(__webpack_exports__);
       data: 'json',
       async: false,
       beforeSend: function () {
-        let showLoading = true;
         console.log('Loading!');
       },
       success: function (themes) {
         const themeArr = themes.themes;
 
         for (let i = 0; i < themeArr.length; i++) {
-          let themePreviewUrl = `http://${shop.domain}/?fts=0&preview_theme_id=${themeArr[i].id}`;
-          console.log(themeArr[0]);
+          let themePreviewUrl = `http://${shop.domain}/?preview_theme_id=${themeArr[i].id}`;
           let theme = {
             name: themeArr[i].name,
             id: themeArr[i].id,
             previewUrl: `${themePreviewUrl}`,
-            status: themeArr[i].role
+            role: themeArr[i].role
           };
           let themeAccordion = `
           <div class="Accordion__Container">
@@ -11825,7 +11815,7 @@ __webpack_require__.r(__webpack_exports__);
             </p>
           </div>
         </div>`;
-          jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-popup-body]').append(themeAccordion);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-panel="active"]').append(themeAccordion);
         }
       },
       error: function () {
@@ -11857,6 +11847,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ // import getShop from './js/modules/shop'
 
 const accordion = new _js_modules_accordion__WEBPACK_IMPORTED_MODULE_2__["default"]();
 const preload = new _js_modules_preload__WEBPACK_IMPORTED_MODULE_3__["default"]();
@@ -11866,22 +11857,26 @@ document.addEventListener('DOMContentLoaded', function () {
     let tabData = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this).data('toggle');
     jquery__WEBPACK_IMPORTED_MODULE_1___default()(thisTab).addClass('Nav__Button--active').attr('data-tab', 'true');
     jquery__WEBPACK_IMPORTED_MODULE_1___default()('.Nav__Button').not(thisTab).removeClass('Nav__Button--active').attr('data-tab', 'false');
+    const tabPanelID = `#${tabData}`;
+    jquery__WEBPACK_IMPORTED_MODULE_1___default()('.Panel').not(tabPanelID).attr('data-panel', 'disabled');
+    jquery__WEBPACK_IMPORTED_MODULE_1___default()(tabPanelID).attr('data-panel', 'active');
+    console.log(tabData);
 
-    switch (tabData) {
-      case 'themes':
-        Object(_js_modules_themes__WEBPACK_IMPORTED_MODULE_4__["default"])();
-        break;
-
-      default:
-        break;
+    if (tabData == 'themes') {
+      Object(_js_modules_themes__WEBPACK_IMPORTED_MODULE_4__["default"])();
+    } else if (tabData == 'apps') {
+      alert('apps');
+    } else if (tabData === '') {
+      // getShop()
+      alert('shop');
+    } else if (tabData == 'products') {
+      alert('products');
+    } else if (tabData == 'collections') {
+      alert('collections');
     }
   });
+  getCurrentPage();
 });
-
-window.onload = function () {
-  if (jquery__WEBPACK_IMPORTED_MODULE_1___default()('[data-tab]') === 'active') {}
-};
-
 jquery__WEBPACK_IMPORTED_MODULE_1___default()('body').on('click', 'a[target="_blank"]', function (e) {
   e.preventDefault();
   chrome.tabs.create({
@@ -11890,6 +11885,36 @@ jquery__WEBPACK_IMPORTED_MODULE_1___default()('body').on('click', 'a[target="_bl
   });
   return false;
 });
+
+function getCurrentPage() {
+  chrome.tabs.getSelected(null, function (tab) {
+    const currentUrl = tab.url;
+    const isAdmin = currentUrl.includes('.myshopify.com/admin');
+    const shopDir = currentUrl.split('.com/').slice(1, 2);
+
+    if (isAdmin) {
+      const adminDir = currentUrl.split('/admin').slice(0, 3);
+      const adminPanelID = `#${adminDir}`;
+      console.log('test');
+      alert(adminDir);
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()('.Panel').not(adminPanelID).attr('data-panel', 'disabled');
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()('[data-popup-body]').find(adminPanelID).attr('data-panel', 'active');
+
+      if (adminDir == 'themes') {
+        Object(_js_modules_themes__WEBPACK_IMPORTED_MODULE_4__["default"])();
+      } else if (adminDir == 'apps') {
+        alert('apps');
+      } else if (shopDir === 'admin') {
+        getShop();
+        alert('shop');
+      } else if (adminDir == 'products') {
+        alert('products');
+      } else if (adminDir == 'collections') {
+        alert('collections');
+      }
+    }
+  });
+}
 
 /***/ }),
 
@@ -11900,7 +11925,7 @@ jquery__WEBPACK_IMPORTED_MODULE_1___default()('body').on('click', 'a[target="_bl
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/liammerlyn/Desktop/Development/StoreExplorer/src/popup.js */"./src/popup.js");
+module.exports = __webpack_require__(/*! /Users/liammerlyn/Desktop/Development.nosync/StoreExplorer/src/popup.js */"./src/popup.js");
 
 
 /***/ })

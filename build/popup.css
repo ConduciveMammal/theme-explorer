@@ -23,6 +23,14 @@ body {
   padding-bottom: 100px;
 }
 
+.popup-container .popup-body .Panel {
+  display: none;
+}
+
+.popup-container .popup-body .Panel[data-panel="active"] {
+  display: block;
+}
+
 .Preload__Screen {
   position: absolute;
   display: flex;
@@ -191,7 +199,7 @@ body {
 }
 
 .Popup__Footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   left: 0;

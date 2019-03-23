@@ -1300,7 +1300,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/liammerlyn/Desktop/Development/StoreExplorer/src/content.js */"./src/content.js");
+module.exports = __webpack_require__(/*! /Users/liammerlyn/Desktop/Development.nosync/StoreExplorer/src/content.js */"./src/content.js");
 
 
 /***/ })

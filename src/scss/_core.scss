@@ -8,4 +8,14 @@
   background-color: $neutral-300;
   box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
   padding-bottom: 100px;
+
+  .popup-body {
+    .Panel {
+      display: none;
+
+      &[data-panel="active"] {
+        display: block;
+      }
+    }
+  }
 }

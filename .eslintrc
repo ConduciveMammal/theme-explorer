@@ -3,6 +3,9 @@
   "env": {
     "browser": true
   },
+  "globals": {
+    "chrome": "writable"
+  },
   "rules": {
     "generator-star-spacing": "off",
     "no-multiple-empty-lines": "off",

@@ -1,25 +1,17 @@
 import $ from 'jquery'
 
-
-
 export default function () {
   chrome.tabs.getSelected(null, function (tab) {
     const tabUrl = tab.url
     const adminUrl = tabUrl.split('/admin')
     const adminPath = `${adminUrl[0]}/admin`
-    const permUrl = '.myshopify.com/admin'
-    const jsonUrl = {
-      shop: `${adminPath}/shop.json`,
-      theme: `${adminPath}/themes.json`,
-      products: `${adminPath}/products.json`,
-      collections: `${adminPath}/collections.json`
-    }
+    const shopUrl = `${adminPath}/shop.json`
     const themeUrl = `${adminPath}/themes.json`
     let shop
     let shopArr
     $.ajax({
       type: 'GET',
-      url: jsonUrl.shop,
+      url: shopUrl,
       data: 'json',
       async: false,
       success: function (shops) {
@@ -27,7 +19,7 @@ export default function () {
         shop = {
           domain: shopArr.myshopify_domain,
         }
-      }
+      },
     })
 
     $.ajax({
@@ -36,20 +28,18 @@ export default function () {
       data: 'json',
       async: false,
       beforeSend: function () {
-        let showLoading = true
         console.log('Loading!')
       },
       success: function (themes) {
         const themeArr = themes.themes
         for (let i = 0; i < themeArr.length; i++) {
-          let themePreviewUrl = `http://${shop.domain}/?fts=0&preview_theme_id=${themeArr[i].id}`
-          console.log(themeArr[0]);
+          let themePreviewUrl = `http://${shop.domain}/?preview_theme_id=${themeArr[i].id}`
 
           let theme = {
             name: themeArr[i].name,
             id: themeArr[i].id,
             previewUrl: `${themePreviewUrl}`,
-            status: themeArr[i].role,
+            role: themeArr[i].role,
           }
           let themeAccordion = `
           <div class="Accordion__Container">
@@ -81,14 +71,12 @@ export default function () {
             </p>
           </div>
         </div>`
-          $('[data-popup-body]').append(themeAccordion)
+          $('[data-panel="active"]').append(themeAccordion)
         }
-
       },
       error: function () {
-        console.log('Ah tits!');
-
-      }
+        console.log('Ah tits!')
+      },
     })
   })
 }
