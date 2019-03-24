@@ -20,9 +20,10 @@
       width: 20%;
     }
     .Nav__Button {
-      @include size(50px);
+      height: 50px;
       padding: 0;
       border-radius: 50%;
+      color: $neutral-700;
       border: 5px solid $neutral-200;
       background: none;
       appearance: none;
@@ -30,27 +31,26 @@
       transition: .2s ease-in;
       box-sizing: content-box;
       svg {
+        display: block;
         width: 30px;
+        margin: 0 auto 5px;
+        fill: currentColor;
         transition: fill .2s ease-in;
       }
+
+      .Button__Label {
+        font-size: 14px;
+        text-align: center;
+      }
       &:hover {
-        background-color: $primary-500;
-        svg {
-          fill: #fff;
-        }
+        color: $primary-500;
       }
       &:focus {
         outline: 0;
       }
 
       &.Nav__Button--active {
-        // position: absolute;
-        @include size(70px);
-        transform: translateY(-35px);
-        background-color: $primary-500;
-        svg {
-          fill: #fff;
-        }
+        color: $primary-500;
       }
     }
   }

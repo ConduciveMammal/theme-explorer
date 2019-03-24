@@ -13467,7 +13467,7 @@ __webpack_require__.r(__webpack_exports__);
         </div>`;
         jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-panel="active"]').append(jsonAccordion);
       },
-      error: function () {
+      onError: function () {
         console.log('Ah tits!');
       }
     });

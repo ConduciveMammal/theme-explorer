@@ -91,7 +91,7 @@ export default function () {
 
         $('[data-panel="active"]').append(jsonAccordion)
       },
-      error: function () {
+      onError: function () {
         console.log('Ah tits!')
       },
     })
