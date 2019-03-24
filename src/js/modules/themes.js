@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import format from 'date-fns/format'
 
 export default function () {
   chrome.tabs.getSelected(null, function (tab) {
@@ -40,6 +41,8 @@ export default function () {
             id: themeArr[i].id,
             previewUrl: `${themePreviewUrl}`,
             role: themeArr[i].role,
+            createdAt: format(themeArr[i].created_at, 'DD-MM-YYYY'),
+            lastUpdated: format(themeArr[i].updated_at, 'DD-MM-YYYY'),
           }
           let themeAccordion = `
           <div class="Accordion__Container">
@@ -63,16 +66,30 @@ export default function () {
             </p>
             <p class="Accordion__Detail">
               <span class="Accordion__Label">Updated at:</span>
-              <span class="Accordion__Value">26/10/2017</span>
+              <span class="Accordion__Value">${theme.createdAt}</span>
             </p>
             <p class="Accordion__Detail">
               <span class="Accordion__Label">Created at:</span>
-              <span class="Accordion__Value">16/11/2016</span>
+              <span class="Accordion__Value">${theme.lastUpdated}</span>
             </p>
           </div>
         </div>`
           $('[data-panel="active"]').append(themeAccordion)
         }
+
+        let jsonAccordion = `
+          <div class="Accordion__Container">
+          <header class="Accordion__Header" data-accordion-toggle>
+            <div class="Accordion__Icon-container">
+              <svg class="Accordion__Icon" height="512" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512.53 312.621c-27.16 0-49.182 22.022-49.182 49.182s22.022 49.181 49.182 49.181c27.161 0 49.183-22.02 49.183-49.18S539.69 312.62 512.53 312.62zm0 229.506c-18.13 0-32.804 14.696-32.804 32.804v98.35c0 18.107 14.673 32.804 32.804 32.804 18.13 0 32.78-14.696 32.78-32.804v-98.35c0-18.108-14.65-32.804-32.78-32.804zm412.831-62.942c-36.165 0-65.583-29.754-65.583-66.353v-96.49c0-69.857-56.145-126.675-125.163-126.675H702.82c-16.45 0-29.802 13.495-29.802 30.162 0 16.642 13.352 30.162 29.802 30.162h31.794c36.14 0 65.559 29.753 65.559 66.352v96.49c0 38.615 17.17 73.267 44.186 96.514-27.015 23.245-44.186 57.875-44.186 96.513v96.477c0 36.598-29.418 66.376-65.56 66.376h-31.793c-16.45 0-29.802 13.495-29.802 30.162 0 16.665 13.352 30.163 29.802 30.163h31.794c69.017 0 125.163-56.818 125.163-126.7v-96.477c0-36.599 29.418-66.352 65.583-66.352 16.45 0 29.802-13.496 29.802-30.162 0-16.642-13.352-30.162-29.802-30.162zm-700.474-66.353v-96.49c0-36.598 29.394-66.351 65.56-66.351h31.795c16.45 0 29.801-13.52 29.801-30.162 0-16.667-13.35-30.162-29.801-30.162h-31.795c-69.017 0-125.163 56.818-125.163 126.676v96.49c0 36.598-29.442 66.352-65.583 66.352-16.45 0-29.803 13.519-29.803 30.162 0 16.665 13.353 30.162 29.803 30.162 36.141 0 65.583 29.753 65.583 66.352v96.477c0 69.882 56.146 126.7 125.163 126.7h31.795c16.45 0 29.801-13.497 29.801-30.163 0-16.667-13.35-30.162-29.801-30.162h-31.795c-36.166 0-65.56-29.78-65.56-66.376V605.86c0-38.64-17.17-73.269-44.186-96.513 27.015-23.246 44.186-57.9 44.186-96.515z"/></svg>
+            </div>
+            <p class="Accordion__Title">
+              <a href="${themeUrl}" target="_blank">View JSON</a>
+            </p>
+          </header>
+        </div>`
+
+        $('[data-panel="active"]').append(jsonAccordion)
       },
       error: function () {
         console.log('Ah tits!')

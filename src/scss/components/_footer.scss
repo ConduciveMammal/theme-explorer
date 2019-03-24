@@ -44,7 +44,7 @@
       }
 
       &.Nav__Button--active {
-        position: absolute;
+        // position: absolute;
         @include size(70px);
         transform: translateY(-35px);
         background-color: $primary-500;

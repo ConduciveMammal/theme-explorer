@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill'
 import $ from 'jquery'
+
 import Accordion from './js/modules/accordion'
 import Preload from './js/modules/preload'
 
@@ -20,15 +21,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const tabPanelID = `#${tabData}`
     $('.Panel').not(tabPanelID).attr('data-panel', 'disabled')
     $(tabPanelID).attr('data-panel', 'active')
-    console.log(tabData);
+    console.dir(tabData);
 
     if (tabData == 'themes') {
       getThemes()
     } else if (tabData == 'apps') {
       alert('apps')
-    } else if (tabData === '') {
-      // getShop()
-      alert('shop')
+    } else if (tabData === 'shop') {
+      getShop()
+      // alert('shop')
     } else if (tabData == 'products') {
       alert('products')
     } else if (tabData == 'collections') {
@@ -52,12 +53,11 @@ function getCurrentPage() {
   chrome.tabs.getSelected(null, function (tab) {
     const currentUrl = tab.url
     const isAdmin = currentUrl.includes('.myshopify.com/admin')
-    const shopDir = currentUrl.split('.com/').slice(1, 2)
+    const shopDir = currentUrl.split('.com/').slice(2, 3)
     if (isAdmin) {
-      const adminDir = currentUrl.split('/admin').slice(0, 3)
+      const adminDir = currentUrl.split('/admin/').slice(1, 2)
       const adminPanelID = `#${adminDir}`
-      console.log('test');
-      alert(adminDir);
+
       $('.Panel').not(adminPanelID).attr('data-panel', 'disabled')
       $('[data-popup-body]').find(adminPanelID).attr('data-panel', 'active')
 
@@ -67,7 +67,6 @@ function getCurrentPage() {
         alert('apps')
       } else if (shopDir === 'admin') {
         getShop()
-        alert('shop')
       } else if (adminDir == 'products') {
         alert('products')
       } else if (adminDir == 'collections') {
