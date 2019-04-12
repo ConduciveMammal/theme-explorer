@@ -134,6 +134,7 @@ body {
   height: 50px;
   max-width: 50px;
   flex: 0 0 50px;
+  color: #fff;
 }
 
 .Accordion__Container .Accordion__Header .Accordion__Icon-container .Accordion__Icon {
