@@ -161,10 +161,34 @@ export default function () {
           </header>
         </div>`
         $('[data-panel="active"]').append(shopAccordion).append(locationAccordion).append(currencyAccordion).append(jsonAccordion)
-
       },
-      error: function () {
-        console.log('Ah tits!')
+      error: function (xhr, status, error) {
+        let errorText
+        switch (xhr.status) {
+          case 404:
+            errorText = 'Shopify admin was not found. Make sure the admin tab is focused.'
+            break
+          case 401:
+            errorText = 'Admin access was not autorised. Please log in again.'
+            break
+          default:
+            errorText = xhr.statusText
+            break
+        }
+        const errorMessage = `
+          <div class="Alert Alert--error">
+            <div class="Alert__Icon-container">
+              <svg class="Alert__Icon">
+                <use xlink:href="#ErrorIcon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+              </svg>
+            </div>
+            <div class="Alert__Content">
+              <p class="Alert__Message">${errorText}</p>
+            </div>
+          </div>
+        `
+        $('.Popup__Header').hide()
+        $('[data-panel="active"]').empty().append(errorMessage)
       },
     })
   })

@@ -12,8 +12,7 @@
   },
   "@std/esm": "all",
   "browserslist": [
-    "last 1 Chrome version",
-    "last 1 Firefox version"
+    "last 15 version"
   ],
   "engines": {
     "node": ">=8.6"

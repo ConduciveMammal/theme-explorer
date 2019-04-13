@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let thisTab = $(this)
     let tabData = $(this).data('toggle')
 
+    // $('[data-popup-body]').empty()
     $(thisTab).addClass('Nav__Button--active').attr('data-tab', 'true')
     $('.Nav__Button').not(thisTab).removeClass('Nav__Button--active').attr('data-tab', 'false')
 

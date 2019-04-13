@@ -1,5 +1,6 @@
 *, *::before, *::after {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 body {
@@ -17,9 +18,11 @@ body {
   min-height: 100vh;
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   color: #364049;
-  border-radius: 6.5px;
+  -webkit-border-radius: 6.5px;
+          border-radius: 6.5px;
   background-color: #e3ebf2;
-  box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
   padding-bottom: 100px;
 }
 
@@ -33,9 +36,18 @@ body {
 
 .Preload__Screen {
   position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   top: 0;
   right: 0;
   bottom: 0;
@@ -44,19 +56,25 @@ body {
   z-index: 2;
   opacity: 0;
   visibility: hidden;
+  -webkit-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
 }
 
 .Preload__Screen .Preload__Spinner {
   width: 150px;
   height: auto;
-  -moz-user-select: none;
-       user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .Preload__Screen.is-shown {
   opacity: 1;
   visibility: visible;
+  -webkit-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
 }
 
@@ -74,9 +92,18 @@ body {
 }
 
 .Popup__Header .Header__Subtitle-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .Popup__Header .Header__Subtitle {
@@ -104,6 +131,75 @@ body {
   color: #879aab;
 }
 
+.Alert {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  width: -webkit-calc(100% - 40px);
+  width: calc(100% - 40px);
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  border: 3px solid #383c8c;
+  background-color: #4247a6;
+  padding: 25px 15px;
+  margin: 45px auto 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-box-shadow: inset 0px 0px 5px 0px #383c8c;
+          box-shadow: inset 0px 0px 5px 0px #383c8c;
+}
+
+.Alert .Alert__Icon-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 30px;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 30px;
+      -ms-flex: 0 0 30px;
+          flex: 0 0 30px;
+  margin-right: 15px;
+  color: #b3b8ff;
+}
+
+.Alert .Alert__Icon-container .Alert__Icon {
+  width: 100%;
+  height: 100%;
+}
+
+.Alert .Alert__Content {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 100%;
+      -ms-flex: 1 1 100%;
+          flex: 1 1 100%;
+}
+
+.Alert .Alert__Content .Alert__Message {
+  font-size: 18px;
+  color: #b3b8ff;
+  margin: 0;
+}
+
 .Accordion__Container {
   margin-bottom: 5px;
 }
@@ -113,27 +209,52 @@ body {
 }
 
 .Accordion__Container .Accordion__Header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   height: 50px;
   background-color: #eff3f6;
+  -webkit-transition: background-color .2s ease-in;
+  -o-transition: background-color .2s ease-in;
   transition: background-color .2s ease-in;
   padding-right: 10px;
   cursor: pointer;
-  -moz-user-select: none;
-       user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .Accordion__Container .Accordion__Header .Accordion__Icon-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   background-color: #4d52bf;
   margin-right: 10px;
   height: 50px;
   max-width: 50px;
-  flex: 0 0 50px;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 50px;
+      -ms-flex: 0 0 50px;
+          flex: 0 0 50px;
   color: #fff;
 }
 
@@ -153,9 +274,13 @@ body {
   letter-spacing: 0.4px;
   color: #4247a6;
   overflow: hidden;
-  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
   white-space: nowrap;
-  flex: 0 1 100%;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 1 100%;
+      -ms-flex: 0 1 100%;
+          flex: 0 1 100%;
   padding-right: 10px;
 }
 
@@ -167,6 +292,8 @@ body {
 .Accordion__Container .Accordion__Header .Accordion__Link {
   letter-spacing: 0.3px;
   text-align: right;
+  -webkit-transition: .2s ease-in;
+  -o-transition: .2s ease-in;
   transition: .2s ease-in;
 }
 
@@ -214,31 +341,51 @@ body {
   bottom: 0;
   right: 0;
   left: 0;
-  box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
+  -webkit-box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
+          box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
   background-color: #eff3f6;
 }
 
 .Popup__Footer .Nav__List {
   list-style: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: space-evenly;
+  -webkit-justify-content: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
   margin: 0;
   padding: 10px;
 }
 
 .Popup__Footer .Nav__List .List__Item {
   position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   width: 20%;
 }
 
 .Popup__Footer .Nav__List .Nav__Button {
   height: 50px;
   padding: 0;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   color: #4d5f6f;
   border: 5px solid #eff3f6;
   background: none;
@@ -246,8 +393,11 @@ body {
      -moz-appearance: none;
           appearance: none;
   cursor: pointer;
+  -webkit-transition: .2s ease-in;
+  -o-transition: .2s ease-in;
   transition: .2s ease-in;
-  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
 }
 
 .Popup__Footer .Nav__List .Nav__Button svg {
@@ -255,6 +405,8 @@ body {
   width: 30px;
   margin: 0 auto 5px;
   fill: currentColor;
+  -webkit-transition: fill .2s ease-in;
+  -o-transition: fill .2s ease-in;
   transition: fill .2s ease-in;
 }
 
