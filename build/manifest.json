@@ -1,6 +1,6 @@
 {
   "name": "Store Explorer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "manifest_version": 2,
   "description": "View in-depth details about your Shopify Store.",
   "author": "Liam Merlyn",
@@ -12,15 +12,21 @@
     "default_popup": "popup.html"
   },
   "options_page": "options.html",
-  "content_scripts": [{
-    "matches": ["https://*/*"],
-    "run_at": "document_end",
-    "js": ["content.js"]
-  }],
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "run_at": "document_end",
+      "js": ["content.js"]
+    }
+  ],
   "background": {
-    "scripts": ["autoreload.js", "background.js"],
+    "scripts": ["background.js"],
     "persistent": true
   },
-  "permissions": ["tabs", "storage"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab"
+  ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

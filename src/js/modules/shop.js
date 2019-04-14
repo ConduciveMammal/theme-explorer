@@ -15,7 +15,7 @@ export default function () {
       type: 'GET',
       url: shopUrl,
       data: 'json',
-      async: false,
+      async: true,
       beforeSend: function () {
         console.log('Loading!')
       },
@@ -43,7 +43,9 @@ export default function () {
           moneyWithCurrencyFormat: shopArr.money_with_currency_format,
           moneyWithCurrencyInEmailsFormat: shopArr.money_with_currency_in_emails_format,
         }
+
         console.dir(shopArr)
+
         let shopAccordion = `
           <div class="Accordion__Container">
           <header class="Accordion__Header" data-accordion-toggle>
@@ -160,6 +162,20 @@ export default function () {
             </p>
           </header>
         </div>`
+
+        let shop
+        shop = {
+          name: shopArr.name,
+          id: shopArr.id,
+          myshopify: shopArr.myshopify_domain,
+          domain: shopArr.domain,
+        }
+
+        $('.Header__Title').empty().text(shop.name)
+        $('.Subtitle--Aside small').empty().text(`Store ID: ${shop.id}`)
+        $('.Subtitle--Primary').empty().text(shop.myshopify)
+        $('.Subtitle--Secondary').empty().text(shop.domain)
+
         $('[data-panel="active"]').append(shopAccordion).append(locationAccordion).append(currencyAccordion).append(jsonAccordion)
       },
       error: function (xhr, status, error) {

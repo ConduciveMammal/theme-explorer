@@ -84,4 +84,25 @@
       }
     }
   }
+
+  .Accordion__Footer {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    margin-top: 10px;
+    .Footer__Link {
+      @extend .Accordion__Detail;
+      a {
+        text-decoration: none;
+        color: $primary-500;
+        transition: color .2s ease-in;
+        &:hover {
+          color: $primary-700;
+        }
+      }
+      &:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
 }

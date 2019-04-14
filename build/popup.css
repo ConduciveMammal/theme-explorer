@@ -104,6 +104,9 @@ body {
   -webkit-justify-content: flex-start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
 }
 
 .Popup__Header .Header__Subtitle {
@@ -316,7 +319,7 @@ body {
   background-color: #f5f7fa;
 }
 
-.Accordion__Container .Accordion__Body .Accordion__Detail {
+.Accordion__Container .Accordion__Body .Accordion__Detail, .Accordion__Container .Accordion__Body .Accordion__Footer .Footer__Link, .Accordion__Container .Accordion__Footer .Accordion__Body .Footer__Link {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -324,16 +327,48 @@ body {
   margin-bottom: 5px;
 }
 
-.Accordion__Container .Accordion__Body .Accordion__Detail .Accordion__Label {
+.Accordion__Container .Accordion__Body .Accordion__Detail .Accordion__Label, .Accordion__Container .Accordion__Body .Accordion__Footer .Footer__Link .Accordion__Label, .Accordion__Container .Accordion__Footer .Accordion__Body .Footer__Link .Accordion__Label {
   color: #364049;
 }
 
-.Accordion__Container .Accordion__Body .Accordion__Detail .Accordion__Value {
+.Accordion__Container .Accordion__Body .Accordion__Detail .Accordion__Value, .Accordion__Container .Accordion__Body .Accordion__Footer .Footer__Link .Accordion__Value, .Accordion__Container .Accordion__Footer .Accordion__Body .Footer__Link .Accordion__Value {
   color: #879aab;
 }
 
-.Accordion__Container .Accordion__Body .Accordion__Detail:last-child {
+.Accordion__Container .Accordion__Body .Accordion__Detail:last-child, .Accordion__Container .Accordion__Body .Accordion__Footer .Footer__Link:last-child, .Accordion__Container .Accordion__Footer .Accordion__Body .Footer__Link:last-child {
   margin-bottom: 0;
+}
+
+.Accordion__Container .Accordion__Footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.Accordion__Container .Accordion__Footer .Footer__Link a {
+  text-decoration: none;
+  color: #4d52bf;
+  -webkit-transition: color .2s ease-in;
+  -o-transition: color .2s ease-in;
+  transition: color .2s ease-in;
+}
+
+.Accordion__Container .Accordion__Footer .Footer__Link a:hover {
+  color: #383c8c;
+}
+
+.Accordion__Container .Accordion__Footer .Footer__Link:first-child {
+  margin-right: 10px;
 }
 
 .Popup__Footer {

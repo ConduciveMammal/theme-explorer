@@ -14,7 +14,7 @@ export default function () {
       type: 'GET',
       url: shopUrl,
       data: 'json',
-      async: false,
+      async: true,
       success: function (shops) {
         shopArr = shops.shop
         shop = {
@@ -55,14 +55,16 @@ export default function () {
       type: 'GET',
       url: themeUrl,
       data: 'json',
-      async: false,
+      async: true,
       beforeSend: function () {
         console.log('Loading!')
       },
       success: function (themes, response) {
         const themeArr = themes.themes
         for (let i = 0; i < themeArr.length; i++) {
-          let themePreviewUrl = `http://${shop.domain}/?preview_theme_id=${themeArr[i].id}`
+          const themePreviewUrl = `https://${shop.domain}/?preview_theme_id=${themeArr[i].id}`
+          const themeJsonUrl = `https://${shop.domain}/admin/themes/${themeArr[i].id}.json`
+          const themeCustomiseUrl = `https://${shop.domain}/admin/themes/${themeArr[i].id}/editor`
 
           let theme = {
             name: themeArr[i].name,
@@ -71,6 +73,23 @@ export default function () {
             role: themeArr[i].role,
             createdAt: format(themeArr[i].created_at, 'DD-MM-YYYY'),
             lastUpdated: format(themeArr[i].updated_at, 'DD-MM-YYYY'),
+            themeJson: `${themeJsonUrl}`,
+            customiseUrl: `${themeCustomiseUrl}`,
+          }
+
+          if (theme.role === 'main') {
+            let main
+            main = {
+              title: theme.name,
+              id: theme.id,
+              updated_at: theme.lastUpdated,
+              created_at: theme.createdAt,
+            }
+
+            $('.Header__Title').empty().text(main.title)
+            $('.Subtitle--Aside').empty().append(`<small>Theme ID: ${main.id}</small>`)
+            $('.Subtitle--Primary').empty().text(`Updated: ${main.updated_at}`)
+            $('.Subtitle--Secondary').empty().text(`Created: ${main.created_at}`)
           }
           let themeAccordion = `
           <div class="Accordion__Container">
@@ -102,6 +121,14 @@ export default function () {
               <span class="Accordion__Label">Created at:</span>
               <span class="Accordion__Value">${theme.lastUpdated}</span>
             </p>
+            <footer class="Accordion__Footer">
+              <p class="Footer__Link">
+                <a href="${theme.themeJson}" target="_blank">View JSON</a>
+              </p>
+              <p class="Footer__Link">
+                <a href="${theme.customiseUrl}" target="_blank">Customise</a>
+              </p>
+            </footer>
           </div>
         </div>`
           $('[data-panel="active"]').append(themeAccordion)
@@ -133,7 +160,7 @@ export default function () {
             errorText = 'Admin access was not autorised. Please log in again.'
             break
           default:
-            errorText = xhr.statusText
+            errorText = xhr.status
             break
         }
         const errorMessage = `
