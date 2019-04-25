@@ -21,9 +21,7 @@ body {
   -webkit-border-radius: 6.5px;
           border-radius: 6.5px;
   background-color: #e3ebf2;
-  -webkit-box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
-          box-shadow: 0 1.5px 3.5px 0.5px rgba(0, 0, 0, 0.3);
-  padding-bottom: 100px;
+  padding-bottom: 85px;
 }
 
 .popup-container .popup-body .Panel {
@@ -355,6 +353,10 @@ body {
   margin-top: 10px;
 }
 
+.Accordion__Container .Accordion__Footer .Footer__Link {
+  margin-right: 10px;
+}
+
 .Accordion__Container .Accordion__Footer .Footer__Link a {
   text-decoration: none;
   color: #4d52bf;
@@ -367,8 +369,8 @@ body {
   color: #383c8c;
 }
 
-.Accordion__Container .Accordion__Footer .Footer__Link:first-child {
-  margin-right: 10px;
+.Accordion__Container .Accordion__Footer .Footer__Link:last-child {
+  margin-right: 0;
 }
 
 .Popup__Footer {
@@ -376,9 +378,9 @@ body {
   bottom: 0;
   right: 0;
   left: 0;
-  -webkit-box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
-          box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
-  background-color: #eff3f6;
+  -webkit-box-shadow: 0 -1.5px 3.5px 0px rgba(51, 51, 51, 0.3);
+          box-shadow: 0 -1.5px 3.5px 0px rgba(51, 51, 51, 0.3);
+  background-color: #364049;
 }
 
 .Popup__Footer .Nav__List {
@@ -396,7 +398,7 @@ body {
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
   margin: 0;
-  padding: 10px;
+  padding: 15px 10px;
 }
 
 .Popup__Footer .Nav__List .List__Item {
@@ -414,20 +416,19 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   width: 20%;
+  margin: 0 10px;
 }
 
 .Popup__Footer .Nav__List .Nav__Button {
   height: 50px;
   padding: 0;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
-  color: #4d5f6f;
-  border: 5px solid #eff3f6;
+  color: #879aab;
   background: none;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   cursor: pointer;
+  border: 0;
   -webkit-transition: .2s ease-in;
   -o-transition: .2s ease-in;
   transition: .2s ease-in;
@@ -446,12 +447,18 @@ body {
 }
 
 .Popup__Footer .Nav__List .Nav__Button .Button__Label {
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
+  text-transform: uppercase;
+}
+
+.Popup__Footer .Nav__List .Nav__Button svg, .Popup__Footer .Nav__List .Nav__Button .Button__Label {
+  -webkit-filter: drop-shadow(0 0px 5px rgba(0, 0, 0, 0.75));
+          filter: drop-shadow(0 0px 5px rgba(0, 0, 0, 0.75));
 }
 
 .Popup__Footer .Nav__List .Nav__Button:hover {
-  color: #4d52bf;
+  color: #dbe0eb;
 }
 
 .Popup__Footer .Nav__List .Nav__Button:focus {
@@ -459,6 +466,14 @@ body {
 }
 
 .Popup__Footer .Nav__List .Nav__Button.Nav__Button--active {
-  color: #4d52bf;
+  color: #eff3f6;
+  -webkit-transform: translateY(-2px);
+      -ms-transform: translateY(-2px);
+          transform: translateY(-2px);
+}
+
+.Popup__Footer .Nav__List .Nav__Button.Nav__Button--active svg, .Popup__Footer .Nav__List .Nav__Button.Nav__Button--active .Button__Label {
+  -webkit-filter: drop-shadow(0 5px 3px rgba(0, 0, 0, 0.75));
+          filter: drop-shadow(0 5px 3px rgba(0, 0, 0, 0.75));
 }
 /*# sourceMappingURL=popup.css.map */

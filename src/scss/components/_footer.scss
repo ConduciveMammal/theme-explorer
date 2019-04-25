@@ -3,31 +3,31 @@
   bottom: 0;
   right: 0;
   left: 0;
-  box-shadow: 0 -0.5px 3.5px -1.5px rgba(51, 51, 51, 0.3);
-  background-color: $neutral-200;
+  box-shadow: 0 -1.5px 3.5px 0px rgba($neutral-900, 0.3);
+  background-color: $neutral-800;
   .Nav__List {
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     margin: 0;
-    padding: 10px;
+    padding: 15px 10px;
     .List__Item {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 20%;
+      margin: 0 10px;
     }
     .Nav__Button {
       height: 50px;
       padding: 0;
-      border-radius: 50%;
-      color: $neutral-700;
-      border: 5px solid $neutral-200;
+      color: $neutral-600;
       background: none;
       appearance: none;
       cursor: pointer;
+      border: 0;
       transition: .2s ease-in;
       box-sizing: content-box;
       svg {
@@ -39,18 +39,27 @@
       }
 
       .Button__Label {
-        font-size: 14px;
+        font-size: 12px;
         text-align: center;
+        text-transform: uppercase;
+      }
+
+      svg, .Button__Label {
+        filter: drop-shadow(0 0px 5px rgba(0,0,0,0.75));
       }
       &:hover {
-        color: $primary-500;
+        color: $neutral-400;
       }
       &:focus {
         outline: 0;
       }
 
       &.Nav__Button--active {
-        color: $primary-500;
+        color: $neutral-200;
+        transform: translateY(-2px);
+        svg, .Button__Label {
+          filter: drop-shadow(0 5px 3px rgba(0,0,0,0.75));
+        }
       }
     }
   }

@@ -92,6 +92,7 @@
     margin-top: 10px;
     .Footer__Link {
       @extend .Accordion__Detail;
+      margin-right: 10px;
       a {
         text-decoration: none;
         color: $primary-500;
@@ -100,8 +101,8 @@
           color: $primary-700;
         }
       }
-      &:first-child {
-        margin-right: 10px;
+      &:last-child {
+        margin-right: 0;
       }
     }
   }

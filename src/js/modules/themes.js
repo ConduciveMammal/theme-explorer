@@ -14,7 +14,7 @@ export default function () {
       type: 'GET',
       url: shopUrl,
       data: 'json',
-      async: true,
+      async: false,
       success: function (shops) {
         shopArr = shops.shop
         shop = {
@@ -55,7 +55,7 @@ export default function () {
       type: 'GET',
       url: themeUrl,
       data: 'json',
-      async: true,
+      async: false,
       beforeSend: function () {
         console.log('Loading!')
       },
@@ -64,6 +64,7 @@ export default function () {
         for (let i = 0; i < themeArr.length; i++) {
           const themePreviewUrl = `https://${shop.domain}/?preview_theme_id=${themeArr[i].id}`
           const themeJsonUrl = `https://${shop.domain}/admin/themes/${themeArr[i].id}.json`
+          const themeCodeUrl = `https://${shop.domain}/admin/themes/${themeArr[i].id}`
           const themeCustomiseUrl = `https://${shop.domain}/admin/themes/${themeArr[i].id}/editor`
 
           let theme = {
@@ -74,6 +75,7 @@ export default function () {
             createdAt: format(themeArr[i].created_at, 'DD-MM-YYYY'),
             lastUpdated: format(themeArr[i].updated_at, 'DD-MM-YYYY'),
             themeJson: `${themeJsonUrl}`,
+            themeCodeUrl: `${themeCodeUrl}`,
             customiseUrl: `${themeCustomiseUrl}`,
           }
 
@@ -127,6 +129,9 @@ export default function () {
               </p>
               <p class="Footer__Link">
                 <a href="${theme.customiseUrl}" target="_blank">Customise</a>
+              </p>
+              <p class="Footer__Link">
+                <a href="${theme.themeCodeUrl}" target="_blank">Edit code</a>
               </p>
             </footer>
           </div>
