@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import { paths } from '../gulpfile'
+import { paths } from '../gulpfile.babel'
 import del from 'del'
 
 

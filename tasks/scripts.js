@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import { paths } from '../gulpfile'
+import { paths } from '../gulpfile.babel'
 import path from 'path'
 import webpackStream from 'webpack-stream'
 import webpack from 'webpack'

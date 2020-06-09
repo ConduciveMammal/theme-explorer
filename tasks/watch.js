@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import { paths } from '../gulpfile'
+import { paths } from '../gulpfile.babel'
 import { scripts, styles, markup, images, manifest } from '.'
 import io from 'socket.io'
 import fancyLog from 'fancy-log'
@@ -8,7 +8,10 @@ import chalk from 'chalk'
 export function watch() {
   const server = io.listen(process.env.WEBSOCKET_PORT)
   let socket
-  server.on('connection', (newSocket) => { socket = newSocket })
+  server.on('connection', (newSocket) => {
+    socket = newSocket; console.log('Connection made');
+   })
+  console.log(server)
 
   async function triggerFileChange() {
     socket.emit('file changed', () => {

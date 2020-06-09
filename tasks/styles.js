@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import { paths } from '../gulpfile'
+import { paths } from '../gulpfile.babel'
 import sass from 'gulp-sass'
 import moduleImporter from 'sass-module-importer'
 import postcss from 'gulp-postcss'

@@ -1,6 +1,7 @@
 import gulp from 'gulp'
-import { clean, scripts, styles, markup, images, manifest, watch, bundle } from './tasks'
 import dotenv from 'dotenv'
+
+import { clean, scripts, styles, markup, images, manifest, watch, bundle } from './tasks'
 dotenv.config()
 
 

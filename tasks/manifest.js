@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import { paths } from '../gulpfile'
+import { paths } from '../gulpfile.babel'
 import jeditor from 'gulp-json-editor'
 import gulpif from 'gulp-if'
 
