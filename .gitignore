@@ -84,4 +84,11 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+# Parcel
+.parcel-cache
+
+.vscode
+.DS_Store
+build/
+
 # End of https://www.gitignore.io/api/node
