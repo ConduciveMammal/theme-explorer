@@ -1,0 +1,142 @@
+@import "../../assets/styles/variables";
+
+.popup-container {
+  position: relative;
+  width: 450px;
+  min-height: 100vh;
+  font-family: $font-primary;
+  color: $neutral-800;
+  border-radius: 6.5px;
+  background-color: $neutral-300;
+}
+
+.Popup__Header {
+  padding: 26px;
+
+  .Header__Title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .Header__Subtitle-wrapper {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .Header__Subtitle {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.4px;
+    margin: 0;
+    margin-bottom: 10px;
+
+    small {
+      font-size: 12px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1;
+      letter-spacing: 0.3px;
+      color: $neutral-600;
+      margin-left: 10px;
+    }
+  }
+
+  .Header__Subtitle--subdued {
+    font-size: 18px;
+    font-style: italic;
+    color: $neutral-600;
+  }
+}
+
+.Panel--error {
+  padding: 26px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: $neutral-600;
+  text-align: center;
+}
+
+.Panel__Loader-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.Panel__Loader {
+  width: 82px;
+  height: 18px;
+  position: relative;
+  display: block;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    top: 0;
+    background: $primary-500;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    animation: jump 0.5s ease-in infinite alternate;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    top: 0;
+    background: $primary-500;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    animation: jump 0.5s ease-in infinite alternate;
+    background: #0000;
+    color: $neutral-900;
+    top: 100%;
+    box-shadow: 32px -20px , -32px -20px;
+    animation: split 0.5s ease-out infinite alternate;
+  }
+}
+
+.Panel__Loader-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.4px;
+  color: $neutral-600;
+  margin: 0;
+  margin-top: 10px;
+}
+
+@keyframes split {
+
+  0% {
+    box-shadow: 8px -20px, -8px -20px;
+  }
+
+  100% {
+    box-shadow: 32px -20px , -32px -20px;
+  }
+}
+
+@keyframes jump {
+
+  0% {
+    transform: translate(-50%, -150%);
+  }
+
+  100% {
+    transform: translate(-50%, 10%);
+  }
+}

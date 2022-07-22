@@ -1,0 +1,146 @@
+@import "../../assets/styles/variables";
+@import "../../assets/styles/mixins";
+
+.Accordion__Container {
+  margin-bottom: 5px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.Accordion__Header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 50px;
+  background-color: $neutral-200;
+  transition: background-color 0.2s ease-in;
+  padding-right: 10px;
+  cursor: pointer;
+  user-select: none;
+
+  &.Accordion__Header--open,
+  &:hover {
+    background-color: $neutral-400;
+  }
+
+  &.Accordion__Header--main {
+    border-bottom: 3px solid $primary-500;
+  }
+
+  &.Accordion__Header--json {
+    cursor: default;
+  }
+}
+
+.Accordion__Icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $primary-500;
+  margin-right: 10px;
+  height: 50px;
+  max-width: 50px;
+  flex: 0 0 50px;
+  color: #fff;
+}
+
+.Accordion__Icon {
+  height: 30px;
+  width: auto;
+  fill: #fff;
+
+  path {
+    fill: inherit;
+  }
+}
+
+.Accordion__Title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: $primary-600;
+  @include text-overflow;
+  flex: 0 1 100%;
+  padding-right: 10px;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.Accordion__Link {
+  letter-spacing: 0.3px;
+  text-align: right;
+  transition: 0.2s ease-in;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+  }
+
+  &:hover {
+    color: $primary-500;
+  }
+}
+
+.Accordion__Body {
+  background-color: $neutral-100;
+}
+
+.Accordion__Body__Content {
+  padding: 10px 15px;
+}
+
+.Accordion__Detail {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-top: 0;
+  margin-bottom: 5px;
+
+  .Accordion__Label {
+    color: $neutral-800;
+  }
+
+  .Accordion__Value {
+    color: $neutral-600;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.Accordion__Footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  margin-top: 10px;
+
+  .Footer__Link {
+    @extend .Accordion__Detail;
+    margin-right: 10px;
+
+    a {
+      text-decoration: none;
+      color: $primary-500;
+      transition: color 0.2s ease-in;
+
+      &:hover {
+        color: $primary-700;
+      }
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.collapse-css-transition {
+  transition: height 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
