@@ -2,7 +2,7 @@
   "name": "theme-explorer",
   "version": "1.0.0",
   "description": "Theme Explorer allows you to view important information about the themes installed on your Shopify store.",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "https://github.com/ConduciveMammal/theme-explorer"

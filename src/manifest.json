@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Theme Explorer - Beta",
+  "name": "Theme Explorer",
   "description": "Theme Explorer allows you to view important information about the themes installed on your Shopify store.",
   "action": {
     "default_popup": "popup.html",
