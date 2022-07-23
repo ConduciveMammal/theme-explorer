@@ -89,6 +89,7 @@ typings/
 
 .vscode
 .DS_Store
+src/.DS_Store
 build/
 
 # End of https://www.gitignore.io/api/node
