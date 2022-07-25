@@ -1,3 +1,4 @@
+
 ![Icon](https://user-images.githubusercontent.com/18140157/180614942-b0849ff5-ce94-426b-aac3-fdd19f784e2a.png)
 
 
@@ -38,3 +39,16 @@ Theme Explorer allows you to view important information about the themes install
    * Click on `Load unpacked extension`
    * Select the `build` folder.
 8. Happy hacking.
+
+## Roadmap
+
+- [ ]  Add Preview Generator for Storefront
+    - lets create you previews for Editor and Storefront from the Storefront with no effort.
+- [ ]  Add SEO Check for Website
+    - Checks your Website for HTML Semantic Elements that improve SEO.
+- [ ]  Add Rich Snippet Check for Website
+    - Checks your Website for Google Rich Snippet Support.
+- [ ]  Add Script and CSS Check for Website
+    - Checks the size if CSS and JS Files and how to improve them.
+- [ ]  Add Image Checker for Website
+    - Checks the Website if Image tags have srcset and use next gen format
