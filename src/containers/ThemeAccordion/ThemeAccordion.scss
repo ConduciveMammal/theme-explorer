@@ -1,5 +1,5 @@
-@import "../../assets/styles/variables";
-@import "../../assets/styles/mixins";
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixins';
 
 .Accordion__Container {
   margin-bottom: 5px;
@@ -79,7 +79,6 @@
   a {
     color: inherit;
     text-decoration: none;
-
   }
 
   &:hover {
