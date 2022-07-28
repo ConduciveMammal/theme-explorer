@@ -7,6 +7,7 @@ import '@fontsource/nunito/variable-italic.css'; // Italic variant.;
 import LoadingComponent from './LoadingComponent';
 import AdminComponent from './AdminComponent';
 import StorefrontComponent from './StorefrontComponent';
+import NotFound from './NotFound';
 
 const Popup = () => {
   const [state, setState] = useState({
@@ -113,6 +114,8 @@ const Popup = () => {
     getLiveTheme();
   }, [state.themes]);
 
+  console.log(state);
+
   if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
     chrome.runtime.onMessage.addListener((request) =>
       registerOnMessage(request)
@@ -126,10 +129,12 @@ const Popup = () => {
 
   if (!state.adminShown && state.storefrontInformation) {
     return <StorefrontComponent state={state} />;
-  } else if (state.themesReady && state.shop) {
+  } else if (state.adminShown && state.themesReady && state.shop) {
     return <AdminComponent state={state} />;
-  } else {
+  } else if (state.adminShown && !state.storefrontInformation || !state.adminShown && state.storefrontInformation) {
     return <LoadingComponent />;
+  } else if (!state.storefrontInformation && !state.adminShown && !state.themesReady) {
+    return <NotFound />;
   }
 };
 

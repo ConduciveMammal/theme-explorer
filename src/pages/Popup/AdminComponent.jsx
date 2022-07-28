@@ -5,8 +5,15 @@ import ThemeAccordion from '../../containers/ThemeAccordion/ThemeAccordion';
 import './Popup.scss';
 import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource/nunito/variable-italic.css'; // Italic variant.
+import { useState } from 'react';
 
 const AdminComponent = ({ state }) => {
+  const [filteredThemes, setFilteredThemes] = useState(null);
+
+  const filterThemesBasedOnInput = (evt) => {
+    setFilteredThemes(state.themes.filter(theme => theme.name.includes(evt.target.value)));
+  }
+
   return (
     <div className="popup-container">
       <header className="Popup__Header">
@@ -24,18 +31,48 @@ const AdminComponent = ({ state }) => {
         </div>
       </header>
       <div className="popup-body">
+        <input className={"popup-body-input"} placeholder={"Search for your theme"} onChange={(evt) => filterThemesBasedOnInput(evt)} />
         <div className="Panel">
-          {state.themesReady &&
-            state.themes.map((theme, index) => {
-              return (
-                <ThemeAccordion
-                  theme={theme}
-                  shop={state.shop}
-                  key={index}
-                  index={index}
-                />
-              );
-            })}
+          <>
+            {state.themesReady && !filteredThemes ?
+              state.themes.map((theme, index) => {
+                return (
+                  <ThemeAccordion
+                    theme={theme}
+                    shop={state.shop}
+                    key={index}
+                    index={index}
+                  />
+                );
+              })
+              :
+              filteredThemes.map((theme, index) => {
+                return (
+                  <ThemeAccordion
+                    theme={theme}
+                    shop={state.shop}
+                    key={index}
+                    index={index}
+                  />
+                );
+              })
+            }
+            {filteredThemes && filteredThemes.length === 0 &&
+              <div className="Accordion__Container">
+                <header className={"Accordion__Header"}>
+                  <div className="Accordion__Icon-container">
+                    <Icon
+                      name="error"
+                      color="#FFFFFF"
+                      size={35}
+                      classes={'Accordion__Icon'}
+                    />
+                  </div>
+                  <p className="Accordion__Title">No Theme found!</p>
+                </header>
+              </div>
+            }
+          </>
           <div className="Accordion__Container">
             <header className="Accordion__Header Accordion__Header--json">
               <div className="Accordion__Icon-container">

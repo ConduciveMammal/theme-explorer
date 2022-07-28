@@ -180,6 +180,16 @@
   }
 }
 
+.popup-body-input {
+  width: calc(100% - 52px);
+  border: 0;
+  padding: 12px 8px;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 0 26px 16px;
+  border-radius: 6px;
+}
+
 @keyframes split {
   0% {
     box-shadow: 8px -20px, -8px -20px;
