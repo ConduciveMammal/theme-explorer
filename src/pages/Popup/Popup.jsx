@@ -127,16 +127,14 @@ const Popup = () => {
     chrome.runtime.onMessage.removeListener(registerOnMessage);
   }
 
-  console.log(state);
-
   if (state.storefrontInformation && !state.storefrontInformation.location.includes("admin")) {
     return <StorefrontComponent state={state} />;
   } else if (state.adminShown && state.themesReady && state.shop) {
     return <AdminComponent state={state} />;
-  } else if (state.adminShown && !state.storefrontInformation || !state.adminShown && state.storefrontInformation) {
-    return <LoadingComponent />;
   } else if (!state.storefrontInformation && !state.adminShown && !state.themesReady) {
     return <NotFound />;
+  } else {
+    return <LoadingComponent />;
   }
 };
 
