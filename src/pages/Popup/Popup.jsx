@@ -24,7 +24,6 @@ const Popup = () => {
 
     state.themes.map((theme) => {
       if (theme.role === 'main') {
-        console.log('theme', theme);
         setState((prevState) => ({
           ...prevState,
           liveTheme: theme,
@@ -85,7 +84,6 @@ const Popup = () => {
         }));
       })
       .then(() => {
-        console.log('test');
         fetchStore();
 
         setState((prevState) => ({
@@ -123,8 +121,6 @@ const Popup = () => {
   if (state.storefrontInformation) {
     chrome.runtime.onMessage.removeListener(registerOnMessage);
   }
-
-  console.log(state);
 
   if (state.storefrontInformation && !state.storefrontInformation.location.includes("admin")) {
     return <StorefrontComponent state={state} />;
