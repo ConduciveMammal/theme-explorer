@@ -25,7 +25,6 @@ const Popup = () => {
 
     state.themes.map((theme) => {
       if (theme.role === 'main') {
-        console.log('theme', theme);
         setState((prevState) => ({
           ...prevState,
           liveTheme: theme,
@@ -86,7 +85,6 @@ const Popup = () => {
         }));
       })
       .then(() => {
-        console.log('test');
         fetchStore();
 
         setState((prevState) => ({
@@ -113,8 +111,6 @@ const Popup = () => {
   useEffect(() => {
     getLiveTheme();
   }, [state.themes]);
-
-  console.log(state);
 
   if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
     chrome.runtime.onMessage.addListener((request) =>
