@@ -1,10 +1,7 @@
 
 ![Icon](https://user-images.githubusercontent.com/18140157/180614942-b0849ff5-ce94-426b-aac3-fdd19f784e2a.png)
 
-
 # Theme Explorer
-
-
 
 Theme Explorer allows you to view important information about the themes installed on your Shopify store.
 
@@ -19,11 +16,9 @@ Theme Explorer allows you to view important information about the themes install
 - Quickly preview each theme.
 - 100% safe. This extension only works on the currently focused Chrome tab and only when viewing a Shopify store's admin screen so unauthorised users won't be able to see these details.
 
-
 ## Acknowledgements
 
- - [Chrome Extension Boilerplate](https://github.com/lxieyang/chrome-extension-boilerplate-react)
-
+- [Chrome Extension Boilerplate](https://github.com/lxieyang/chrome-extension-boilerplate-react)
 
 ## Installation
 
@@ -34,10 +29,10 @@ Theme Explorer allows you to view important information about the themes install
 5. Run `npm install` to install the dependencies.
 6. Run `npm start`
 7. Load your extension on Chrome following:
-   * Access `chrome://extensions/`
-   * Check `Developer mode`
-   * Click on `Load unpacked extension`
-   * Select the `build` folder.
+   - Access `chrome://extensions/`
+   - Check `Developer mode`
+   - Click on `Load unpacked extension`
+   - Select the `build` folder.
 8. Happy hacking.
 
 ## Roadmap

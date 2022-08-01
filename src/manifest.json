@@ -11,18 +11,22 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.myshopify.com/*"],
-      "js": ["contentScript.bundle.js"],
-      "css": ["content.styles.css"]
+      "matches": ["https://*/*"],
+      "js": ["contentScript.bundle.js"]
     }
   ],
-  "permissions": [
-    "tabs"
-  ],
+  "permissions": ["tabs"],
   "web_accessible_resources": [
     {
-      "resources": ["content.styles.css", "icon-128.png", "icon-34.png", "nunito.woff2", "nunito-italic.woff2"],
-      "matches": []
+      "resources": [
+        "contentScript.bundle.js",
+        "injectScript.bundle.js",
+        "icon-128.png",
+        "icon-34.png",
+        "nunito.woff2",
+        "nunito-italic.woff2"
+      ],
+      "matches": ["<all_urls>"]
     }
   ]
 }
