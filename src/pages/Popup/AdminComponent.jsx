@@ -14,8 +14,6 @@ const AdminComponent = ({ state }) => {
     setFilteredThemes(state.themes.filter(theme => theme.name.includes(evt.target.value)));
   }
 
-  console.log(state.shop);
-
   return (
     <div className="popup-container">
       <span className='AdminComponent__ThemeCount'>
