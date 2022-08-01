@@ -7,6 +7,7 @@ import '@fontsource/nunito/variable-italic.css'; // Italic variant.;
 import LoadingComponent from './LoadingComponent';
 import AdminComponent from './AdminComponent';
 import StorefrontComponent from './StorefrontComponent';
+import NotFound from './NotFound';
 
 const Popup = () => {
   const [state, setState] = useState({
@@ -126,6 +127,8 @@ const Popup = () => {
     return <StorefrontComponent state={state} />;
   } else if (state.adminShown && state.themesReady && state.shop) {
     return <AdminComponent state={state} />;
+  } else if (!state.storefrontInformation && !state.adminShown && !state.themesReady) {
+    return <NotFound />;
   } else {
     return <LoadingComponent />;
   }
