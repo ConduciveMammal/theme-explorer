@@ -12,6 +12,7 @@ const ThemeAccordion = ({ theme, shop, index }) => {
   const themeJsonUrl = `https://${shop.domain}/admin/themes/${theme.id}.json`;
   const themeCodeUrl = `https://${shop.domain}/admin/themes/${theme.id}`;
   const themeCustomiseUrl = `https://${shop.domain}/admin/themes/${theme.id}/editor`;
+  const themeLanguageEditorUrl = `https://${shop.domain}/admin/themes/${theme.id}/language`;
 
   return (
     <div className="Accordion__Container">
@@ -85,6 +86,11 @@ const ThemeAccordion = ({ theme, shop, index }) => {
             <p className="Footer__Link">
               <a href={themeCodeUrl} target="_blank" rel="noreferrer">
                 Edit code
+              </a>
+            </p>
+            <p className="Footer__Link">
+              <a href={themeLanguageEditorUrl} target="_blank" rel="noreferrer">
+                Edit languages
               </a>
             </p>
           </footer>
