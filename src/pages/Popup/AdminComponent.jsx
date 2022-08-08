@@ -16,19 +16,33 @@ const AdminComponent = ({ state }) => {
 
   return (
     <div className="popup-container">
-      <header className="Popup__Header">
-        <h1 className="Header__Title">{state.liveTheme?.name}</h1>
-        <div className="Header__Subtitle-wrapper">
-          <h2 className="Header__Subtitle Subtitle--Primary">
-            Updated: <DisplayDate date={state.liveTheme?.updated_at} />
-          </h2>
-          <h3 className="Header__Subtitle Subtitle--Aside">
-            <small>Theme ID: {state.liveTheme?.id}</small>
-          </h3>
+      <span className='AdminComponent__ThemeCount'>
+        {(state.shop?.plan_name === "shopify_plus" && state.themes.length === 100)
+          || (state.shop?.plan_name !== "shopify_plus" && state.themes.length === 20) ?
+          <>
+            No free space for Themes are available
+          </>
+          :
+          <>
+            {state.themes.length} of
+            {state.shop?.plan_name === "shopify_plus" && " 100 "}
+            {state.shop?.plan_name !== "shopify_plus" && " 20 "}
+            Themes are occupied
+          </>
+        }
+      </span>
+      <header className="AdminComponent__Header">
+        <h1 className={"Header__Title"}>
+          {state.liveTheme?.name}
+        </h1>
+        <div className={"Header__Date"}>
+          <p>
+            Created at <b><DisplayDate date={state.liveTheme?.created_at} /></b> and updated on <b><DisplayDate date={state.liveTheme?.updated_at} /></b>
+          </p>
         </div>
-        <div className="Header__Subtitle Subtitle--Secondary Header__Subtitle--subdued">
-          Created at: <DisplayDate date={state.liveTheme?.created_at} />
-        </div>
+        <p className={"Header__Id"}>
+          Theme ID: {state.liveTheme?.id}
+        </p>
       </header>
       <div className="popup-body">
         <input className={"popup-body-input"} placeholder={"Search for your theme"} onChange={(evt) => filterThemesBasedOnInput(evt)} />

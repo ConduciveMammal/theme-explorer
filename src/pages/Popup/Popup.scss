@@ -9,48 +9,41 @@
   background-color: $neutral-300;
 }
 
-.Popup__Header {
-  padding: 26px;
+.AdminComponent__ThemeCount {
+  display: flex;
+  justify-content: center;
+  background-color: #4d52bf;
+  text-align: center;
+  padding: 12px 14px;
+  color: #fff;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+}
+
+.AdminComponent__Header {
+  padding: 26px 26px 8px 26px;
+
+  h1,
+  p {
+    margin: 0;
+  }
 
   .Header__Title {
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-    line-height: 1;
-    margin: 0;
-    margin-bottom: 10px;
-  }
-
-  .Header__Subtitle-wrapper {
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .Header__Subtitle {
-    font-size: 21px;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.4px;
-    margin: 0;
-    margin-bottom: 10px;
-
-    small {
-      font-size: 12px;
-      font-weight: 400;
-      font-style: italic;
-      line-height: 1;
-      letter-spacing: 0.3px;
-      color: $neutral-600;
-      margin-left: 10px;
-    }
-  }
-
-  .Header__Subtitle--subdued {
     font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .Header__Date {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .Header__Id {
     font-style: italic;
-    color: $neutral-600;
+    margin-bottom: 8px;
   }
 }
 
