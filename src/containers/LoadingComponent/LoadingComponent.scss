@@ -1,0 +1,56 @@
+@import "../../assets/styles/variables";
+
+.Panel__Loader-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.Panel__Loader {
+  width: 82px;
+  height: 18px;
+  position: relative;
+  display: block;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    top: 0;
+    background: $primary-500;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    animation: jump 0.5s ease-in infinite alternate;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    top: 0;
+    background: $primary-500;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    animation: jump 0.5s ease-in infinite alternate;
+    background: #0000;
+    color: $neutral-900;
+    top: 100%;
+    box-shadow: 32px -20px, -32px -20px;
+    animation: split 0.5s ease-out infinite alternate;
+  }
+}
+
+.Panel__Loader-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.4px;
+  color: $neutral-600;
+  margin: 0;
+  margin-top: 10px;
+}

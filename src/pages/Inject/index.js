@@ -1,3 +1,5 @@
+window.Shopify = window.Shopify || {};
+
 window.postMessage(
   {
     type: 'theme',

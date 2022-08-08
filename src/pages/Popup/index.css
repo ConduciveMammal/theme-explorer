@@ -1,18 +1,12 @@
-/* @font-face {
-  font-family: "Nunito";
-  src: url('static/nunito.woff2') format('woff2 supports variations'),
-       url('static/nunito.woff2') format('woff2-variations');
-  font-weight: 200 900;
-  font-style: normal;
+html {
+  box-sizing: border-box;
 }
 
-@font-face {
-  font-family: "Nunito";
-  src: url('static/nunito-italic.woff2') format('woff2 supports variations'),
-       url('static/nunito-italic.woff2') format('woff2-variations');
-  font-weight: 200 900;
-  font-style: italic;
-} */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
 
 body {
   margin: 0;
@@ -21,7 +15,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   position: relative;
 }
 

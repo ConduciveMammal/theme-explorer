@@ -21,8 +21,9 @@
       "resources": [
         "contentScript.bundle.js",
         "injectScript.bundle.js",
-        "icon-128.png",
-        "icon-34.png",
+        "icon128.png",
+        "icon48.png",
+        "icon16.png",
         "nunito.woff2",
         "nunito-italic.woff2"
       ],

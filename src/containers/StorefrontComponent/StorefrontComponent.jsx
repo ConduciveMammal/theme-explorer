@@ -1,6 +1,7 @@
 import React from 'react';
-import Icon from '../../containers/Icon/Icon';
-import './Popup.scss';
+import Icon from '../Icon/Icon';
+import "./StorefrontComponent.scss";
+import '../../pages/Popup/Popup.scss';
 import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource/nunito/variable-italic.css'; // Italic variant.
 import { ToastContainer, toast } from 'react-toastify';
@@ -36,19 +37,19 @@ const StorefrontComponent = ({ state }) => {
 
   const copyPreviewURL = () => {
     navigator.clipboard.writeText(getPreviewURL());
-    launchToast('Preview URL copied');
+    launchToast('Preview URL copied!');
   }
 
   const copyPreviewAndEditorURL = () => {
-    navigator.clipboard.writeText(`Themename: ${state.storefrontInformation.theme.name}\n\nPreview: ${getPreviewURL()}\nEditor: ${getEditorURL()}`);
-    launchToast('Preview & Editor URL copied');
+    navigator.clipboard.writeText(`Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${getPreviewURL()}\nEditor: ${getEditorURL()}`);
+    launchToast('Preview & Editor URL copied!');
   }
 
   return (
     <div className="popup-container popup-storefront">
       <div className="popup-body">
-        <div className="Panel Panel--error">
-          <div className="Alert Alert--error">
+        <div className="Panel">
+          <div className="Alert Alert--padding">
             <div className="Alert__Icon-container">
               <Icon
                 name="theme"
@@ -57,14 +58,14 @@ const StorefrontComponent = ({ state }) => {
                 classes={'Alert__Icon'}
               />
               <h1 className="title">
-                <small>You're spectating</small>
+                <small>You&rsquo;re viewing</small>
                 <br />
                 <b>{state.storefrontInformation.theme.name}</b>
               </h1>
             </div>
             <div className="Alert__Content">
               <p className="Alert__Message">
-                Generate Preview or Preview & Editor URL to this theme.
+                Generate Preview or Preview &amp; Editor URL to this theme.
               </p>
 
               <div className='generator-actions'>
@@ -72,7 +73,7 @@ const StorefrontComponent = ({ state }) => {
                   Preview URL
                 </button>
                 <button className='button' onClick={() => copyPreviewAndEditorURL()}>
-                  Preview & Editor URL
+                  Preview &amp; Editor URL
                 </button>
               </div>
             </div>

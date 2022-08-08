@@ -22,7 +22,7 @@
 }
 
 .AdminComponent__Header {
-  padding: 26px 26px 8px 26px;
+  padding: 26px;
 
   h1,
   p {
@@ -30,7 +30,8 @@
   }
 
   .Header__Title {
-    font-size: 18px;
+    font-size: 32px;
+    font-weight: 800;
     margin-bottom: 5px;
   }
 
@@ -47,143 +48,47 @@
   }
 }
 
-.Panel--error {
-  padding: 26px;
-  font-size: 18px;
+.Panel {
   font-weight: 400;
   line-height: 1.5;
+}
+
+.Panel--error {
   color: $neutral-600;
   text-align: center;
 }
 
-.Panel__Loader-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 0;
-}
-
-.Panel__Loader {
-  width: 82px;
-  height: 18px;
-  position: relative;
-  display: block;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 10%);
-    top: 0;
-    background: $primary-500;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    animation: jump 0.5s ease-in infinite alternate;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 10%);
-    top: 0;
-    background: $primary-500;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    animation: jump 0.5s ease-in infinite alternate;
-    background: #0000;
-    color: $neutral-900;
-    top: 100%;
-    box-shadow: 32px -20px, -32px -20px;
-    animation: split 0.5s ease-out infinite alternate;
-  }
-}
-
-.Panel__Loader-text {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.4px;
-  color: $neutral-600;
-  margin: 0;
-  margin-top: 10px;
-}
-
-.popup-storefront {
-  .Alert__Icon-container {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-
-    .title {
-      text-align: left;
-      font-size: 18px;
-      font-weight: 400;
-      margin: 0;
-    }
-  }
-
-  .Alert__Content {
-    text-align: left;
-
-    .Alert__Message {
-      font-size: 14px;
-    }
-
-    .generator-actions {
-      display: flex;
-      gap: 10px;
-    
-      .button {
-        flex: 1 1 auto;
-        background-color: #4d52bf;
-        margin: 0;
-        border-width: 0;
-        padding: 12px 16px;
-        border-radius: 3px;
-        color: #fff;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.2s ease-in-out;
-        transform: scale(1);
-
-        &:hover {
-          background-color: #575edd;
-        }
-
-        &:active {
-          transform: scale(0.9);
-        }
-      }
-    }
-  }
-
-  .Toastify__toast-container {
-    --toastify-icon-color-success: rgb(5, 197, 171);
-    --toastify-color-progress-success: rgb(5, 197, 171);
-    --toastify-color-light: #4d52bf;
-    --toastify-text-color-light: #fff;
-    font-weight: 700;
-
-    .Toastify__close-button--light {
-      color: var(--toastify-text-color-light);
-    }
-  }
+.Popup__Search-wrapper {
+  margin: 0 25px 15px;
 }
 
 .popup-body-input {
-  width: calc(100% - 52px);
-  border: 0;
-  padding: 12px 8px;
-  text-align: center;
-  box-sizing: border-box;
-  margin: 0 26px 16px;
-  border-radius: 6px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 1px rgba(135, 154, 171, 0.3);
+  border: solid 2px #eff3f6;
+  background-color: #f5f7fa;
+  font-family: inherit;
+  width: 100%;
+  transition: border-color 0.2s ease-in;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-500;
+  }
+
+  &::placeholder {
+    transition: opacity 0.2s ease-in;
+  }
+
+  &:focus::placeholder {
+    color: $neutral-600;
+    opacity: 0.1;
+  }
 }
 
 @keyframes split {
+
   0% {
     box-shadow: 8px -20px, -8px -20px;
   }
@@ -194,6 +99,7 @@
 }
 
 @keyframes jump {
+
   0% {
     transform: translate(-50%, -150%);
   }

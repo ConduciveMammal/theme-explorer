@@ -1,0 +1,52 @@
+@import "../../assets/styles/components/buttons";
+
+.popup-storefront {
+  --toastify-font-family: $font-primary;
+
+  .Alert__Icon-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    .title {
+      text-align: left;
+      font-size: 18px;
+      font-weight: 400;
+      margin: 0;
+    }
+  }
+
+  .Alert--padding {
+    padding: 20px;
+  }
+
+  .Alert__Content {
+    text-align: left;
+
+    .Alert__Message {
+      font-size: 14px;
+    }
+
+    .generator-actions {
+      display: flex;
+      gap: 10px;
+
+      .button {
+        flex: 1 1 auto;
+        margin: 0;
+      }
+    }
+  }
+
+  .Toastify__toast-container {
+    --toastify-icon-color-success: rgb(5, 197, 171);
+    --toastify-color-progress-success: rgb(5, 197, 171);
+    --toastify-color-light: #4d52bf;
+    --toastify-text-color-light: #fff;
+    font-weight: 700;
+
+    .Toastify__close-button--light {
+      color: var(--toastify-text-color-light);
+    }
+  }
+}

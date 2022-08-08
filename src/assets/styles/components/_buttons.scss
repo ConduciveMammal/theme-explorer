@@ -1,0 +1,19 @@
+@import "../variables";
+
+.button {
+  font-family: inherit;
+  color: $neutral-100;
+  letter-spacing: 0.75px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 0;
+  background-color: $primary-500;
+  box-shadow: 0 1px 4px 1px rgba(135, 154, 171, 0.3);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+  appearance: none;
+
+  &:hover {
+    background-color: $primary-600;
+  }
+}

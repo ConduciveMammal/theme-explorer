@@ -4,10 +4,10 @@ import './Popup.scss';
 import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource/nunito/variable-italic.css'; // Italic variant.;
 
-import LoadingComponent from './LoadingComponent';
-import AdminComponent from './AdminComponent';
-import StorefrontComponent from './StorefrontComponent';
-import NotFound from './NotFound';
+import LoadingComponent from '../../containers/LoadingComponent/LoadingComponent';
+import AdminComponent from '../../containers/AdminComponent/AdminComponent';
+import StorefrontComponent from '../../containers/StorefrontComponent/StorefrontComponent';
+import NotFound from '../../containers/NotFound/NotFound';
 
 const Popup = () => {
   const [state, setState] = useState({
