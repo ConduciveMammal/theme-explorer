@@ -91,5 +91,7 @@ typings/
 .DS_Store
 src/.DS_Store
 build/
+*.zip
+Media Assets/
 
 # End of https://www.gitignore.io/api/node

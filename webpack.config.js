@@ -4,9 +4,10 @@ var webpack = require('webpack'),
   env = require('./utils/env'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin');
+  TerserPlugin = require('terser-webpack-plugin'),
+  ZipPlugin = require('zip-webpack-plugin');
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+const packageName = `${process.env.npm_package_name}-${process.env.npm_package_version}`;
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 var alias = {
@@ -179,6 +180,20 @@ var options = {
       chunks: ['popup'],
       cache: false,
     }),
+    new ZipPlugin({
+      path: '../',
+      filename: `${packageName}.zip`,
+      extension: 'zip',
+      fileOptions: {
+          mtime: new Date(),
+          mode: 0o100664,
+          compress: true,
+          forceZip64Format: false,
+      },
+      zipOptions: {
+          forceZip64Format: false,
+      },
+  })
     // new HtmlWebpackPlugin({
     //   template: path.join(__dirname, 'src', 'pages', 'Devtools', 'index.html'),
     //   filename: 'devtools.html',
