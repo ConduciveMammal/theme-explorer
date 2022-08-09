@@ -37,12 +37,17 @@ const StorefrontComponent = ({ state }) => {
 
   const copyPreviewURL = () => {
     navigator.clipboard.writeText(getPreviewURL());
-    launchToast('Preview URL copied!');
+    launchToast('Preview URL copied');
   }
 
   const copyPreviewAndEditorURL = () => {
     navigator.clipboard.writeText(`Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${getPreviewURL()}\nEditor: ${getEditorURL()}`);
-    launchToast('Preview & Editor URL copied!');
+    launchToast('Preview & Editor URL copied');
+  }
+
+  const copyThemeId = () => {
+    navigator.clipboard.writeText(state.storefrontInformation.theme.id);
+    launchToast('Theme ID copied');
   }
 
   return (
@@ -58,9 +63,9 @@ const StorefrontComponent = ({ state }) => {
                 classes={'Alert__Icon'}
               />
               <h1 className="title">
-                <small>You&rsquo;re viewing</small>
+                <small>Theme name:</small>
                 <br />
-                <b>{state.storefrontInformation.theme.name}</b>
+                <strong>{state.storefrontInformation.theme.name}</strong>
               </h1>
             </div>
             <div className="Alert__Content">
@@ -69,10 +74,13 @@ const StorefrontComponent = ({ state }) => {
               </p>
 
               <div className='generator-actions'>
-                <button className='button' onClick={() => copyPreviewURL()}>
+                <button className='button' title="Copy theme ID" onClick={() => copyThemeId()}>
+                  Theme ID
+                </button>
+                <button className='button' title="Copy preview URL" onClick={() => copyPreviewURL()}>
                   Preview URL
                 </button>
-                <button className='button' onClick={() => copyPreviewAndEditorURL()}>
+                <button className='button' title="Copy preview &amp; editor URLs" onClick={() => copyPreviewAndEditorURL()}>
                   Preview &amp; Editor URL
                 </button>
               </div>

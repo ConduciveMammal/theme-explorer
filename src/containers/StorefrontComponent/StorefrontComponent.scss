@@ -26,15 +26,15 @@
     .Alert__Message {
       font-size: 14px;
     }
+  }
 
-    .generator-actions {
-      display: flex;
-      gap: 10px;
+  .generator-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 
-      .button {
-        flex: 1 1 auto;
-        margin: 0;
-      }
+    .button {
+      flex: 1 1 auto;
     }
   }
 

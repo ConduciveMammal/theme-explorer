@@ -1,12 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Theme Explorer",
+  "name": "Theme Explorer for Shopify",
   "description": "Theme Explorer allows you to view important information about the themes installed on your Shopify store.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon48.png"
   },
   "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
     "128": "icon128.png"
   },
   "content_scripts": [

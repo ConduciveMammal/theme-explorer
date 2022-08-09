@@ -39,7 +39,7 @@ const AdminComponent = ({ state }) => {
         </h1>
         <div className={"Header__Date"}>
           <p>
-            Created at <strong><DisplayDate date={state.liveTheme?.created_at} /></strong> and updated on <b><DisplayDate date={state.liveTheme?.updated_at} /></b>
+            Created at <strong><DisplayDate date={state.liveTheme?.created_at} /></strong> and updated on <strong><DisplayDate date={state.liveTheme?.updated_at} /></strong>
           </p>
         </div>
         <p className={"Header__Id"}>
