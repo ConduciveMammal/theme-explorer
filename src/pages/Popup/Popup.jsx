@@ -96,7 +96,6 @@ const Popup = () => {
 
   const registerOnMessage = (request) => {
     if (request.type === 'theme') {
-      console.log(request.data);
       setState((prevState) => ({
         ...prevState,
         storefrontInformation: request.data.hasOwnProperty('theme') ? request.data : null,
@@ -124,19 +123,13 @@ const Popup = () => {
     chrome.runtime.onMessage.removeListener(registerOnMessage);
   }
 
-  console.log(state);
-
   if (!state.adminShown && state.storefrontInformation && !state.storefrontInformation.location.includes(".myshopify.com/admin")) {
-    console.log('show storefront');
     return <StorefrontComponent state={state} />;
   } else if (state.adminShown && state.themesReady && state.shop) {
-    console.log('show admin');
     return <AdminComponent state={state} />;
   } else if (!state.storefrontInformation && !state.adminShown && !state.themesReady) {
-    console.log('show not found');
     return <NotFound />;
   } else {
-    console.log('show loading');
     return <LoadingComponent />;
   }
 };
