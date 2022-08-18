@@ -1,4 +1,5 @@
 import React from 'react';
+import MixPanel from '../../Utilities/MixPanel';
 import Icon from '../Icon/Icon';
 import "./StorefrontComponent.scss";
 import '../../pages/Popup/Popup.scss';
@@ -8,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const StorefrontComponent = ({ state }) => {
+  console.log(state);
+  MixPanel('Opened Shopify Frontend', {"shop": state.storefrontInformation.shop});
   const getPreviewURL = () => {
     if (state.storefrontInformation.location) {
       const url = new URL(state.storefrontInformation.location);
@@ -36,16 +39,19 @@ const StorefrontComponent = ({ state }) => {
   }
 
   const copyPreviewURL = () => {
+    MixPanel('Clicked Preview Button');
     navigator.clipboard.writeText(getPreviewURL());
     launchToast('Preview URL copied');
   }
 
   const copyPreviewAndEditorURL = () => {
+    MixPanel('Clicked Editor & Editor Button');
     navigator.clipboard.writeText(`Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${getPreviewURL()}\nEditor: ${getEditorURL()}`);
     launchToast('Preview & Editor URL copied');
   }
 
   const copyThemeId = () => {
+    MixPanel('Copied Theme ID');
     navigator.clipboard.writeText(state.storefrontInformation.theme.id);
     launchToast('Theme ID copied');
   }

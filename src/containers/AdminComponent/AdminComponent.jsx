@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import MixPanel from '../../Utilities/MixPanel';
 import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
 import ThemeAccordion from '../ThemeAccordion/ThemeAccordion';
 import '../../pages/Popup/Popup.scss';
 import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource/nunito/variable-italic.css'; // Italic variant.
-import { useState } from 'react';
 
 const AdminComponent = ({ state }) => {
+  console.log(state);
+  MixPanel('Admin Component', {"shop": state.shop.myshopify_domain});
   const [filteredThemes, setFilteredThemes] = useState(null);
 
   const returnSearchItem = (term, compare) => {return term.toLowerCase().includes(compare.toLowerCase())}
