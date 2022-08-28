@@ -1,13 +1,26 @@
-window.Shopify = window.Shopify || {};
+function getThemeDataAndSendItToExt() {
+  if (window.location.href.indexOf("myshopify.com/admin") > -1) return;
 
-window.postMessage(
-  {
-    type: 'theme',
-    data: {
-      theme: window.Shopify.theme,
-      shop: window.Shopify.shop,
-      location: window.location.href
-    },
-  },
-  '*'
-);
+  if ((typeof window.Shopify === 'undefined' && typeof window.Shopify.theme === 'undefined') || (typeof window.Shopify === 'undefined' && typeof window.Shopify.shop === 'undefined')) {
+    getThemeDataAndSendItToExt();
+  } else {
+    window.postMessage(
+      {
+        type: 'theme',
+        data: {
+          theme: {
+            handle: window.Shopify.theme.handle,
+            id: window.Shopify.theme.id,
+            name: window.Shopify.theme.name,
+            role: window.Shopify.theme.role,
+          },
+          shop: window.Shopify.shop,
+          location: window.location.href
+        },
+      },
+      '*'
+    );
+  }
+}
+
+getThemeDataAndSendItToExt();

@@ -123,9 +123,9 @@ const Popup = () => {
     chrome.runtime.onMessage.removeListener(registerOnMessage);
   }
 
-  if (!state.adminShown && state.storefrontInformation && !state.storefrontInformation.location.includes(".myshopify.com/admin")) {
+  if (state.storefrontInformation) {
     return <StorefrontComponent state={state} />;
-  } else if (state.adminShown && state.themesReady && state.shop) {
+  } else if (state.adminShown && state.themesReady && state.shop && !state.storefrontInformation) {
     return <AdminComponent state={state} />;
   } else if (!state.storefrontInformation && !state.adminShown && !state.themesReady) {
     return <NotFound />;
