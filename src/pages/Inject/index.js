@@ -1,20 +1,18 @@
 function getThemeDataAndSendItToExt() {
   if (window.location.href.indexOf("myshopify.com/admin") > -1) return;
 
-  if ((typeof window.Shopify === 'undefined' && typeof window.Shopify.theme === 'undefined') || (typeof window.Shopify === 'undefined' && typeof window.Shopify.shop === 'undefined')) {
-    getThemeDataAndSendItToExt();
-  } else {
+  if ((typeof Shopify !== 'undefined' && typeof Shopify.theme !== 'undefined') || (typeof Shopify !== 'undefined' && typeof Shopify.shop !== 'undefined')) {
     window.postMessage(
       {
         type: 'theme',
         data: {
           theme: {
-            handle: window.Shopify.theme.handle,
-            id: window.Shopify.theme.id,
-            name: window.Shopify.theme.name,
-            role: window.Shopify.theme.role,
+            handle: Shopify.theme.handle,
+            id: Shopify.theme.id,
+            name: Shopify.theme.name,
+            role: Shopify.theme.role,
           },
-          shop: window.Shopify.shop,
+          shop: Shopify.shop,
           location: window.location.href
         },
       },
