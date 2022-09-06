@@ -2,6 +2,8 @@ import React from 'react';
 import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
 import ThemeAccordion from '../ThemeAccordion/ThemeAccordion';
+import FooterBar from '../FooterBar/FooterBar';
+
 import '../../pages/Popup/Popup.scss';
 import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource/nunito/variable-italic.css'; // Italic variant.
@@ -114,6 +116,7 @@ const AdminComponent = ({ state }) => {
           </div>
         </div>
       </div>
+      <FooterBar />
     </div>
   );
 };
