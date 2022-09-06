@@ -1,6 +1,6 @@
 {
   "name": "theme-explorer",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Theme Explorer allows you to view important information about the themes installed on your Shopify store.",
   "license": "UNLICENSED",
   "repository": {
@@ -16,6 +16,7 @@
     "@fontsource/nunito": "^4.5.9",
     "@hot-loader/react-dom": "^17.0.2",
     "@kunukn/react-collapse": "^2.2.9",
+    "html-react-parser": "^3.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-loader": "^4.13.0",

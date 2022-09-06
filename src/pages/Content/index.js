@@ -29,3 +29,6 @@ chrome.runtime.onMessage.addListener((request) => {
     sendMessageToReact(data, true);
   }
 });
+
+console.log('test');
+console.log(chrome.runtime.getManifest().version);
