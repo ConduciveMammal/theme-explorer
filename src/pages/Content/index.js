@@ -30,5 +30,10 @@ chrome.runtime.onMessage.addListener((request) => {
   }
 });
 
-console.log('test');
-console.log(chrome.runtime.getManifest().version);
+// console.log('test');
+// console.log(chrome.runtime.getManifest().version);
+chrome.runtime.onInstalled.addListener((details) => {
+  if(details.reason === "update"){
+    chrome.tabs.create({ url: `https://github.com/ConduciveMammal/theme-explorer/releases/tag/${chrome.runtime.getManifest().version}` });
+  }
+});
