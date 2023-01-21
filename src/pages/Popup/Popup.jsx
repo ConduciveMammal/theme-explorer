@@ -66,9 +66,11 @@ const Popup = () => {
 
     setState((prevState) => ({
       ...prevState,
-      adminShown: tabUrl.hostname.includes('.myshopify.com'),
+      adminShown: tabUrl.href.includes('.myshopify.com/admin') || tabUrl.hostname.includes('admin.shopify.com'),
       storeUrl: `${tabUrl.protocol}//${tabUrl.hostname}`,
     }));
+    console.log(tabUrl);
+    console.log(state.adminShown);
   };
 
   const fetchThemes = async () => {
