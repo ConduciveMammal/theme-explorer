@@ -1,9 +1,15 @@
-
 ![Icon](https://user-images.githubusercontent.com/18140157/180614942-b0849ff5-ce94-426b-aac3-fdd19f784e2a.png)
 
 # Theme Explorer
 
 Theme Explorer allows you to view important information about the themes installed on your Shopify store.
+
+## Get it now
+
+[![Install on Chrome](/src/assets/img/get-it-chrome.png)](https://chrome.google.com/webstore/detail/theme-explorer-for-shopif/jiapemkfhgejoifinncjnbdkpafhkcnj)
+[![Install on Firefox](/src/assets/img/get-it-firefox.png)](https://addons.mozilla.org/en-GB/firefox/addon/theme-explorer-for-shopify/)
+
+_Note: Firefox requires at least version 109.0_
 
 ## Screenshots
 
@@ -14,7 +20,7 @@ Theme Explorer allows you to view important information about the themes install
 - View details of each theme installed on your Shopify store.
 - Access quick links to your theme, such as the Theme Customiser, code editor and theme JSON.
 - Quickly preview each theme.
-- 100% safe. This extension only works on the currently focused Chrome tab and only when viewing a Shopify store's admin screen so unauthorised users won't be able to see these details.
+- 100% safe. This extension only works on the currently focused tab and only when viewing a Shopify store's admin screen so unauthorised users won't be able to see these details.
 
 ## Acknowledgements
 
