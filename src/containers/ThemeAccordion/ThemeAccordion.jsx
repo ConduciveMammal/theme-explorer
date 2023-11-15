@@ -5,14 +5,15 @@ import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
 import './ThemeAccordion.scss';
 
-const ThemeAccordion = ({ theme, shop, index }) => {
+const ThemeAccordion = ({ theme, shop, index, storeUrl }) => {
+  console.log(shop);
   const [isOpen, setIsOpen] = React.useState(false);
   const onToggle = () => setIsOpen((shown) => !shown);
   const themePreviewUrl = `https://${shop.domain}/?preview_theme_id=${theme.id}`;
-  const themeJsonUrl = `https://${shop.domain}/admin/themes/${theme.id}.json`;
-  const themeCodeUrl = `https://${shop.domain}/admin/themes/${theme.id}`;
-  const themeCustomiseUrl = `https://${shop.domain}/admin/themes/${theme.id}/editor`;
-  const themeLanguageEditorUrl = `https://${shop.domain}/admin/themes/${theme.id}/language`;
+  const themeJsonUrl = `${storeUrl}/themes/${theme.id}.json`;
+  const themeCodeUrl = `${storeUrl}/themes/${theme.id}`;
+  const themeCustomiseUrl = `${storeUrl}/themes/${theme.id}/editor`;
+  const themeLanguageEditorUrl = `${storeUrl}/themes/${theme.id}/language`;
 
   return (
     <div className="Accordion__Container">

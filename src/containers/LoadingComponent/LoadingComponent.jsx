@@ -1,8 +1,8 @@
 import React from 'react';
 import '../../pages/Popup/Popup.scss';
 import './LoadingComponent.scss';
-import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
-import '@fontsource/nunito/variable-italic.css'; // Italic variant.
+import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
+import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 
 const LoadingComponent = () => {
   return (

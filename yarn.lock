@@ -1066,10 +1066,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@fontsource/nunito@^4.5.9":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@fontsource/nunito/-/nunito-4.5.10.tgz#159d52126fda9acc57681687cbe3c8509c3782ca"
-  integrity sha512-pxbv8qtPhtA3fTmJ727PsKgUQqhSzJc0wIe4Wt8mYZ73bkM/jWfCr3944D3pz2Er5CfLum+M9Zwq0G7y+Avk3A==
+"@fontsource-variable/nunito@^5.0.16":
+  version "5.0.16"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/nunito/-/nunito-5.0.16.tgz#6e2d868f219cacf7ddf4cc14bf8302bf7a2cb67a"
+  integrity sha512-ZmmtDc/oBk7l3Tn33OmjUkcOapL8O/8w78Xm9AML0+t00gu5msH/BL5yeowLh8pFnKCIPsTYHqxnu5xdM1N+dA==
 
 "@hot-loader/react-dom@^17.0.2":
   version "17.0.2"

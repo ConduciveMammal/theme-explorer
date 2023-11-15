@@ -2,12 +2,13 @@ import React from 'react';
 import Icon from '../Icon/Icon';
 import "./StorefrontComponent.scss";
 import '../../pages/Popup/Popup.scss';
-import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
-import '@fontsource/nunito/variable-italic.css'; // Italic variant.
+import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
+import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const StorefrontComponent = ({ state }) => {
+  console.log('State', state);
   const getPreviewURL = () => {
     if (state.storefrontInformation.location) {
       const url = new URL(state.storefrontInformation.location);
@@ -21,7 +22,7 @@ const StorefrontComponent = ({ state }) => {
   }
 
   const getEditorURL = () => {
-    return "https://" + state.storefrontInformation.shop + "/admin/themes/" + state.storefrontInformation.theme.id + "/editor";
+    return "https://" + state.storefrontInformation.shop + "/themes/" + state.storefrontInformation.theme.id + "/editor";
   }
 
   const launchToast = (message) => {

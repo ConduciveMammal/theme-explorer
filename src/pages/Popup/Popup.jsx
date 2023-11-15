@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import './Popup.scss';
-import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
-import '@fontsource/nunito/variable-italic.css'; // Italic variant.;
+import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
+import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 
 import LoadingComponent from '../../containers/LoadingComponent/LoadingComponent';
 import AdminComponent from '../../containers/AdminComponent/AdminComponent';
@@ -62,21 +62,35 @@ const Popup = () => {
   const getTabData = async (tab) => {
     if (!tab) return;
 
-    const tabUrl = await new URL(tab.url);
+    // const tabUrl = await new URL(tab.url);
+    const tabUrl = await parseUrl(tab.url);
+    console.log(tabUrl);
 
     setState((prevState) => ({
       ...prevState,
-      adminShown: tabUrl.href.includes('.myshopify.com/admin') || tabUrl.hostname.includes('admin.shopify.com'),
-      storeUrl: `${tabUrl.protocol}//${tabUrl.hostname}`,
+      adminShown: tabUrl.host.includes('admin.shopify.com'),
+      storeUrl: `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`,
     }));
-    console.log(tabUrl);
+    console.log('Tab', `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`);
     console.log(state.adminShown);
   };
+
+  function parseUrl(url) {
+    const parsedUrl = new URL(url);
+    const urlSegments = parsedUrl.pathname.split('/').filter(segment => segment !== '')
+    return {
+      fullUrl: url,
+      protocol: parsedUrl.protocol,
+      host: parsedUrl.host,
+      storeHandle: urlSegments[1],
+      currentPage: urlSegments[2]
+    };
+  }
 
   const fetchThemes = async () => {
     if (!state.storeUrl || !state.adminShown) return;
 
-    await fetch(`${state.storeUrl}/admin/themes.json`)
+    await fetch(`${state.storeUrl}/themes.json`)
       .then((response) => response.text())
       .then((data) => {
         const themesArray = JSON.parse(data);

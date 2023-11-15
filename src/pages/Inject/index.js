@@ -1,5 +1,5 @@
 function getThemeDataAndSendItToExt() {
-  if (window.location.href.indexOf("myshopify.com/admin") > -1) return;
+  if (window.location.href.indexOf("admin.shopify.com/store") > -1) return;
 
   if ((typeof Shopify !== 'undefined' && typeof Shopify.theme !== 'undefined') || (typeof Shopify !== 'undefined' && typeof Shopify.shop !== 'undefined')) {
     window.postMessage(

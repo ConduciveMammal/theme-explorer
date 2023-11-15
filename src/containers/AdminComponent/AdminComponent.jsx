@@ -5,11 +5,12 @@ import ThemeAccordion from '../ThemeAccordion/ThemeAccordion';
 import FooterBar from '../FooterBar/FooterBar';
 
 import '../../pages/Popup/Popup.scss';
-import '@fontsource/nunito/variable.css'; // This contains ALL variable axes. Font files are larger.
-import '@fontsource/nunito/variable-italic.css'; // Italic variant.
+import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
+import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 import { useState } from 'react';
 
 const AdminComponent = ({ state }) => {
+  console.log('state', state);
   const [filteredThemes, setFilteredThemes] = useState(null);
 
   const returnSearchItem = (term, compare) => {return term.toLowerCase().includes(compare.toLowerCase())}
@@ -56,9 +57,11 @@ const AdminComponent = ({ state }) => {
           <>
             {state.themesReady && !filteredThemes ?
               state.themes.map((theme, index) => {
+                console.log('theme state', state);
                 return (
                   <ThemeAccordion
                     theme={theme}
+                    storeUrl={state.storeUrl}
                     shop={state.shop}
                     key={index}
                     index={index}
@@ -70,6 +73,7 @@ const AdminComponent = ({ state }) => {
                 return (
                   <ThemeAccordion
                     theme={theme}
+                    storeUrl={state.storeUrl}
                     shop={state.shop}
                     key={index}
                     index={index}
@@ -105,7 +109,7 @@ const AdminComponent = ({ state }) => {
               </div>
               <p className="Accordion__Title">
                 <a
-                  href={`${state.storeUrl}/admin/themes.json`}
+                  href={`${state.storeUrl}/themes.json`}
                   target="_blank"
                   rel="noreferrer"
                 >
