@@ -63,8 +63,10 @@ const Popup = () => {
     if (!tab) return;
 
     // const tabUrl = await new URL(tab.url);
-    const tabUrl = await parseUrl(tab.url);
+    const tabUrl = parseUrl(tab.url);
+    console.log('t', tab);
     console.log(tabUrl);
+
 
     setState((prevState) => ({
       ...prevState,
@@ -72,7 +74,6 @@ const Popup = () => {
       storeUrl: `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`,
     }));
     console.log('Tab', `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`);
-    console.log(state.adminShown);
   };
 
   function parseUrl(url) {
@@ -111,10 +112,17 @@ const Popup = () => {
   };
 
   const registerOnMessage = (request) => {
+    // console.log('loloo', request);
+    const storeHandle = request.data.shop.split('.myshopify.com')[0];
+
     if (request.type === 'theme') {
       setState((prevState) => ({
         ...prevState,
         storefrontInformation: request.data.hasOwnProperty('theme') ? request.data : null,
+        storeHandle,
+        urls: {
+          adminBase: `admin.shopify.com/store/${storeHandle}`
+        }
       }));
     }
   };
