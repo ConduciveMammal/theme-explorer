@@ -22,7 +22,7 @@ const StorefrontComponent = ({ state }) => {
   }
 
   const getEditorURL = () => {
-    return "https://" + state.storefrontInformation.shop + "/themes/" + state.storefrontInformation.theme.id + "/editor";
+    return `https://${state.urls.adminBase}/themes/${state.storefrontInformation.theme.id}/editor`;
   }
 
   const launchToast = (message) => {
