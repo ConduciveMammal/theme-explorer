@@ -19,22 +19,41 @@ const AdminComponent = ({ state }) => {
     setFilteredThemes(state.themes.filter(theme => returnSearchItem(theme.name, evt.target.value)));
   }
 
+  const plans = {
+    plus: {
+      name: 'shopify_plus',
+      themeLimit: 100
+    },
+    nonPlus: {
+      name: '',
+      themeLimit: 20
+    }
+  }
+
+  const getPlanName = () => {
+    return state.shop?.plan_name
+  }
+
+  function getPlanThemeLimit() {
+    return getPlanName() === plans.plus.name ? plans.plus.themeLimit : plans.nonPlus.themeLimit
+  }
+
+  function themeCountNotice() {
+    const currentPlanLimit = getPlanThemeLimit();
+
+    if ((state.themes.length >= currentPlanLimit)) {
+      return 'No free space for themes is available'
+    } else {
+      return `${state.themes.length} of ${getPlanThemeLimit()} themes installed`
+    }
+  }
+
+  const themeMessage = themeCountNotice();
+
   return (
     <div className="popup-container">
       <span className='AdminComponent__ThemeCount'>
-        {(state.shop?.plan_name === "shopify_plus" && state.themes.length === 100)
-          || (state.shop?.plan_name !== "shopify_plus" && state.themes.length === 20) ?
-          <>
-            No free space for themes is available
-          </>
-          :
-          <>
-            {state.themes.length} of
-            {state.shop?.plan_name === "shopify_plus" && " 100 "}
-            {state.shop?.plan_name !== "shopify_plus" && " 20 "}
-            themes installed
-          </>
-        }
+        {themeMessage}
       </span>
       <header className="AdminComponent__Header">
         <h1 className={"Header__Title"}>

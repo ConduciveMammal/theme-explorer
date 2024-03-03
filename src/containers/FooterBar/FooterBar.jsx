@@ -20,6 +20,11 @@ const menuLinks = [
     label: "Support",
     link: "https://github.com/ConduciveMammal/theme-explorer/issues",
     icon: "question"
+  },
+  {
+    label: "Changelog",
+    link: 'https://github.com/ConduciveMammal/theme-explorer/blob/master/CHANGELOG.md',
+    icon: "changelog"
   }
 ]
 

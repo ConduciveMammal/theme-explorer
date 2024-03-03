@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Theme Explorer for Shopify",
+  "name": "Dev - Theme Explorer for Shopify",
+  "version": "1",
   "description": "Theme Explorer allows you to view important information about the themes installed on your Shopify store.",
   "action": {
     "default_popup": "popup.html",

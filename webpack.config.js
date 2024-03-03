@@ -124,8 +124,16 @@ var options = {
           force: true,
           transform: function (content, path) {
             // generates the manifest file using the package.json informations
+            let packageNameValue
+            if (env.NODE_ENV === 'development') {
+              packageNameValue = process.env.npm_package_name_development
+            }  else {
+              packageNameValue = process.env.npm_package_name_formatted
+            }
+            console.log(env.NODE_ENV);
             return Buffer.from(
               JSON.stringify({
+                name: packageNameValue,
                 description: process.env.npm_package_description,
                 version: process.env.npm_package_version,
                 ...JSON.parse(content.toString()),

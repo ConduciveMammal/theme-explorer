@@ -6,10 +6,10 @@ import DisplayDate from '../Date/FormatDate';
 import './ThemeAccordion.scss';
 
 const ThemeAccordion = ({ theme, shop, index, storeUrl }) => {
-  console.log(shop);
+  // console.log(shop);
   const [isOpen, setIsOpen] = React.useState(false);
   const onToggle = () => setIsOpen((shown) => !shown);
-  const themePreviewUrl = `https://${shop.domain}/?preview_theme_id=${theme.id}`;
+  const themePreviewUrl = `https://${shop.domain}?preview_theme_id=${theme.id}`;
   const themeJsonUrl = `${storeUrl}/themes/${theme.id}.json`;
   const themeCodeUrl = `${storeUrl}/themes/${theme.id}`;
   const themeCustomiseUrl = `${storeUrl}/themes/${theme.id}/editor`;
@@ -101,4 +101,4 @@ const ThemeAccordion = ({ theme, shop, index, storeUrl }) => {
   );
 };
 
-export default ThemeAccordion;
+export default React.memo(ThemeAccordion);

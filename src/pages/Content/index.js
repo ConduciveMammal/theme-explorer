@@ -1,22 +1,39 @@
 let data = null;
 
-var s = document.createElement('script');
-s.src = chrome.runtime.getURL('injectScript.bundle.js');
-s.onload = function () {
+const script = document.createElement('script');
+script.src = chrome.runtime.getURL('injectScript.bundle.js');
+script.onload = function () {
   this.remove();
 };
-(document.head || document.documentElement).appendChild(s);
 
-function sendMessageToReact(objectData, popupIsOpen = false) {
-  chrome.runtime.sendMessage(chrome.runtime.id, { ...objectData });
-  if (!popupIsOpen) {
-    data = { ...objectData };
+script.onerror = function (event) {
+  console.error('Error loading script:', event);
+};
+
+(document.head || document.documentElement).appendChild(script);
+
+// function sendMessageToReact(objectData, popupIsOpen = false) {
+//   chrome.runtime.sendMessage(chrome.runtime.id, { ...objectData });
+//   if (!popupIsOpen) {
+//     data = { ...objectData };
+//   }
+// }
+function sendMessageToReact(objectData, isPopupOpen = false) {
+  const t0 = performance.now();
+  chrome.runtime.sendMessage(chrome.runtime.id, objectData);
+  console.log('firing');
+  if (!isPopupOpen) {
+    data = objectData;
   }
+
+  const t1 = performance.now();
+  console.log(`Call to sendMessageToReact took ${t1 - t0} milliseconds.`);
 }
 
 window.addEventListener(
   'message',
   (e) => {
+    console.log('firing 2');
     if (e.data.type === 'theme') {
       sendMessageToReact(e.data);
     }
@@ -24,16 +41,11 @@ window.addEventListener(
   false
 );
 
-chrome.runtime.onMessage.addListener((request) => {
+function handleChromeMessage(request) {
   if (request.popupIsOpen) {
-    sendMessageToReact(data, true);
+    sendMessageToReact(request.data, true);
   }
-});
+  // Handle other message types...
+}
 
-// console.log('test');
-// console.log(chrome.runtime.getManifest().version);
-// chrome.runtime.onInstalled.addListener((details) => {
-//   if(details.reason === "update"){
-//     chrome.tabs.create({ url: `https://github.com/ConduciveMammal/theme-explorer/releases/tag/${chrome.runtime.getManifest().version}` });
-//   }
-// });
+chrome.runtime.onMessage.addListener(handleChromeMessage);
