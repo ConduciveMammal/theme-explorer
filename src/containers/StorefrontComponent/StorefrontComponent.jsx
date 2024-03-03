@@ -11,13 +11,9 @@ const StorefrontComponent = ({ state }) => {
   console.log('State', state);
   const getPreviewURL = () => {
     if (state.storefrontInformation.location) {
-      const url = new URL(state.storefrontInformation.location);
+        const url = new URL(state.storefrontInformation.location);
 
-      if (url.search) {
-        return url.href + '&preview_theme_id=' + state.storefrontInformation.theme.id;
-      } else {
-        return url.href + '?preview_theme_id=' + state.storefrontInformation.theme.id;
-      }
+        return url.search ? `${url.href}&preview_theme_id=${state.storefrontInformation.theme.id}` : `${url.href}?preview_theme_id=${state.storefrontInformation.theme.id}`;
     }
   }
 
@@ -28,28 +24,36 @@ const StorefrontComponent = ({ state }) => {
   const launchToast = (message) => {
     toast.success(`${message}`, {
       position: "bottom-center",
-      autoClose: 2500,
-      hideProgressBar: false,
+      autoClose: 1000,
+      hideProgressBar: true,
       closeOnClick: true,
-      pauseOnHover: true,
+      pauseOnHover: false,
       draggable: false
     });
   }
 
   const copyPreviewURL = () => {
-    navigator.clipboard.writeText(getPreviewURL());
-    launchToast('Preview URL copied');
+    copyToClipboard(getPreviewURL(), 'Preview URL copied');
   }
 
   const copyPreviewAndEditorURL = () => {
-    navigator.clipboard.writeText(`Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${getPreviewURL()}\nEditor: ${getEditorURL()}`);
-    launchToast('Preview & Editor URL copied');
+    copyToClipboard(`Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${getPreviewURL()}\nEditor: ${getEditorURL()}`, 'Preview & Editor URL copied');
   }
 
   const copyThemeId = () => {
-    navigator.clipboard.writeText(state.storefrontInformation.theme.id);
-    launchToast('Theme ID copied');
+    copyToClipboard(state.storefrontInformation.theme.id, 'Theme ID copied');
   }
+
+  const copyToClipboard = async (text, toastText) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      launchToast(toastText);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      launchToast('Failed to copy to clipboard', 'error'); // Assuming launchToast can handle error messages
+    }
+  }
+
 
   return (
     <div className="popup-container popup-storefront">

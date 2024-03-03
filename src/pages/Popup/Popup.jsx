@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import './Popup.scss';
 import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
@@ -17,33 +17,36 @@ const Popup = () => {
     storefrontInformation: null,
     adminShown: false,
     storeUrl: null,
+    storeHandle: '',
     currentTab: null,
   });
 
-  const getLiveTheme = () => {
+  const getLiveTheme = useCallback(() => {
     if (!state.themes) return;
 
-    state.themes.map((theme) => {
-      if (theme.role === 'main') {
-        setState((prevState) => ({
-          ...prevState,
-          liveTheme: theme,
-        }));
-      }
-    });
-  };
+    const liveTheme = state.themes.find(theme => theme.role === 'main');
+    console.log('ll', liveTheme);
+    if (liveTheme) {
+      setState(prevState => ({ ...prevState, liveTheme }));
+    }
+  }, [state.themes]);
 
   const fetchStore = async () => {
     if (!state.storeUrl) return;
 
-    await fetch(`${state.storeUrl}/admin/shop.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        setState((prevState) => ({
-          ...prevState,
-          shop: data.shop,
-        }));
-      });
+    try {
+      console.log('shop state', state);
+      const response = await fetch(`${state.storeUrl}/shop.json`);
+      const data = await response.json();
+
+      setState(prevState => ({
+        ...prevState,
+        shop: data.shop,
+        storeHandle: data.shop.domain.split('.myshopify.com')[0]
+      }));
+    } catch (error) {
+      console.error('Failed to fetch store: ', error)
+    }
   };
 
   const getCurrentTab = async () => {
@@ -64,8 +67,9 @@ const Popup = () => {
 
     // const tabUrl = await new URL(tab.url);
     const tabUrl = parseUrl(tab.url);
-    console.log('t', tab);
-    console.log(tabUrl);
+
+    // console.log('t', tab);
+    // console.log(tabUrl);
 
 
     setState((prevState) => ({
@@ -73,7 +77,7 @@ const Popup = () => {
       adminShown: tabUrl.host.includes('admin.shopify.com'),
       storeUrl: `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`,
     }));
-    console.log('Tab', `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`);
+    // console.log('Tab', `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`);
   };
 
   function parseUrl(url) {
@@ -90,7 +94,7 @@ const Popup = () => {
 
   const fetchThemes = async () => {
     if (!state.storeUrl || !state.adminShown) return;
-
+    console.log('url', state.storeUrl);
     await fetch(`${state.storeUrl}/themes.json`)
       .then((response) => response.text())
       .then((data) => {
@@ -129,23 +133,59 @@ const Popup = () => {
 
   useEffect(() => {
     getCurrentTab();
-    fetchThemes();
-  }, [state.storeUrl]);
+    // Potentially remove fetchThemes() from here if it's dependent on the result of getCurrentTab()
+  }, []); // This runs only once when the component mounts
+
+
+  useEffect(() => {
+    if (state.storeUrl) {
+      fetchThemes();
+    }
+  }, [state.storeUrl]); // This runs when `state.storeUrl` changes
+
+
 
   useEffect(() => {
     getLiveTheme();
-  }, [state.themes]);
+  }, [getLiveTheme]);
 
+//   useEffect(() => {
+//   const handleMessage = (request) => registerOnMessage(request);
+
+//   chrome.runtime.onMessage.addListener(handleMessage);
+
+//   return () => chrome.runtime.onMessage.removeListener(handleMessage);
+// }, []); // Adjust dependencies based on your needs
+
+useEffect(() => {
+  // Define a function that will handle incoming messages
+  const handleMessage = (request) => {
+    registerOnMessage(request);
+  };
+
+  // Conditionally add the event listener
   if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
-    chrome.runtime.onMessage.addListener((request) =>
-      registerOnMessage(request)
-    );
-    chrome.tabs.sendMessage(state.currentTab?.id, { popupIsOpen: true });
+    chrome.runtime.onMessage.addListener(handleMessage);
+    chrome.tabs.sendMessage(state.currentTab.id, { popupIsOpen: true });
+
+    // Return a cleanup function that removes the event listener
+    return () => chrome.runtime.onMessage.removeListener(handleMessage);
   }
 
-  if (state.storefrontInformation) {
-    chrome.runtime.onMessage.removeListener(registerOnMessage);
-  }
+  // This effect should depend on the state that dictates whether the listener should be added or removed
+}, [state.storefrontInformation, state.currentTab, state.adminShown]); // Adjust this array based on actual dependencies
+
+
+  // if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
+  //   chrome.runtime.onMessage.addListener((request) =>
+  //     registerOnMessage(request)
+  //   );
+  //   chrome.tabs.sendMessage(state.currentTab?.id, { popupIsOpen: true });
+  // }
+
+  // if (state.storefrontInformation) {
+  //   chrome.runtime.onMessage.removeListener(registerOnMessage);
+  // }
 
   if (state.storefrontInformation) {
     return <StorefrontComponent state={state} />;
