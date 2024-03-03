@@ -5,7 +5,7 @@ import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
 import './ThemeAccordion.scss';
 
-const ThemeAccordion = ({ theme, shop, index, storeUrl }) => {
+const ThemeAccordion = ({ theme, shop, index, storeUrl, ...additionalAttrs }) => {
   // console.log(shop);
   const [isOpen, setIsOpen] = React.useState(false);
   const onToggle = () => setIsOpen((shown) => !shown);
@@ -23,6 +23,7 @@ const ThemeAccordion = ({ theme, shop, index, storeUrl }) => {
         }${isOpen ? ' Accordion__Header--open' : ''}`}
         onClick={onToggle}
         aria-controls={`Accordion-${index}`}
+        {...additionalAttrs}
       >
         <div className="Accordion__Icon-container">
           <Icon
