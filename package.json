@@ -18,6 +18,7 @@
     "@fontsource-variable/nunito": "^5.0.16",
     "@hot-loader/react-dom": "^17.0.2",
     "@kunukn/react-collapse": "^2.2.9",
+    "fuse.js": "^7.0.0",
     "html-react-parser": "^3.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
