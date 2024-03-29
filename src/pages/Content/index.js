@@ -47,5 +47,3 @@ function handleChromeMessage(request) {
   }
   // Handle other message types...
 }
-
-chrome.runtime.onMessage.addListener(handleChromeMessage);
