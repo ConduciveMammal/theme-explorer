@@ -23,7 +23,7 @@ const menuLinks = [
   },
   {
     label: "Changelog",
-    link: 'https://theme-explorer.merlyndesignworks.co.uk',
+    link: 'https://theme-explorer.merlyndesignworks.co.uk/releases',
     icon: "changelog"
   }
 ]
