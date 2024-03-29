@@ -23,7 +23,7 @@ const menuLinks = [
   },
   {
     label: "Changelog",
-    link: 'https://github.com/ConduciveMammal/theme-explorer/blob/master/CHANGELOG.md',
+    link: 'https://theme-explorer.merlyndesignworks.co.uk/releases',
     icon: "changelog"
   }
 ]
