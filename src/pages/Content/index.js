@@ -41,9 +41,8 @@ window.addEventListener(
   false
 );
 
-function handleChromeMessage(request) {
+chrome.runtime.onMessage.addListener((request) => {
   if (request.popupIsOpen) {
-    sendMessageToReact(request.data, true);
+    sendMessageToReact(data, true);
   }
-  // Handle other message types...
-}
+});
