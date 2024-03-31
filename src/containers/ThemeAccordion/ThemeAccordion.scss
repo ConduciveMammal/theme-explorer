@@ -7,6 +7,10 @@
   &:last-child {
     margin-bottom: 0;
   }
+
+  &.Accordion__Container--processing {
+    opacity: 0.8;
+  }
 }
 
 .Accordion__Header {
@@ -21,6 +25,10 @@
 
   &:not(.Accordion__Header--no-results) {
     cursor: pointer;
+  }
+
+  .Accordion__Container--processing & {
+    cursor: wait;
   }
 
   &.Accordion__Header--open,
@@ -75,6 +83,9 @@
 }
 
 .Accordion__Link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   letter-spacing: 0.3px;
   text-align: right;
   transition: color 0.2s ease-in;
@@ -87,6 +98,11 @@
   &:hover {
     color: $primary-500;
   }
+}
+
+.Accordion__Spinner {
+  transform-origin: center;
+  animation: spinner_irSm 0.75s infinite linear;
 }
 
 .Accordion__Body {
@@ -145,4 +161,11 @@
 
 .collapse-css-transition {
   transition: height 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes spinner_irSm {
+
+  to {
+    transform: rotate(360deg);
+  }
 }
