@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import * as Sentry from '@sentry/browser';
 
 import './Popup.scss';
 import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
@@ -8,6 +9,20 @@ import LoadingComponent from '../../containers/LoadingComponent/LoadingComponent
 import AdminComponent from '../../containers/AdminComponent/AdminComponent';
 import StorefrontComponent from '../../containers/StorefrontComponent/StorefrontComponent';
 import NotFound from '../../containers/NotFound/NotFound';
+
+
+window.addEventListener("load", function () {
+  Sentry.init({
+    dsn:
+    "https://769de98c6320a26b71a868f8ba5ab915@o4506865007722496.ingest.us.sentry.io/4506865009557504",
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+    integrations: [
+      Sentry.replayIntegration(),
+    ]
+  });
+});
 
 const Popup = () => {
   const [state, setState] = useState({

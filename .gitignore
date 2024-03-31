@@ -96,3 +96,5 @@ theme-explorer-*/
 Media Assets/
 
 # End of https://www.gitignore.io/api/node
+# Sentry Config File
+.env.sentry-build-plugin

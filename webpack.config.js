@@ -7,6 +7,7 @@ var webpack = require('webpack'),
   TerserPlugin = require('terser-webpack-plugin'),
   ZipPlugin = require('zip-webpack-plugin');
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { sentryWebpackPlugin } = require("@sentry/webpack-plugin");
 const packageName = `${process.env.npm_package_name}-${process.env.npm_package_version}`;
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
@@ -36,6 +37,7 @@ if (fileSystem.existsSync(secretsPath)) {
 
 var options = {
   mode: process.env.NODE_ENV || 'development',
+  devtool: 'source-map',
   entry: {
     // newtab: path.join(__dirname, 'src', 'pages', 'Newtab', 'index.jsx'),
     // options: path.join(__dirname, 'src', 'pages', 'Options', 'index.jsx'),
@@ -177,12 +179,21 @@ var options = {
           to: path.join(__dirname, 'build'),
           force: true,
         },
-        // {
-        //   from: 'src/assets/js/*.js',
-        //   to: path.join(__dirname, 'build'),
-        //   force: true,
-        // },
+        {
+          from: 'src/sentry.js',
+          to: path.join(__dirname, 'build'),
+          force: true,
+        },
       ],
+    }),
+    sentryWebpackPlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: "merlyn-design-works",
+      project: "theme-explorer",
+      debug: true,
+      // sourcemaps: {
+      //   assets: './build/*.js.map'
+      // }
     }),
     // new HtmlWebpackPlugin({
     //   template: path.join(__dirname, 'src', 'pages', 'Newtab', 'index.html'),

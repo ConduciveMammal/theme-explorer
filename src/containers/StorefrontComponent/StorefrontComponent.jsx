@@ -56,7 +56,10 @@ const StorefrontComponent = ({ state }) => {
 
 
   return (
+
+
     <div className="popup-container popup-storefront">
+      <button onClick={() => methodDoesNotExist()}>Break the world</button>
       <div className="popup-body">
         <div className="Panel">
           <div className="Alert Alert--padding">

@@ -2,6 +2,7 @@
   "extends": "react-app",
   "globals": {
     "chrome": "readonly",
-    "Shopify": "readonly"
+    "Shopify": "readonly",
+    "Sentry": "readonly"
   }
 }

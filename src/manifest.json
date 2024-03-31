@@ -35,7 +35,9 @@
         "icon48.png",
         "icon16.png",
         "nunito.woff2",
-        "nunito-italic.woff2"
+        "nunito-italic.woff2",
+        "src/assets/js/sentry.js"
+
       ],
       "matches": ["<all_urls>"]
     }

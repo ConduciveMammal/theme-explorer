@@ -1,16 +1,34 @@
+import * as Sentry from '@sentry/react';
 let data = null;
 
-const script = document.createElement('script');
-script.src = chrome.runtime.getURL('injectScript.bundle.js');
-script.onload = function () {
-  this.remove();
-};
+function loadScripts(scripts) {
+  scripts.forEach((scriptSrc) => {
+    const script = document.createElement('script');
+    script.src = chrome.runtime.getURL(scriptSrc);
 
-script.onerror = function (event) {
-  console.error('Error loading script:', event);
-};
+    script.onload = function () {
+      console.log(`${scriptSrc} loaded successfully`);
+      this.remove(); // Remove the script element once loaded
+    };
 
-(document.head || document.documentElement).appendChild(script);
+    script.onerror = function (event) {
+      console.error('Error loading script:', scriptSrc, event);
+    };
+
+    (document.head || document.documentElement).appendChild(script);
+  });
+}
+
+// Usage
+loadScripts(['injectScript.bundle.js', 'sentry.js']);
+
+window.addEventListener('load', function () {
+  console.log('Sentry here!');
+  Sentry.init({
+    dsn: 'https://769de98c6320a26b71a868f8ba5ab915@o4506865007722496.ingest.us.sentry.io/4506865009557504',
+    tracesSampleRate: 1.0,
+  });
+});
 
 // function sendMessageToReact(objectData, popupIsOpen = false) {
 //   chrome.runtime.sendMessage(chrome.runtime.id, { ...objectData });
@@ -43,6 +61,10 @@ window.addEventListener(
 
 chrome.runtime.onMessage.addListener((request) => {
   if (request.popupIsOpen) {
-    sendMessageToReact(data, true);
+    try {
+      sendMessageToReact(data, true);
+    } catch (err) {
+      Sentry.captureException(err);
+    }
   }
 });
