@@ -14,7 +14,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ],
       "js": ["contentScript.bundle.js"]
     }
   ],
