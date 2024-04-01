@@ -14,6 +14,9 @@ const NotFound = () => {
             </p>
           </div>
         </div>
+          <footer className="Panel__Footer">
+              <a href="https://github.com/ConduciveMammal/theme-explorer/issues" target="_blank" rel="noreferrer">Report an issue</a>
+          </footer>
       </div>
     </div>
   );
