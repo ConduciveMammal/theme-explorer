@@ -36,7 +36,7 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 var options = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: process.env.NODE_ENV,
   entry: {
     // newtab: path.join(__dirname, 'src', 'pages', 'Newtab', 'index.jsx'),
     // options: path.join(__dirname, 'src', 'pages', 'Options', 'index.jsx'),
@@ -236,7 +236,7 @@ var options = {
   },
 };
 
-if (env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   options.devtool = 'cheap-module-source-map';
 } else {
   options.optimization = {
