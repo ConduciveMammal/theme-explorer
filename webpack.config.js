@@ -1,7 +1,8 @@
 var webpack = require('webpack'),
   path = require('path'),
   fileSystem = require('fs-extra'),
-  env = require('./utils/env'),
+  // env = require('./utils/env'),
+  env = require('dotenv').config().parsed,
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   TerserPlugin = require('terser-webpack-plugin'),
@@ -115,7 +116,7 @@ var options = {
     new CleanWebpackPlugin({ verbose: false }),
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    // new webpack.EnvironmentPlugin(['NODE_ENV']),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -125,18 +126,19 @@ var options = {
           transform: function (content, path) {
             // generates the manifest file using the package.json informations
             let packageNameValue
-            if (env.NODE_ENV === 'development') {
+
+            if (process.env.NODE_ENV === 'development') {
               packageNameValue = process.env.npm_package_name_development
-            }  else {
+            } else {
               packageNameValue = process.env.npm_package_name_formatted
             }
-            console.log(env.NODE_ENV);
+
             return Buffer.from(
               JSON.stringify({
+                ...JSON.parse(content.toString()),
                 name: packageNameValue,
                 description: process.env.npm_package_description,
                 version: process.env.npm_package_version,
-                ...JSON.parse(content.toString()),
               })
             );
           },

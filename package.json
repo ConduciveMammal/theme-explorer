@@ -10,7 +10,8 @@
     "url": "https://github.com/ConduciveMammal/theme-explorer"
   },
   "scripts": {
-    "build": "node utils/build.js",
+    "build:prod": "NODE_ENV=production node utils/build.js",
+    "build:dev": "NODE_ENV=development node utils/build.js",
     "start": "node utils/webserver.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },
@@ -18,6 +19,7 @@
     "@fontsource-variable/nunito": "^5.0.16",
     "@hot-loader/react-dom": "^17.0.2",
     "@kunukn/react-collapse": "^2.2.9",
+    "dotenv": "^16.4.5",
     "fuse.js": "^7.0.0",
     "html-react-parser": "^3.0.4",
     "react": "^17.0.2",
