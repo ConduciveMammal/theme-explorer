@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 02.04.2024
+
+### Fixed
+
+- Storefront component will now output the correct admin URLs
+- Storefront component should now fully work on Shopify CLI-hosted stores
+
+### Added
+
+- Admin component will now mark themes that are still processing.
+
+- Added Fuse.js search
+  - Search by theme name, ID, and role.
+  - Search results are weighted, with ID and role given a higher weight.
+
+Read more at the new [Theme Explorer site](https://theme-explorer.merlyndesignworks.co.uk/releases/1_4_0)
+
 ## [1.3.0] - 15.11.2023
 
 ### Fixed
