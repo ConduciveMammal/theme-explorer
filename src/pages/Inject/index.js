@@ -1,10 +1,8 @@
 function getThemeDataAndSendItToExt() {
-  console.log('thing');
   if (window.location.href.includes('admin.shopify.com/store')) return;
 
-  console.log('Shopify', window.Shopify);
   if (window.Shopify && (Shopify.theme || Shopify.shop)) {
-    console.log('Shopify', Shopify);
+    // console.log('Shopify', Shopify);
     const themeData = {
       type: 'theme',
       data: {

@@ -25,7 +25,6 @@ const Popup = () => {
     if (!state.themes) return;
 
     const liveTheme = state.themes.find(theme => theme.role === 'main');
-    console.log('ll', liveTheme);
     if (liveTheme) {
       setState(prevState => ({ ...prevState, liveTheme }));
     }
@@ -35,7 +34,7 @@ const Popup = () => {
     if (!state.storeUrl) return;
 
     try {
-      console.log('shop state', state);
+      // console.log('shop state', state);
       const response = await fetch(`${state.storeUrl}/shop.json`);
       const data = await response.json();
 
@@ -94,7 +93,7 @@ const Popup = () => {
 
   const fetchThemes = async () => {
     if (!state.storeUrl || !state.adminShown) return;
-    console.log('url', state.storeUrl);
+
     await fetch(`${state.storeUrl}/themes.json`)
       .then((response) => response.text())
       .then((data) => {
