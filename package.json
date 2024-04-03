@@ -63,7 +63,7 @@
     "stylelint-config-sass-guidelines": "^9.0.1",
     "stylelint-config-standard-scss": "^5.0.0",
     "stylelint-prettier": "^2.0.0",
-    "stylelint-selector-bem-pattern": "^2.1.1",
+    "stylelint-selector-bem-pattern": "^4.0.0",
     "terser-webpack-plugin": "^5.3.1",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.5",
