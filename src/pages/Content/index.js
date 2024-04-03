@@ -19,21 +19,16 @@ script.onerror = function (event) {
 //   }
 // }
 function sendMessageToReact(objectData, isPopupOpen = false) {
-  const t0 = performance.now();
   chrome.runtime.sendMessage(chrome.runtime.id, objectData);
-  console.log('firing');
+
   if (!isPopupOpen) {
     data = objectData;
   }
-
-  const t1 = performance.now();
-  console.log(`Call to sendMessageToReact took ${t1 - t0} milliseconds.`);
 }
 
 window.addEventListener(
   'message',
   (e) => {
-    console.log('firing 2');
     if (e.data.type === 'theme') {
       sendMessageToReact(e.data);
     }

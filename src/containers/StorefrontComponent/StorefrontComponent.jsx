@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const StorefrontComponent = ({ state }) => {
-  console.log('State', state);
+  // console.log('State', state);
   const getPreviewURL = () => {
     if (state.storefrontInformation.location) {
         const url = new URL(state.storefrontInformation.location);
