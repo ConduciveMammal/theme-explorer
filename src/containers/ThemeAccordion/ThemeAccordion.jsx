@@ -1,113 +1,113 @@
 import React from 'react';
+import { Loader2 } from 'lucide-react';
 
 import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
-import './ThemeAccordion.scss';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion';
+import { Badge } from '../../components/ui/badge';
+import { Button } from '../../components/ui/button';
 
 const ThemeAccordion = ({ theme, shop, index, storeUrl, ...additionalAttrs }) => {
-  // console.log(shop);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const onToggle = () => setIsOpen((shown) => !shown);
-  const themePreviewUrl = `https://${shop.domain}?preview_theme_id=${theme.id}`;
+  const shopDomain = shop?.domain;
+  const themePreviewUrl = shopDomain
+    ? `https://${shopDomain}?preview_theme_id=${theme.id}`
+    : null;
   const themeJsonUrl = `${storeUrl}/themes/${theme.id}.json`;
   const themeCodeUrl = `${storeUrl}/themes/${theme.id}`;
   const themeCustomiseUrl = `${storeUrl}/themes/${theme.id}/editor`;
   const themeLanguageEditorUrl = `${storeUrl}/themes/${theme.id}/language`;
-  const processing = theme.processing
+  const processing = theme.processing;
 
   return (
-      <div className={`Accordion__Container${processing ? ' Accordion__Container--processing': ''}`}>
-        <header
-          className={`Accordion__Header${
-            theme.role === 'main' ? ' Accordion__Header--main' : ''
-          }${isOpen ? ' Accordion__Header--open' : ''}`}
-          onClick={processing ? null : onToggle}
-          aria-controls={`Accordion-${index}`}
-          {...additionalAttrs}
-        >
-          <div className="Accordion__Icon-container">
-            <Icon
-              name="theme"
-              color="#FFFFFF"
-              size={35}
-              classes={'Accordion__Icon'}
-            />
+    <AccordionItem
+      value={`theme-${theme.id}-${index}`}
+      className={`rounded-md border border-border bg-card ${
+        theme.role === 'main' ? 'border-l-4 border-l-primary' : ''
+      } ${processing ? 'opacity-80' : ''}`}
+      {...additionalAttrs}
+    >
+      <AccordionTrigger
+        className="px-3 py-3 hover:no-underline"
+        disabled={processing}
+      >
+        <div className="flex w-full items-center gap-3 pr-2 text-left">
+          <Icon name="theme" color="hsl(var(--primary))" size={26} classes="" />
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <span className="truncate text-sm font-semibold text-foreground">
+              {theme.name}
+            </span>
+            <div className="flex items-center gap-2">
+              <Badge variant={theme.role === 'main' ? 'default' : 'secondary'}>
+                {theme.role}
+              </Badge>
+              {processing && (
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Processing
+                </span>
+              )}
+            </div>
           </div>
-          <p className="Accordion__Title">{theme.name}</p>
-          <p className="Accordion__Link">
-            {processing ?
-            <Icon
-            name="spinner"
-            color="#b3b8ff"
-            size={24}
-            classes={'Accordion__Spinner'}
-          />
-            :
-            <a
-              href={
-                theme.role === 'main' ? `https://${shop.domain}` : themePreviewUrl
-              }
-              target="_blank"
-              rel="noreferrer"
-            >
-              {theme.role === 'main' ? 'View' : 'Preview'}
-            </a>
-            }
+        </div>
+      </AccordionTrigger>
+      <AccordionContent className="px-3">
+        <div className="space-y-1.5 pb-3 text-xs">
+          <p>
+            <span className="font-semibold text-foreground">Theme ID: </span>
+            <span className="text-muted-foreground">{theme.id}</span>
           </p>
-        </header>
-        {isOpen && (
-          <div
-          id={`Accordion-${index}`}
-          className="Accordion__Body"
-          aria-hidden={isOpen ? 'false' : 'true'}
-        >
-          <div className="Accordion__Body__Content">
-            <p className="Accordion__Detail">
-              <span className="Accordion__Label">Theme ID: </span>
-              <span className="Accordion__Value">{theme.id}</span>
-            </p>
-            <p className="Accordion__Detail">
-              <span className="Accordion__Label">Role: </span>
-              <span className="Accordion__Value">{theme.role}</span>
-            </p>
-            <p className="Accordion__Detail">
-              <span className="Accordion__Label">Updated at: </span>
-              <span className="Accordion__Value">
-                <DisplayDate date={theme.created_at} />
-              </span>
-            </p>
-            <p className="Accordion__Detail">
-              <span className="Accordion__Label">Created at: </span>
-              <span className="Accordion__Value">
-                <DisplayDate date={theme.created_at} />
-              </span>
-            </p>
-            <footer className="Accordion__Footer">
-              <p className="Footer__Link">
-                <a href={themeJsonUrl} target="_blank" rel="noreferrer">
-                  View JSON
+          <p>
+            <span className="font-semibold text-foreground">Role: </span>
+            <span className="text-muted-foreground">{theme.role}</span>
+          </p>
+          <p>
+            <span className="font-semibold text-foreground">Updated at: </span>
+            <span className="text-muted-foreground">
+              <DisplayDate date={theme.updated_at} />
+            </span>
+          </p>
+          <p>
+            <span className="font-semibold text-foreground">Created at: </span>
+            <span className="text-muted-foreground">
+              <DisplayDate date={theme.created_at} />
+            </span>
+          </p>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {themePreviewUrl && (
+              <Button asChild size="sm" variant="secondary">
+                <a
+                  href={theme.role === 'main' ? `https://${shopDomain}` : themePreviewUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {theme.role === 'main' ? 'View' : 'Preview'}
                 </a>
-              </p>
-              <p className="Footer__Link">
-                <a href={themeCustomiseUrl} target="_blank" rel="noreferrer">
-                  Customise
-                </a>
-              </p>
-              <p className="Footer__Link">
-                <a href={themeCodeUrl} target="_blank" rel="noreferrer">
-                  Edit code
-                </a>
-              </p>
-              <p className="Footer__Link">
-                <a href={themeLanguageEditorUrl} target="_blank" rel="noreferrer">
-                  Edit languages
-                </a>
-              </p>
-            </footer>
+              </Button>
+            )}
+            <Button asChild size="sm" variant="secondary">
+              <a href={themeJsonUrl} target="_blank" rel="noreferrer">
+                View JSON
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="secondary">
+              <a href={themeCustomiseUrl} target="_blank" rel="noreferrer">
+                Customise
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="secondary">
+              <a href={themeCodeUrl} target="_blank" rel="noreferrer">
+                Edit code
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="secondary">
+              <a href={themeLanguageEditorUrl} target="_blank" rel="noreferrer">
+                Edit languages
+              </a>
+            </Button>
           </div>
-          </div>
-        )}
-      </div>
+        </div>
+      </AccordionContent>
+    </AccordionItem>
   );
 };
 

@@ -1,19 +1,22 @@
 import React from 'react';
-import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
 import ThemeAccordion from '../ThemeAccordion/ThemeAccordion';
 import FooterBar from '../FooterBar/FooterBar';
 
-import '../../pages/Popup/Popup.scss';
-import '@fontsource-variable/nunito';
-import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 import { useState } from 'react';
 import Fuse from 'fuse.js';
+import { AlertCircle, Braces } from 'lucide-react';
+
+import { Accordion } from '../../components/ui/accordion';
+import { Badge } from '../../components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Input } from '../../components/ui/input';
+import { Button } from '../../components/ui/button';
 
 const AdminComponent = ({ state }) => {
   const { themes, liveTheme, themesReady, storeUrl, shop } = state;
 
-  const initialThemeData = themes
+  const initialThemeData = themes || [];
   const [filteredThemes, setFilteredThemes] = useState(initialThemeData);
 
   const fuseOptions = {
@@ -27,10 +30,7 @@ const AdminComponent = ({ state }) => {
     minMatchCharLength: 2,
     keys: [
       'name',
-      {
-        name: 'id',
-        weight: 3
-      },
+      { name: 'id', weight: 3 },
       {
         name: 'role',
         weight: 2,
@@ -78,116 +78,91 @@ const AdminComponent = ({ state }) => {
   function themeCountNotice() {
     const currentPlanLimit = getPlanThemeLimit();
 
-    if (themes.length >= currentPlanLimit) {
+    if ((themes?.length || 0) >= currentPlanLimit) {
       return 'No free space for themes is available';
-    } else {
-      return `${
-        themes.length
-      } of ${getPlanThemeLimit()} themes installed`;
     }
+    return `${themes?.length || 0} of ${getPlanThemeLimit()} themes installed`;
   }
 
   const themeMessage = themeCountNotice();
+  const visibleThemes = themesReady && !filteredThemes ? themes : filteredThemes;
 
   return (
-    <div className="popup-container">
-      <span className="AdminComponent__ThemeCount">{themeMessage}</span>
-      <header className="AdminComponent__Header">
-        <h1 className={'Header__Title'}>{liveTheme?.name}</h1>
-        <div className={'Header__Date'}>
-          <p>
-            Created at{' '}
-            <strong>
-              <DisplayDate date={liveTheme?.created_at} />
-            </strong>{' '}
-            and updated on{' '}
-            <strong>
-              <DisplayDate date={liveTheme?.updated_at} />
-            </strong>
-          </p>
-        </div>
-        <p className={'Header__Id'}>Theme ID: {liveTheme?.id}</p>
-      </header>
-      <div className="popup-body">
-        <div className="Popup__Search-wrapper">
-          <input
-            className={'popup-body-input'}
-            aria-label="Search by theme ID, name or role."
-            placeholder={`Search by theme ID, name, or role\u2026`}
-            onChange={(evt) => {
-              const value = evt.target.value;
-              if (value.length > 2 || value.length === 0) {
-                filterThemesBasedOnInput(evt);
-              }
-            }}
-          />
-        </div>
-        <div className="Panel">
-          <>
-            {themesReady && !filteredThemes
-              ? themes.map((theme, index) => {
-                  return (
-                    <ThemeAccordion
-                      theme={theme}
-                      storeUrl={storeUrl}
-                      shop={shop}
-                      key={theme.id}
-                      index={index}
-                    />
-                  );
-                })
-              : filteredThemes.map((theme, index) => {
-                  return (
-                    <ThemeAccordion
-                      data-filtered-item
-                      theme={theme}
-                      storeUrl={state.storeUrl}
-                      shop={state.shop}
-                      key={theme.id}
-                      index={index}
-                    />
-                  );
-                })}
-            {filteredThemes && filteredThemes.length === 0 && (
-              <div className="Accordion__Container">
-                <header className="Accordion__Header Accordion__Header--no-results">
-                  <div className="Accordion__Icon-container">
-                    <Icon
-                      name="error"
-                      color="#FFFFFF"
-                      size={35}
-                      classes={'Accordion__Icon'}
-                    />
-                  </div>
-                  <p className="Accordion__Title">No themes found</p>
-                </header>
+    <div className="w-[450px] bg-background text-foreground">
+      <div className="sticky top-0 z-10 border-b border-border bg-primary px-4 py-3 text-center text-sm font-bold text-primary-foreground">
+        {themeMessage}
+      </div>
+      <div className="space-y-3 p-4">
+        <Card>
+          <CardHeader className="space-y-2 pb-3">
+            <CardTitle className="text-2xl">{liveTheme?.name}</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Created at{' '}
+              <strong>
+                <DisplayDate date={liveTheme?.created_at} />
+              </strong>{' '}
+              and updated on{' '}
+              <strong>
+                <DisplayDate date={liveTheme?.updated_at} />
+              </strong>
+            </p>
+            <Badge variant="secondary" className="w-fit">
+              Theme ID: {liveTheme?.id}
+            </Badge>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <Input
+              type="text"
+              aria-label="Search by theme ID, name or role."
+              placeholder={`Search by theme ID, name, or role\u2026`}
+              onChange={(evt) => {
+                const value = evt.target.value;
+                if (value.length > 2 || value.length === 0) {
+                  filterThemesBasedOnInput(evt);
+                }
+              }}
+            />
+          </CardContent>
+        </Card>
+        <div className="space-y-2">
+          <Accordion type="multiple" className="space-y-2">
+            {(visibleThemes || []).map((theme, index) => (
+              <ThemeAccordion
+                key={theme.id}
+                theme={theme}
+                storeUrl={storeUrl}
+                shop={shop}
+                index={index}
+                data-filtered-item={Boolean(filteredThemes)}
+              />
+            ))}
+          </Accordion>
+          {filteredThemes && filteredThemes.length === 0 && (
+            <Card>
+              <CardContent className="flex items-center gap-2 p-4 text-sm font-semibold text-muted-foreground">
+                <AlertCircle className="h-4 w-4 text-primary" />
+                No themes found
+              </CardContent>
+            </Card>
+          )}
+          <Card>
+            <CardContent className="flex items-center justify-between gap-3 p-3">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <Braces className="h-4 w-4 text-primary" />
+                View JSON
               </div>
-            )}
-          </>
-          <div className="Accordion__Container">
-            <header className="Accordion__Header Accordion__Header--json">
-              <div className="Accordion__Icon-container">
-                <Icon
-                  name="json"
-                  color="#FFFFFF"
-                  size={35}
-                  classes={'Accordion__Icon'}
-                />
-              </div>
-              <p className="Accordion__Title">
-                <a
-                  href={`${storeUrl}/themes.json`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View JSON
+              <Button asChild size="sm" variant="secondary">
+                <a href={`${storeUrl}/themes.json`} target="_blank" rel="noreferrer">
+                  Open
                 </a>
-              </p>
-            </header>
-          </div>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="pt-1">
+          <FooterBar />
         </div>
       </div>
-      <FooterBar />
     </div>
   );
 };
