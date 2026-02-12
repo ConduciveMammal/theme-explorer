@@ -61,10 +61,20 @@ function run() {
     buildManifest.action && buildManifest.action.default_popup
   );
 
-  assertManifestPathExists(
-    'Background service worker',
-    buildManifest.background && buildManifest.background.service_worker
-  );
+  const backgroundServiceWorkerPath =
+    buildManifest.background && buildManifest.background.service_worker;
+  const backgroundScriptPath =
+    buildManifest.background &&
+    buildManifest.background.scripts &&
+    buildManifest.background.scripts[0];
+
+  if (backgroundServiceWorkerPath) {
+    assertManifestPathExists('Background service worker', backgroundServiceWorkerPath);
+  } else if (backgroundScriptPath) {
+    assertManifestPathExists('Background script', backgroundScriptPath);
+  } else {
+    fail('Background entry is missing from manifest');
+  }
 
   const contentScriptPath =
     buildManifest.content_scripts &&
