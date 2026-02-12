@@ -2,8 +2,6 @@ name: QA Release Candidate
 
 on:
   pull_request:
-    branches:
-      - codex/theme-explorer-v2
   workflow_dispatch:
 
 jobs:
