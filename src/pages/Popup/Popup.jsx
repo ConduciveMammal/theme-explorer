@@ -8,6 +8,9 @@ import LoadingComponent from '../../containers/LoadingComponent/LoadingComponent
 import AdminComponent from '../../containers/AdminComponent/AdminComponent';
 import StorefrontComponent from '../../containers/StorefrontComponent/StorefrontComponent';
 import NotFound from '../../containers/NotFound/NotFound';
+import getExtensionApi from '../../utils/getExtensionApi';
+
+const extensionApi = getExtensionApi();
 
 const Popup = () => {
   const MESSAGE_PORT_CLOSED_ERROR =
@@ -49,12 +52,12 @@ const Popup = () => {
   }, []);
 
   const fetchStorefrontDataFromMainWorld = useCallback(async (tabId) => {
-    if (!tabId || !chrome.scripting?.executeScript) {
+    if (!tabId || !extensionApi?.scripting?.executeScript) {
       return null;
     }
 
     try {
-      const results = await chrome.scripting.executeScript({
+      const results = await extensionApi.scripting.executeScript({
         target: { tabId },
         world: 'MAIN',
         func: () => {
@@ -97,7 +100,7 @@ const Popup = () => {
   }, []);
 
   const ensureContentScriptInjected = useCallback(async (tabId) => {
-    if (!tabId || !chrome.scripting?.executeScript) {
+    if (!tabId || !extensionApi?.scripting?.executeScript) {
       return false;
     }
 
@@ -108,7 +111,7 @@ const Popup = () => {
     attemptedContentInjectionRef.current = true;
 
     try {
-      await chrome.scripting.executeScript({
+      await extensionApi.scripting.executeScript({
         target: { tabId },
         files: ['src/pages/Content/index.js'],
       });
@@ -157,9 +160,17 @@ const Popup = () => {
   };
 
   const getCurrentTab = async () => {
+    if (!extensionApi?.tabs?.query) {
+      setLoadError(
+        'Browser API unavailable',
+        'Theme Explorer could not access extension tab APIs in this browser.'
+      );
+      return;
+    }
+
     try {
       const queryOptions = { active: true, currentWindow: true };
-      const [tab] = await chrome.tabs.query(queryOptions);
+      const [tab] = await extensionApi.tabs.query(queryOptions);
 
       setState((prevState) => ({
         ...prevState,
@@ -326,6 +337,10 @@ const Popup = () => {
   // }, []); // Adjust dependencies based on your needs
 
   useEffect(() => {
+    if (!extensionApi?.tabs?.sendMessage || !extensionApi?.runtime?.onMessage) {
+      return undefined;
+    }
+
     const handleMessage = (request) => {
       registerOnMessage(request);
     };
@@ -340,50 +355,48 @@ const Popup = () => {
       };
 
       const sendPopupOpenMessage = () => {
-        chrome.tabs.sendMessage(
-          state.currentTab.id,
-          { popupIsOpen: true },
-          (response) => {
+        extensionApi.tabs
+          .sendMessage(state.currentTab.id, { popupIsOpen: true })
+          .then((response) => {
             if (response && response.type === 'theme' && response.data) {
               registerOnMessage(response);
+            }
+          })
+          .catch((error) => {
+            const errorMessage =
+              error?.message || extensionApi?.runtime?.lastError?.message || '';
+
+            if (
+              errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR) ||
+              errorMessage.includes(RECEIVING_END_MISSING_ERROR)
+            ) {
+              if (errorMessage.includes(RECEIVING_END_MISSING_ERROR)) {
+                ensureContentScriptInjected(state.currentTab.id);
+
+                if (!attemptedMainWorldFallbackRef.current) {
+                  attemptedMainWorldFallbackRef.current = true;
+                  fetchStorefrontDataFromMainWorld(state.currentTab.id).then(
+                    (mainWorldData) => {
+                      if (mainWorldData) {
+                        registerOnMessage(mainWorldData);
+                      }
+                    }
+                  );
+                }
+              }
               return;
             }
 
-            if (chrome.runtime.lastError) {
-              const errorMessage = chrome.runtime.lastError.message || '';
-              if (
-                errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR) ||
-                errorMessage.includes(RECEIVING_END_MISSING_ERROR)
-              ) {
-                if (errorMessage.includes(RECEIVING_END_MISSING_ERROR)) {
-                  ensureContentScriptInjected(state.currentTab.id);
-
-                  if (!attemptedMainWorldFallbackRef.current) {
-                    attemptedMainWorldFallbackRef.current = true;
-                    fetchStorefrontDataFromMainWorld(state.currentTab.id).then(
-                      (mainWorldData) => {
-                        if (mainWorldData) {
-                          registerOnMessage(mainWorldData);
-                        }
-                      }
-                    );
-                  }
-                }
-                return;
-              }
-
-              console.debug(
-                'Theme Explorer: popup message not delivered:',
-                errorMessage
-              );
-              stopPolling();
-              setLoadError(
-                'Unable to communicate with the page',
-                'Theme Explorer could not read storefront data from this tab. Reload the page and retry.'
-              );
-            }
-          }
-        );
+            console.debug(
+              'Theme Explorer: popup message not delivered:',
+              errorMessage
+            );
+            stopPolling();
+            setLoadError(
+              'Unable to communicate with the page',
+              'Theme Explorer could not read storefront data from this tab. Reload the page and retry.'
+            );
+          });
       };
 
       const timeoutId = window.setTimeout(() => {
@@ -405,13 +418,13 @@ const Popup = () => {
         sendPopupOpenMessage();
       }, STOREFRONT_MESSAGE_RETRY_INTERVAL_MS);
 
-      chrome.runtime.onMessage.addListener(handleMessage);
+      extensionApi.runtime.onMessage.addListener(handleMessage);
       sendPopupOpenMessage();
 
       return () => {
         window.clearTimeout(timeoutId);
         stopPolling();
-        chrome.runtime.onMessage.removeListener(handleMessage);
+        extensionApi.runtime.onMessage.removeListener(handleMessage);
       };
     }
   }, [

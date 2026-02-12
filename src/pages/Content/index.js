@@ -1,6 +1,14 @@
+import getExtensionApi from '../../utils/getExtensionApi';
+
 let data = null;
+let injectScriptIsLoading = false;
+let lastInjectAttemptAt = 0;
 const MESSAGE_PORT_CLOSED_ERROR =
   'The message port closed before a response was received.';
+const INJECT_RETRY_INTERVAL_MS = 1000;
+const INJECT_SCRIPT_MARKER_ATTRIBUTE = 'data-theme-explorer-inject';
+
+const extensionApi = getExtensionApi();
 
 function parseThemeObject(scriptText) {
   if (!scriptText) {
@@ -73,13 +81,39 @@ function getFallbackThemeData() {
 }
 
 function appendInjectScript(srcPath, onError) {
+  if (!extensionApi?.runtime?.getURL) {
+    return;
+  }
+
+  const now = Date.now();
+  if (
+    injectScriptIsLoading ||
+    now - lastInjectAttemptAt < INJECT_RETRY_INTERVAL_MS
+  ) {
+    return;
+  }
+
+  const scriptUrl = extensionApi.runtime.getURL(srcPath);
+  const existingInjectScript = document.querySelector(
+    `script[${INJECT_SCRIPT_MARKER_ATTRIBUTE}="true"][src="${scriptUrl}"]`
+  );
+  if (existingInjectScript) {
+    return;
+  }
+
+  injectScriptIsLoading = true;
+  lastInjectAttemptAt = now;
+
   const script = document.createElement('script');
-  script.src = chrome.runtime.getURL(srcPath);
+  script.src = scriptUrl;
+  script.setAttribute(INJECT_SCRIPT_MARKER_ATTRIBUTE, 'true');
   script.onload = function () {
+    injectScriptIsLoading = false;
     this.remove();
   };
 
   script.onerror = function (event) {
+    injectScriptIsLoading = false;
     this.remove();
     if (onError) onError(event);
   };
@@ -104,13 +138,13 @@ if (initialFallbackData) {
 //   }
 // }
 function sendMessageToReact(objectData, isPopupOpen = false) {
-  if (!objectData) {
+  if (!objectData || !extensionApi?.runtime?.sendMessage) {
     return;
   }
 
-  chrome.runtime.sendMessage(chrome.runtime.id, objectData, () => {
-    if (chrome.runtime.lastError) {
-      const errorMessage = chrome.runtime.lastError.message || '';
+  extensionApi.runtime.sendMessage(objectData, () => {
+    if (extensionApi.runtime.lastError) {
+      const errorMessage = extensionApi.runtime.lastError.message || '';
       if (errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR)) {
         return;
       }
@@ -138,25 +172,27 @@ window.addEventListener(
   false
 );
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.popupIsOpen) {
-    if (!data) {
-      const fallbackData = getFallbackThemeData();
-      if (fallbackData) {
-        data = fallbackData;
-        sendResponse(fallbackData);
-        sendMessageToReact(fallbackData, true);
+if (extensionApi?.runtime?.onMessage?.addListener) {
+  extensionApi.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.popupIsOpen) {
+      if (!data) {
+        const fallbackData = getFallbackThemeData();
+        if (fallbackData) {
+          data = fallbackData;
+          sendResponse(fallbackData);
+          sendMessageToReact(fallbackData, true);
+          return;
+        }
+
+        appendInjectScript('src/pages/Inject/index.js', (event) => {
+          console.error('Error reloading script for popup request:', event);
+        });
+        sendResponse(null);
         return;
       }
 
-      appendInjectScript('src/pages/Inject/index.js', (event) => {
-        console.error('Error reloading script for popup request:', event);
-      });
-      sendResponse(null);
-      return;
+      sendResponse(data);
+      sendMessageToReact(data, true);
     }
-
-    sendResponse(data);
-    sendMessageToReact(data, true);
-  }
-});
+  });
+}

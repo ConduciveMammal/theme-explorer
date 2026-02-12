@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { crx } from '@crxjs/vite-plugin';
@@ -32,8 +33,36 @@ export default defineConfig(({ mode }) => {
     };
   }
 
+  const firefoxManifestCompatibilityPlugin = {
+    name: 'firefox-manifest-compatibility',
+    closeBundle() {
+      if (targetBrowser !== 'firefox') {
+        return;
+      }
+
+      const manifestPath = path.resolve('build-vite/manifest.json');
+      if (!fs.existsSync(manifestPath)) {
+        return;
+      }
+
+      const buildManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+      const resources = buildManifest.web_accessible_resources || [];
+
+      buildManifest.web_accessible_resources = resources.map((entry) => {
+        if (!entry || typeof entry !== 'object') {
+          return entry;
+        }
+
+        const { use_dynamic_url, ...rest } = entry;
+        return rest;
+      });
+
+      fs.writeFileSync(manifestPath, JSON.stringify(buildManifest, null, 2));
+    },
+  };
+
   return {
-    plugins: [react(), crx({ manifest })],
+    plugins: [react(), crx({ manifest }), firefoxManifestCompatibilityPlugin],
     server: {
       host: true,
       port: 5173,

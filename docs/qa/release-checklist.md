@@ -25,6 +25,7 @@ Reference runbooks:
 
 - [ ] No new console errors in popup, content, or background contexts
 - [ ] Core styling remains intact in popup views
+- [ ] Cross-browser parity notes updated in `docs/qa/cross-browser-parity.md`
 - [ ] Required host permissions remain unchanged:
   - `https://admin.shopify.com/*`
   - `https://*.myshopify.com/*`
