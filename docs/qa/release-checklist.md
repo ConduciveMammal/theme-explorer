@@ -2,6 +2,10 @@
 
 Run this checklist for every release candidate.
 
+Reference runbooks:
+- `docs/qa/release-pipeline.md`
+- `docs/qa/rollback-plan.md`
+
 ## 1. Build and artefact verification
 
 - [ ] `npm ci` completed without errors
@@ -29,5 +33,7 @@ Run this checklist for every release candidate.
 
 - [ ] `CHANGELOG.md` updated for the candidate version
 - [ ] Candidate build reviewed by at least one other person (when available)
-- [ ] Linear ticket `THE-10` checklist evidence attached or linked
+- [ ] CI artefact downloaded from `QA Release Candidate` workflow and linked in ticket
+- [ ] Rollback path validated against `docs/qa/rollback-plan.md`
+- [ ] Linear ticket `THE-14` checklist evidence attached or linked
 - [ ] Final go/no-go decision recorded

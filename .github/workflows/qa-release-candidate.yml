@@ -24,3 +24,32 @@ jobs:
 
       - name: Run QA release candidate checks
         run: npm run qa:release-candidate
+
+      - name: Capture release candidate metadata
+        run: |
+          echo "VERSION=$(node -p "require('./package.json').version")" >> "$GITHUB_ENV"
+          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+
+      - name: Archive build artefact
+        run: |
+          cd build-vite
+          zip -r "../theme-explorer-v${VERSION}-${SHORT_SHA}.zip" .
+
+      - name: Upload build artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-explorer-v${{ env.VERSION }}-${{ env.SHORT_SHA }}
+          path: theme-explorer-v${{ env.VERSION }}-${{ env.SHORT_SHA }}.zip
+          if-no-files-found: error
+
+      - name: Workflow summary
+        run: |
+          {
+            echo "## QA Release Candidate";
+            echo "";
+            echo "- Version: \`${VERSION}\`";
+            echo "- Commit: \`${SHORT_SHA}\`";
+            echo "- Artefact: \`theme-explorer-v${VERSION}-${SHORT_SHA}.zip\`";
+            echo "";
+            echo "Next step: run the manual checks in \`docs/qa/release-checklist.md\`.";
+          } >> "$GITHUB_STEP_SUMMARY"
