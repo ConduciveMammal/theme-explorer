@@ -1,16 +1,23 @@
 let data = null;
 
-const script = document.createElement('script');
-script.src = chrome.runtime.getURL('injectScript.bundle.js');
-script.onload = function () {
-  this.remove();
-};
+function appendInjectScript(srcPath, onError) {
+  const script = document.createElement('script');
+  script.src = chrome.runtime.getURL(srcPath);
+  script.onload = function () {
+    this.remove();
+  };
 
-script.onerror = function (event) {
+  script.onerror = function (event) {
+    this.remove();
+    if (onError) onError(event);
+  };
+
+  (document.head || document.documentElement).appendChild(script);
+}
+
+appendInjectScript('src/pages/Inject/index.js', (event) => {
   console.error('Error loading script:', event);
-};
-
-(document.head || document.documentElement).appendChild(script);
+});
 
 // function sendMessageToReact(objectData, popupIsOpen = false) {
 //   chrome.runtime.sendMessage(chrome.runtime.id, { ...objectData });

@@ -24,11 +24,12 @@ _Note: Firefox requires at least version 109.0_
 
 ## Acknowledgements
 
-- [Chrome Extension Boilerplate](https://github.com/lxieyang/chrome-extension-boilerplate-react)
+- [CRXJS](https://github.com/crxjs/chrome-extension-tools)
+- [Vite](https://vite.dev/)
 
 ## Installation
 
-1. Check if your [Node.js](https://nodejs.org/) version is >= **14**.
+1. Check if your [Node.js](https://nodejs.org/) version is >= **18**.
 2. Clone this repository.
 3. Change the package's `name`, `description`, and `repository` fields in `package.json`.
 4. Change the name of your extension on `src/manifest.json`.
@@ -38,8 +39,15 @@ _Note: Firefox requires at least version 109.0_
    - Access `chrome://extensions/`
    - Check `Developer mode`
    - Click on `Load unpacked extension`
-   - Select the `build` folder.
+   - Select the `build-vite` folder.
 8. Happy hacking.
+
+## Commands
+
+- `npm start` or `npm run dev`: Vite dev server with HMR
+- `npm run dev:watch`: stable watch build to `build-vite` (fallback if HMR is blocked)
+- `npm run build:dev`: one-off development build to `build-vite`
+- `npm run build:prod` or `npm run build`: production build to `build-vite`
 
 ## Roadmap
 

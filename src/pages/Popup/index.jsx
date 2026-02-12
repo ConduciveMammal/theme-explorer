@@ -6,6 +6,8 @@ import './index.css';
 import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 
-render(<Popup />, window.document.querySelector('#app-container'));
+const mountNode = window.document.querySelector('#app-container');
 
-if (module.hot) module.hot.accept();
+if (mountNode) {
+  render(<Popup />, mountNode);
+}

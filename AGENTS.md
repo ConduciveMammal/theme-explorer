@@ -4,15 +4,18 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-Theme Explorer is a Chrome/Firefox browser extension (Manifest V3) that displays information about Shopify themes. Built with React 17, TypeScript/JavaScript, and Webpack.
+Theme Explorer is a Chrome/Firefox browser extension (Manifest V3) that displays information about Shopify themes. Built with React 17, TypeScript/JavaScript, and Vite.
 
 ## Commands
 
 ```bash
-# Development server with hot reload (builds to /build, runs on port 3000)
+# Development server with HMR
 npm start
 
-# Production build (outputs to /build and creates versioned .zip)
+# Stable watch build fallback (outputs to /build-vite)
+npm run dev:watch
+
+# Production build (outputs to /build-vite)
 npm run build:prod
 
 # Development build
@@ -26,7 +29,7 @@ npm run prettier
 
 1. Run `npm start` or `npm run build:dev`
 2. Open `chrome://extensions/` (Chrome) or `about:debugging` (Firefox)
-3. Enable Developer mode and load the `/build` folder as unpacked extension
+3. Enable Developer mode and load the `/build-vite` folder as unpacked extension
 
 ## Architecture
 
@@ -46,15 +49,15 @@ Inject Script → Content Script → Popup
 
 - `src/pages/` - Extension entry points (each becomes a bundle)
 - `src/containers/` - React components (AdminComponent, StorefrontComponent, ThemeAccordion, etc.)
-- `utils/` - Build scripts (webserver.js, build.js)
+- `src/manifest.json` - Extension manifest used by the Vite + CRX plugin build
 
 ### Build System
 
-Webpack configured in `webpack.config.js`:
-- Entry points: popup, background, contentScript, injectScript
-- Hot reload enabled for popup only (not background/content scripts)
-- Manifest generated from `src/manifest.json` + `package.json` metadata
-- Production builds create `theme-explorer-{version}.zip`
+Vite configured in `vite.config.js`:
+- Manifest is generated from `src/manifest.json` with name/version metadata from `package.json`
+- Entry points are declared in the manifest and built by `@crxjs/vite-plugin`
+- Development watch builds write to `/build-vite`
+- Production builds output optimised assets to `/build-vite`
 
 ### Globals
 
