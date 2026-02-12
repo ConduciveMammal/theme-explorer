@@ -48,6 +48,13 @@ _Note: Firefox requires at least version 109.0_
 - `npm run dev:watch`: stable watch build to `build-vite` (fallback if HMR is blocked)
 - `npm run build:dev`: one-off development build to `build-vite`
 - `npm run build:prod` or `npm run build`: production build to `build-vite`
+- `npm run qa:verify-build`: verifies release build artefacts and manifest integrity
+- `npm run qa:release-candidate`: runs production build and QA verification
+
+## QA
+
+- Smoke test plan: `docs/qa/smoke-test-plan.md`
+- Release checklist: `docs/qa/release-checklist.md`
 
 ## Roadmap
 
