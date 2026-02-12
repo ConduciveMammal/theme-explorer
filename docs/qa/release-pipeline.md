@@ -23,7 +23,8 @@ Produce a repeatable release artefact, validate it, and capture sign-off evidenc
 
 1. Run `npm ci`.
 2. Run `npm run qa:release-candidate`.
-3. Verify local output in `build-vite/`.
+3. Review `docs/qa/performance-budget.md` and confirm no budget overruns.
+4. Verify local output in `build-vite/`.
 
 ## 3. CI candidate artefact
 
