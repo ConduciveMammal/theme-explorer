@@ -16,7 +16,9 @@
     "build": "vite build --mode production",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
-    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
+    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
+    "qa:verify-build": "node scripts/qa/verify-build.js",
+    "qa:release-candidate": "npm run build:prod && npm run qa:verify-build"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.0.16",
