@@ -10,6 +10,9 @@ import StorefrontComponent from '../../containers/StorefrontComponent/Storefront
 import NotFound from '../../containers/NotFound/NotFound';
 
 const Popup = () => {
+  const MESSAGE_PORT_CLOSED_ERROR =
+    'The message port closed before a response was received.';
+
   const [state, setState] = useState({
     themes: null,
     themesReady: false,
@@ -19,14 +22,17 @@ const Popup = () => {
     storeUrl: null,
     storeHandle: '',
     currentTab: null,
+    urls: null,
+    shop: null,
+    loadError: false,
   });
 
   const getLiveTheme = useCallback(() => {
     if (!state.themes) return;
 
-    const liveTheme = state.themes.find(theme => theme.role === 'main');
+    const liveTheme = state.themes.find((theme) => theme.role === 'main');
     if (liveTheme) {
-      setState(prevState => ({ ...prevState, liveTheme }));
+      setState((prevState) => ({ ...prevState, liveTheme }));
     }
   }, [state.themes]);
 
@@ -34,100 +40,144 @@ const Popup = () => {
     if (!state.storeUrl) return;
 
     try {
-      // console.log('shop state', state);
       const response = await fetch(`${state.storeUrl}/shop.json`);
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Store request failed with status ${response.status}`);
+      }
 
-      setState(prevState => ({
+      const data = await response.json();
+      const storeHandle = data?.shop?.domain?.split('.myshopify.com')[0] || '';
+
+      setState((prevState) => ({
         ...prevState,
-        shop: data.shop,
-        storeHandle: data.shop.domain.split('.myshopify.com')[0]
+        shop: data?.shop || null,
+        storeHandle,
+        loadError: false,
       }));
     } catch (error) {
-      console.error('Failed to fetch store: ', error)
+      console.error('Failed to fetch store:', error);
+      setState((prevState) => ({
+        ...prevState,
+        loadError: true,
+      }));
     }
   };
 
   const getCurrentTab = async () => {
-    let queryOptions = { active: true, currentWindow: true };
-    // `tab` will either be a `tabs.Tab` instance or `undefined`.
-    let [tab] = await chrome.tabs.query(queryOptions);
+    try {
+      const queryOptions = { active: true, currentWindow: true };
+      const [tab] = await chrome.tabs.query(queryOptions);
 
-    setState((prevState) => ({
-      ...prevState,
-      currentTab: tab,
-    }));
+      setState((prevState) => ({
+        ...prevState,
+        currentTab: tab || null,
+      }));
 
-    getTabData(tab);
+      getTabData(tab);
+    } catch (error) {
+      console.error('Failed to get current tab:', error);
+      setState((prevState) => ({
+        ...prevState,
+        loadError: true,
+      }));
+    }
   };
 
   const getTabData = async (tab) => {
-    if (!tab) return;
-
-    // const tabUrl = await new URL(tab.url);
+    if (!tab || !tab.url) return;
     const tabUrl = parseUrl(tab.url);
 
-    // console.log('t', tab);
-    // console.log(tabUrl);
-
+    if (!tabUrl) {
+      setState((prevState) => ({
+        ...prevState,
+        adminShown: false,
+        storeUrl: null,
+      }));
+      return;
+    }
 
     setState((prevState) => ({
       ...prevState,
       adminShown: tabUrl.host.includes('admin.shopify.com'),
-      storeUrl: `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`,
+      storeUrl: tabUrl.storeHandle
+        ? `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`
+        : null,
     }));
-    // console.log('Tab', `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`);
   };
 
   function parseUrl(url) {
-    const parsedUrl = new URL(url);
-    const urlSegments = parsedUrl.pathname.split('/').filter(segment => segment !== '')
-    return {
-      fullUrl: url,
-      protocol: parsedUrl.protocol,
-      host: parsedUrl.host,
-      storeHandle: urlSegments[1],
-      currentPage: urlSegments[2]
-    };
+    try {
+      const parsedUrl = new URL(url);
+      if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+        return null;
+      }
+
+      const urlSegments = parsedUrl.pathname
+        .split('/')
+        .filter((segment) => segment !== '');
+      return {
+        fullUrl: url,
+        protocol: parsedUrl.protocol,
+        host: parsedUrl.host,
+        storeHandle: urlSegments[1] || '',
+        currentPage: urlSegments[2] || '',
+      };
+    } catch (error) {
+      console.debug('Theme Explorer: failed to parse tab URL:', url);
+      return null;
+    }
   }
 
   const fetchThemes = async () => {
     if (!state.storeUrl || !state.adminShown) return;
 
-    await fetch(`${state.storeUrl}/themes.json`)
-      .then((response) => response.text())
-      .then((data) => {
-        const themesArray = JSON.parse(data);
+    try {
+      const response = await fetch(`${state.storeUrl}/themes.json`);
+      if (!response.ok) {
+        throw new Error(`Theme request failed with status ${response.status}`);
+      }
 
-        setState((prevState) => ({
-          ...prevState,
-          themes: themesArray.themes,
-        }));
-      })
-      .then(() => {
-        fetchStore();
+      const themesArray = await response.json();
+      setState((prevState) => ({
+        ...prevState,
+        themes: themesArray?.themes || [],
+        themesReady: true,
+        loadError: false,
+      }));
 
-        setState((prevState) => ({
-          ...prevState,
-          themesReady: true,
-        }));
-      });
+      fetchStore();
+    } catch (error) {
+      console.error('Failed to fetch themes:', error);
+      setState((prevState) => ({
+        ...prevState,
+        themes: [],
+        themesReady: true,
+        loadError: true,
+      }));
+    }
   };
 
   const registerOnMessage = (request) => {
-    // console.log('loloo', request);
-    const storeHandle = request.data.shop.split('.myshopify.com')[0];
-
-    if (request.type === 'theme') {
-      setState((prevState) => ({
-        ...prevState,
-        storefrontInformation: request.data.hasOwnProperty('theme') ? request.data : null,
-        storeHandle,
-        urls: {
-          adminBase: `admin.shopify.com/store/${storeHandle}`
-        }
-      }));
+    if (!request || request.type !== 'theme' || !request.data) {
+      return;
     }
+
+    const shopDomain =
+      typeof request.data.shop === 'string' ? request.data.shop : '';
+    const storeHandle = shopDomain.endsWith('.myshopify.com')
+      ? shopDomain.split('.myshopify.com')[0]
+      : '';
+
+    setState((prevState) => ({
+      ...prevState,
+      storefrontInformation: request.data.theme ? request.data : null,
+      storeHandle: storeHandle || prevState.storeHandle,
+      urls: storeHandle
+        ? {
+            adminBase: `admin.shopify.com/store/${storeHandle}`,
+          }
+        : prevState.urls,
+    }));
   };
 
   useEffect(() => {
@@ -135,45 +185,52 @@ const Popup = () => {
     // Potentially remove fetchThemes() from here if it's dependent on the result of getCurrentTab()
   }, []); // This runs only once when the component mounts
 
-
   useEffect(() => {
     if (state.storeUrl) {
       fetchThemes();
     }
   }, [state.storeUrl]); // This runs when `state.storeUrl` changes
 
-
-
   useEffect(() => {
     getLiveTheme();
   }, [getLiveTheme]);
 
-//   useEffect(() => {
-//   const handleMessage = (request) => registerOnMessage(request);
+  //   useEffect(() => {
+  //   const handleMessage = (request) => registerOnMessage(request);
 
-//   chrome.runtime.onMessage.addListener(handleMessage);
+  //   chrome.runtime.onMessage.addListener(handleMessage);
 
-//   return () => chrome.runtime.onMessage.removeListener(handleMessage);
-// }, []); // Adjust dependencies based on your needs
+  //   return () => chrome.runtime.onMessage.removeListener(handleMessage);
+  // }, []); // Adjust dependencies based on your needs
 
-useEffect(() => {
-  // Define a function that will handle incoming messages
-  const handleMessage = (request) => {
-    registerOnMessage(request);
-  };
+  useEffect(() => {
+    const handleMessage = (request) => {
+      registerOnMessage(request);
+    };
 
-  // Conditionally add the event listener
-  if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
-    chrome.runtime.onMessage.addListener(handleMessage);
-    chrome.tabs.sendMessage(state.currentTab.id, { popupIsOpen: true });
+    if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
+      chrome.runtime.onMessage.addListener(handleMessage);
+      chrome.tabs.sendMessage(
+        state.currentTab.id,
+        { popupIsOpen: true },
+        () => {
+          if (chrome.runtime.lastError) {
+            const errorMessage = chrome.runtime.lastError.message || '';
+            if (errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR)) {
+              return;
+            }
 
-    // Return a cleanup function that removes the event listener
-    return () => chrome.runtime.onMessage.removeListener(handleMessage);
-  }
+            console.debug(
+              'Theme Explorer: popup message not delivered:',
+              errorMessage
+            );
+          }
+        }
+      );
 
-  // This effect should depend on the state that dictates whether the listener should be added or removed
-}, [state.storefrontInformation, state.currentTab, state.adminShown]); // Adjust this array based on actual dependencies
-
+      return () => chrome.runtime.onMessage.removeListener(handleMessage);
+    }
+  }, [state.storefrontInformation, state.currentTab, state.adminShown]);
 
   // if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
   //   chrome.runtime.onMessage.addListener((request) =>
@@ -188,9 +245,20 @@ useEffect(() => {
 
   if (state.storefrontInformation) {
     return <StorefrontComponent state={state} />;
-  } else if (state.adminShown && state.themesReady && state.shop && !state.storefrontInformation) {
+  } else if (state.loadError) {
+    return <NotFound />;
+  } else if (
+    state.adminShown &&
+    state.themesReady &&
+    state.shop &&
+    !state.storefrontInformation
+  ) {
     return <AdminComponent state={state} />;
-  } else if (!state.storefrontInformation && !state.adminShown && !state.themesReady) {
+  } else if (
+    !state.storefrontInformation &&
+    !state.adminShown &&
+    !state.themesReady
+  ) {
     return <NotFound />;
   } else {
     return <LoadingComponent />;

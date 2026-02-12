@@ -23,6 +23,10 @@
   "permissions": [
     "tabs"
   ],
+  "host_permissions": [
+    "https://admin.shopify.com/*",
+    "https://*.myshopify.com/*"
+  ],
   "background": {
     "service_worker": "src/pages/Background/index.js",
     "type": "module"
