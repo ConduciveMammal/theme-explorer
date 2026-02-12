@@ -89,9 +89,10 @@ typings/
 
 .vscode
 .DS_Store
-src/.DS_Store
+**/.DS_Store
 build/
 build-vite/
+Bundled/
 *.zip
 theme-explorer-*/
 Media Assets/

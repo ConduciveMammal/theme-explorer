@@ -21,7 +21,9 @@
     }
   ],
   "permissions": [
-    "tabs"
+    "tabs",
+    "activeTab",
+    "scripting"
   ],
   "host_permissions": [
     "https://admin.shopify.com/*",

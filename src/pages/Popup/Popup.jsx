@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import './Popup.scss';
 import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
@@ -12,6 +12,10 @@ import NotFound from '../../containers/NotFound/NotFound';
 const Popup = () => {
   const MESSAGE_PORT_CLOSED_ERROR =
     'The message port closed before a response was received.';
+  const RECEIVING_END_MISSING_ERROR =
+    'Could not establish connection. Receiving end does not exist.';
+  const STOREFRONT_TIMEOUT_MS = 1000;
+  const STOREFRONT_MESSAGE_RETRY_INTERVAL_MS = 300;
 
   const [state, setState] = useState({
     themes: null,
@@ -25,7 +29,94 @@ const Popup = () => {
     urls: null,
     shop: null,
     loadError: false,
+    errorTitle: '',
+    errorMessage: '',
+    currentTabResolved: false,
+    storefrontCheckComplete: false,
   });
+  const attemptedContentInjectionRef = useRef(false);
+  const attemptedMainWorldFallbackRef = useRef(false);
+
+  const setLoadError = useCallback((title, message) => {
+    setState((prevState) => ({
+      ...prevState,
+      loadError: true,
+      errorTitle: title,
+      errorMessage: message,
+      themesReady: true,
+      storefrontCheckComplete: true,
+    }));
+  }, []);
+
+  const fetchStorefrontDataFromMainWorld = useCallback(async (tabId) => {
+    if (!tabId || !chrome.scripting?.executeScript) {
+      return null;
+    }
+
+    try {
+      const results = await chrome.scripting.executeScript({
+        target: { tabId },
+        world: 'MAIN',
+        func: () => {
+          const shopify = window.Shopify;
+          if (!shopify || (!shopify.theme && !shopify.shop)) {
+            return null;
+          }
+
+          const theme =
+            shopify.theme && shopify.theme.id
+              ? {
+                  handle: shopify.theme.handle,
+                  id: shopify.theme.id,
+                  name: shopify.theme.name,
+                  role: shopify.theme.role,
+                }
+              : undefined;
+          const shop =
+            typeof shopify.shop === 'string' ? shopify.shop : undefined;
+
+          if (!theme && !shop) {
+            return null;
+          }
+
+          return {
+            type: 'theme',
+            data: {
+              theme,
+              shop,
+              location: window.location.href,
+            },
+          };
+        },
+      });
+
+      return results?.[0]?.result || null;
+    } catch (error) {
+      return null;
+    }
+  }, []);
+
+  const ensureContentScriptInjected = useCallback(async (tabId) => {
+    if (!tabId || !chrome.scripting?.executeScript) {
+      return false;
+    }
+
+    if (attemptedContentInjectionRef.current) {
+      return false;
+    }
+
+    attemptedContentInjectionRef.current = true;
+
+    try {
+      await chrome.scripting.executeScript({
+        target: { tabId },
+        files: ['src/pages/Content/index.js'],
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }, []);
 
   const getLiveTheme = useCallback(() => {
     if (!state.themes) return;
@@ -53,13 +144,15 @@ const Popup = () => {
         shop: data?.shop || null,
         storeHandle,
         loadError: false,
+        errorTitle: '',
+        errorMessage: '',
       }));
     } catch (error) {
       console.error('Failed to fetch store:', error);
-      setState((prevState) => ({
-        ...prevState,
-        loadError: true,
-      }));
+      setLoadError(
+        'Unable to load Shopify store details',
+        'The store responded with an error. Check the shop is reachable and retry.'
+      );
     }
   };
 
@@ -71,20 +164,30 @@ const Popup = () => {
       setState((prevState) => ({
         ...prevState,
         currentTab: tab || null,
+        currentTabResolved: true,
       }));
 
       getTabData(tab);
     } catch (error) {
       console.error('Failed to get current tab:', error);
-      setState((prevState) => ({
-        ...prevState,
-        loadError: true,
-      }));
+      setLoadError(
+        'Unable to read browser tab',
+        'Theme Explorer could not access the active tab. Try reopening the popup.'
+      );
     }
   };
 
   const getTabData = async (tab) => {
-    if (!tab || !tab.url) return;
+    if (!tab || !tab.url) {
+      setState((prevState) => ({
+        ...prevState,
+        adminShown: false,
+        storeUrl: null,
+        themesReady: true,
+        storefrontCheckComplete: true,
+      }));
+      return;
+    }
     const tabUrl = parseUrl(tab.url);
 
     if (!tabUrl) {
@@ -92,16 +195,23 @@ const Popup = () => {
         ...prevState,
         adminShown: false,
         storeUrl: null,
+        themesReady: true,
+        storefrontCheckComplete: true,
       }));
       return;
     }
 
+    const isAdmin = tabUrl.host.includes('admin.shopify.com');
+    const adminStoreUrl = tabUrl.storeHandle
+      ? `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`
+      : null;
+
     setState((prevState) => ({
       ...prevState,
-      adminShown: tabUrl.host.includes('admin.shopify.com'),
-      storeUrl: tabUrl.storeHandle
-        ? `${tabUrl.protocol}//${tabUrl.host}/store/${tabUrl.storeHandle}`
-        : null,
+      adminShown: isAdmin,
+      storeUrl: adminStoreUrl,
+      themesReady: isAdmin && adminStoreUrl ? prevState.themesReady : true,
+      storefrontCheckComplete: isAdmin,
     }));
   };
 
@@ -143,6 +253,9 @@ const Popup = () => {
         themes: themesArray?.themes || [],
         themesReady: true,
         loadError: false,
+        errorTitle: '',
+        errorMessage: '',
+        storefrontCheckComplete: true,
       }));
 
       fetchStore();
@@ -152,8 +265,12 @@ const Popup = () => {
         ...prevState,
         themes: [],
         themesReady: true,
-        loadError: true,
+        storefrontCheckComplete: true,
       }));
+      setLoadError(
+        'Unable to load themes',
+        'Theme data could not be fetched from this store. Confirm you are in Shopify admin and retry.'
+      );
     }
   };
 
@@ -170,13 +287,18 @@ const Popup = () => {
 
     setState((prevState) => ({
       ...prevState,
-      storefrontInformation: request.data.theme ? request.data : null,
+      storefrontInformation:
+        request.data.theme || request.data.shop ? request.data : null,
       storeHandle: storeHandle || prevState.storeHandle,
       urls: storeHandle
         ? {
             adminBase: `admin.shopify.com/store/${storeHandle}`,
           }
         : prevState.urls,
+      storefrontCheckComplete: true,
+      loadError: false,
+      errorTitle: '',
+      errorMessage: '',
     }));
   };
 
@@ -209,28 +331,91 @@ const Popup = () => {
     };
 
     if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
-      chrome.runtime.onMessage.addListener(handleMessage);
-      chrome.tabs.sendMessage(
-        state.currentTab.id,
-        { popupIsOpen: true },
-        () => {
-          if (chrome.runtime.lastError) {
-            const errorMessage = chrome.runtime.lastError.message || '';
-            if (errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR)) {
+      const sendPopupOpenMessage = () => {
+        chrome.tabs.sendMessage(
+          state.currentTab.id,
+          { popupIsOpen: true },
+          (response) => {
+            if (response && response.type === 'theme' && response.data) {
+              registerOnMessage(response);
               return;
             }
 
-            console.debug(
-              'Theme Explorer: popup message not delivered:',
-              errorMessage
-            );
-          }
-        }
-      );
+            if (chrome.runtime.lastError) {
+              const errorMessage = chrome.runtime.lastError.message || '';
+              if (
+                errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR) ||
+                errorMessage.includes(RECEIVING_END_MISSING_ERROR)
+              ) {
+                if (errorMessage.includes(RECEIVING_END_MISSING_ERROR)) {
+                  ensureContentScriptInjected(state.currentTab.id);
 
-      return () => chrome.runtime.onMessage.removeListener(handleMessage);
+                  if (!attemptedMainWorldFallbackRef.current) {
+                    attemptedMainWorldFallbackRef.current = true;
+                    fetchStorefrontDataFromMainWorld(state.currentTab.id).then(
+                      (mainWorldData) => {
+                        if (mainWorldData) {
+                          registerOnMessage(mainWorldData);
+                        }
+                      }
+                    );
+                  }
+                }
+                return;
+              }
+
+              console.debug(
+                'Theme Explorer: popup message not delivered:',
+                errorMessage
+              );
+              setLoadError(
+                'Unable to communicate with the page',
+                'Theme Explorer could not read storefront data from this tab. Reload the page and retry.'
+              );
+            }
+          }
+        );
+      };
+
+      const timeoutId = window.setTimeout(() => {
+        fetchStorefrontDataFromMainWorld(state.currentTab.id).then(
+          (mainWorldData) => {
+            if (mainWorldData) {
+              registerOnMessage(mainWorldData);
+              return;
+            }
+            setState((prevState) => ({
+              ...prevState,
+              storefrontCheckComplete: true,
+            }));
+          }
+        );
+      }, STOREFRONT_TIMEOUT_MS);
+      const retryIntervalId = window.setInterval(() => {
+        sendPopupOpenMessage();
+      }, STOREFRONT_MESSAGE_RETRY_INTERVAL_MS);
+
+      chrome.runtime.onMessage.addListener(handleMessage);
+      sendPopupOpenMessage();
+
+      return () => {
+        window.clearTimeout(timeoutId);
+        window.clearInterval(retryIntervalId);
+        chrome.runtime.onMessage.removeListener(handleMessage);
+      };
     }
-  }, [state.storefrontInformation, state.currentTab, state.adminShown]);
+  }, [
+    state.storefrontInformation,
+    state.currentTab,
+    state.adminShown,
+    ensureContentScriptInjected,
+    fetchStorefrontDataFromMainWorld,
+    setLoadError,
+  ]);
+
+  const handleRetry = () => {
+    window.location.reload();
+  };
 
   // if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
   //   chrome.runtime.onMessage.addListener((request) =>
@@ -246,7 +431,29 @@ const Popup = () => {
   if (state.storefrontInformation) {
     return <StorefrontComponent state={state} />;
   } else if (state.loadError) {
-    return <NotFound />;
+    return (
+      <NotFound
+        title={state.errorTitle || 'Something went wrong'}
+        message={
+          state.errorMessage ||
+          'Theme Explorer hit an unexpected error. Please try again.'
+        }
+        onRetry={handleRetry}
+      />
+    );
+  } else if (
+    state.adminShown &&
+    state.themesReady &&
+    !state.storeUrl &&
+    !state.storefrontInformation
+  ) {
+    return (
+      <NotFound
+        title="Shopify admin store not detected"
+        message="Open a specific Shopify admin store URL, then retry."
+        onRetry={handleRetry}
+      />
+    );
   } else if (
     state.adminShown &&
     state.themesReady &&
@@ -255,11 +462,17 @@ const Popup = () => {
   ) {
     return <AdminComponent state={state} />;
   } else if (
-    !state.storefrontInformation &&
+    state.currentTabResolved &&
     !state.adminShown &&
-    !state.themesReady
+    state.storefrontCheckComplete
   ) {
-    return <NotFound />;
+    return (
+      <NotFound
+        title="No Shopify theme data found"
+        message="Open a Shopify storefront or admin page, then retry."
+        onRetry={handleRetry}
+      />
+    );
   } else {
     return <LoadingComponent />;
   }
