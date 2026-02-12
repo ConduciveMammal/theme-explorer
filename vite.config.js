@@ -8,6 +8,7 @@ const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
 
 export default defineConfig(({ mode }) => {
   const isDevelopment = mode === 'development';
+  const targetBrowser = process.env.TARGET_BROWSER || 'chrome';
 
   const manifest = {
     ...baseManifest,
@@ -17,6 +18,12 @@ export default defineConfig(({ mode }) => {
     description: packageJson.description,
     version: packageJson.version,
   };
+
+  if (targetBrowser === 'firefox') {
+    manifest.background = {
+      scripts: ['src/pages/Background/index.js'],
+    };
+  }
 
   if (isDevelopment) {
     manifest.content_security_policy = {

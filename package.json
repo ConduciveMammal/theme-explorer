@@ -2,7 +2,7 @@
   "name": "theme-explorer",
   "name_formatted": "Theme Explorer for Shopify",
   "name_development": "Dev - Theme Explorer for Shopify",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "description": "Theme Explorer allows you to view important information about the themes installed on your Shopify store.",
   "license": "UNLICENSED",
   "repository": {
@@ -16,6 +16,11 @@
     "build": "vite build --mode production",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
+    "build:firefox": "TARGET_BROWSER=firefox vite build --mode production",
+    "build:firefox:dev": "TARGET_BROWSER=firefox vite build --mode development",
+    "package:bundle:chrome": "node scripts/package-bundles.js chrome",
+    "package:bundle:firefox": "node scripts/package-bundles.js firefox",
+    "package:bundle": "node scripts/package-bundles.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "qa:verify-build": "node scripts/qa/verify-build.js",
     "qa:release-candidate": "npm run build:prod && npm run qa:verify-build"

@@ -8,8 +8,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const StorefrontComponent = ({ state }) => {
-  const themeId = state?.storefrontInformation?.theme?.id;
+  const theme = state?.storefrontInformation?.theme || null;
+  const themeId = theme?.id;
   const shopDomain = state?.storefrontInformation?.shop;
+  const hasThemeData = Boolean(themeId);
 
   const getPreviewURL = () => {
     if (!shopDomain || !themeId) {
@@ -73,7 +75,7 @@ const StorefrontComponent = ({ state }) => {
     }
 
     copyToClipboard(
-      `Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${previewUrl}\nEditor: ${editorUrl}`,
+      `Theme name: ${theme?.name || 'Unknown'}\n\nPreview: ${previewUrl}\nEditor: ${editorUrl}`,
       'Preview & Editor URL copied'
     );
   };
@@ -120,12 +122,14 @@ const StorefrontComponent = ({ state }) => {
               <h1 className="title">
                 <small>Theme name:</small>
                 <br />
-                <strong>{state.storefrontInformation.theme.name}</strong>
+                <strong>{theme?.name || 'Theme data unavailable'}</strong>
               </h1>
             </div>
             <div className="Alert__Content">
               <p className="Alert__Message">
-                Generate Preview or Preview &amp; Editor URL to this theme.
+                {hasThemeData
+                  ? 'Generate Preview or Preview &amp; Editor URL to this theme.'
+                  : 'Shop detected, but this page does not expose a theme ID yet. Open a product or collection page and retry.'}
               </p>
 
               <div className="generator-actions">
@@ -133,6 +137,7 @@ const StorefrontComponent = ({ state }) => {
                   className="button"
                   title="Copy theme ID"
                   onClick={() => copyThemeId()}
+                  disabled={!hasThemeData}
                 >
                   Theme ID
                 </button>
