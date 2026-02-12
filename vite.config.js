@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
   if (isDevelopment) {
     manifest.content_security_policy = {
       extension_pages:
-        "script-src 'self'; object-src 'self'; connect-src 'self' http://localhost:5173 ws://localhost:5173 http://127.0.0.1:5173 ws://127.0.0.1:5173;",
+        "script-src 'self'; object-src 'self'; connect-src 'self' https://admin.shopify.com https://*.myshopify.com http://localhost:5173 ws://localhost:5173 http://127.0.0.1:5173 ws://127.0.0.1:5173;",
     };
   }
 
