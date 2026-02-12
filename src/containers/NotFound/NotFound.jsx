@@ -1,7 +1,10 @@
 import React from 'react';
-import '../../pages/Popup/Popup.scss';
-import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
-import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
+import { AlertCircle } from 'lucide-react';
+
+import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert';
+import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '../../components/ui/card';
+import { Separator } from '../../components/ui/separator';
 
 const NotFound = ({
   title = 'Shopify store not found',
@@ -10,29 +13,37 @@ const NotFound = ({
   retryLabel = 'Retry',
 }) => {
   return (
-    <div className="popup-container">
-      <div className="popup-body">
-        <div className="Panel Panel__Loader-screen Panel__Status-screen">
-          <div className="Panel__Loader-wrapper Panel__Status-wrapper">
-            <p className="Panel__Status-title">{title}</p>
-            <p className="Panel__Status-message">{message}</p>
-            {onRetry && (
-              <button className="button Panel__Status-retry" onClick={onRetry}>
-                {retryLabel}
-              </button>
-            )}
-          </div>
-        </div>
-        <footer className="Panel__Footer">
+    <div className="w-[450px] bg-background p-4 text-foreground">
+      <Card>
+        <CardHeader className="pb-2" />
+        <CardContent className="space-y-4">
+          <Alert className="border-border">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="mt-0.5 h-4 w-4 text-primary" />
+              <div className="space-y-2">
+                <AlertTitle className="text-lg">{title}</AlertTitle>
+                <AlertDescription className="text-sm">{message}</AlertDescription>
+              </div>
+            </div>
+          </Alert>
+          {onRetry && (
+            <Button type="button" onClick={onRetry}>
+              {retryLabel}
+            </Button>
+          )}
+        </CardContent>
+        <Separator />
+        <CardFooter className="justify-end py-4">
           <a
             href="https://github.com/ConduciveMammal/theme-explorer/issues"
             target="_blank"
             rel="noreferrer"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Report an issue
           </a>
-        </footer>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

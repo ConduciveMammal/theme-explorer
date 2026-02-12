@@ -1,19 +1,20 @@
 import React from 'react';
-import '../../pages/Popup/Popup.scss';
-import './LoadingComponent.scss';
-import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
-import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
+import { Loader2 } from 'lucide-react';
+
+import { Card, CardContent } from '../../components/ui/card';
+import { Skeleton } from '../../components/ui/skeleton';
 
 const LoadingComponent = () => {
   return (
-    <div className="popup-container">
-      <div className="popup-body">
-        <div className="Panel Panel__Loader-screen">
-          <div className="Panel__Loader-wrapper">
-            <span className="Panel__Loader"></span>
-            <p className="Panel__Loader-text">Loading&hellip;</p>
-          </div>
-        </div>
+    <div className="w-[450px] bg-background p-4 text-foreground">
+      <div className="min-h-[240px]">
+        <Card>
+          <CardContent className="flex min-h-[220px] flex-col items-center justify-center gap-4 p-6">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Skeleton className="h-4 w-24" />
+            <p className="text-sm font-semibold text-muted-foreground">Loading&hellip;</p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
