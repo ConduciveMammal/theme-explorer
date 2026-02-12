@@ -26,7 +26,18 @@ appendInjectScript('src/pages/Inject/index.js', (event) => {
 //   }
 // }
 function sendMessageToReact(objectData, isPopupOpen = false) {
-  chrome.runtime.sendMessage(chrome.runtime.id, objectData);
+  if (!objectData) {
+    return;
+  }
+
+  chrome.runtime.sendMessage(chrome.runtime.id, objectData, () => {
+    if (chrome.runtime.lastError) {
+      console.debug(
+        'Theme Explorer: runtime message skipped:',
+        chrome.runtime.lastError.message
+      );
+    }
+  });
 
   if (!isPopupOpen) {
     data = objectData;
@@ -36,7 +47,11 @@ function sendMessageToReact(objectData, isPopupOpen = false) {
 window.addEventListener(
   'message',
   (e) => {
-    if (e.data.type === 'theme') {
+    if (e.source !== window || e.origin !== window.location.origin) {
+      return;
+    }
+
+    if (e.data && e.data.type === 'theme' && e.data.data) {
       sendMessageToReact(e.data);
     }
   },
@@ -45,6 +60,13 @@ window.addEventListener(
 
 chrome.runtime.onMessage.addListener((request) => {
   if (request.popupIsOpen) {
+    if (!data) {
+      appendInjectScript('src/pages/Inject/index.js', (event) => {
+        console.error('Error reloading script for popup request:', event);
+      });
+      return;
+    }
+
     sendMessageToReact(data, true);
   }
 });

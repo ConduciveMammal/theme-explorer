@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from '../Icon/Icon';
-import "./StorefrontComponent.scss";
+import './StorefrontComponent.scss';
 import '../../pages/Popup/Popup.scss';
 import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
@@ -32,23 +32,23 @@ const StorefrontComponent = ({ state }) => {
 
   const launchSuccessToast = (message) => {
     toast.success(`${message}`, {
-      position: "bottom-center",
+      position: 'bottom-center',
       autoClose: 1000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: false,
-      draggable: false
+      draggable: false,
     });
   };
 
   const launchErrorToast = (message) => {
     toast.error(`${message}`, {
-      position: "bottom-center",
+      position: 'bottom-center',
       autoClose: 1500,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: false,
-      draggable: false
+      draggable: false,
     });
   };
 
@@ -72,7 +72,10 @@ const StorefrontComponent = ({ state }) => {
       return;
     }
 
-    copyToClipboard(`Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${previewUrl}\nEditor: ${editorUrl}`, 'Preview & Editor URL copied');
+    copyToClipboard(
+      `Theme name: ${state.storefrontInformation.theme.name}\n\nPreview: ${previewUrl}\nEditor: ${editorUrl}`,
+      'Preview & Editor URL copied'
+    );
   };
 
   const copyThemeId = () => {
@@ -102,7 +105,6 @@ const StorefrontComponent = ({ state }) => {
   const previewUrlAvailable = Boolean(getPreviewURL());
   const editorUrlAvailable = Boolean(getEditorURL());
 
-
   return (
     <div className="popup-container popup-storefront">
       <div className="popup-body">
@@ -126,21 +128,41 @@ const StorefrontComponent = ({ state }) => {
                 Generate Preview or Preview &amp; Editor URL to this theme.
               </p>
 
-              <div className='generator-actions'>
-                <button className='button' title="Copy theme ID" onClick={() => copyThemeId()}>
+              <div className="generator-actions">
+                <button
+                  className="button"
+                  title="Copy theme ID"
+                  onClick={() => copyThemeId()}
+                >
                   Theme ID
                 </button>
-                <button className='button' title="Copy preview URL" onClick={() => copyPreviewURL()} disabled={!previewUrlAvailable}>
+                <button
+                  className="button"
+                  title="Copy preview URL"
+                  onClick={() => copyPreviewURL()}
+                  disabled={!previewUrlAvailable}
+                >
                   Preview URL
                 </button>
-                <button className='button' title="Copy preview &amp; editor URLs" onClick={() => copyPreviewAndEditorURL()} disabled={!previewUrlAvailable || !editorUrlAvailable}>
+                <button
+                  className="button"
+                  title="Copy preview &amp; editor URLs"
+                  onClick={() => copyPreviewAndEditorURL()}
+                  disabled={!previewUrlAvailable || !editorUrlAvailable}
+                >
                   Preview &amp; Editor URL
                 </button>
               </div>
             </div>
           </div>
           <footer className="Panel__Footer">
-            <a href="https://github.com/ConduciveMammal/theme-explorer/issues" target="_blank" rel="noreferrer">Report an issue</a>
+            <a
+              href="https://github.com/ConduciveMammal/theme-explorer/issues"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Report an issue
+            </a>
           </footer>
         </div>
         <ToastContainer />
@@ -148,6 +170,5 @@ const StorefrontComponent = ({ state }) => {
     </div>
   );
 };
-
 
 export default StorefrontComponent;
