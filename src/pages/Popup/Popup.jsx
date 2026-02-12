@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
-import './Popup.scss';
 import '@fontsource-variable/nunito'; // This contains ALL variable axes. Font files are larger.
 import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 
