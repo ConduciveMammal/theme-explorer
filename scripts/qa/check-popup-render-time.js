@@ -73,6 +73,16 @@ function resolveChromePath() {
   return candidates.find((candidate) => fs.existsSync(candidate)) || null;
 }
 
+function getChromeSandboxArgs() {
+  // GitHub-hosted Linux runners often cannot use the bundled setuid sandbox.
+  // In CI we explicitly disable it so headless checks remain deterministic.
+  if (process.platform === 'linux') {
+    return ['--no-sandbox', '--disable-setuid-sandbox'];
+  }
+
+  return [];
+}
+
 function startStaticServer(root) {
   const server = http.createServer((request, response) => {
     const requestPath = decodeURIComponent((request.url || '/').split('?')[0]);
@@ -172,6 +182,7 @@ async function run() {
       '--no-first-run',
       '--no-default-browser-check',
       '--allow-file-access-from-files',
+      ...getChromeSandboxArgs(),
       `--user-data-dir=${userDataDir}`,
       '--virtual-time-budget=6000',
       '--dump-dom',
