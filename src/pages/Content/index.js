@@ -1,8 +1,12 @@
 import getExtensionApi from '../../utils/getExtensionApi';
 
 let data = null;
+let injectScriptIsLoading = false;
+let lastInjectAttemptAt = 0;
 const MESSAGE_PORT_CLOSED_ERROR =
   'The message port closed before a response was received.';
+const INJECT_RETRY_INTERVAL_MS = 1000;
+const INJECT_SCRIPT_MARKER_ATTRIBUTE = 'data-theme-explorer-inject';
 
 const extensionApi = getExtensionApi();
 
@@ -81,13 +85,35 @@ function appendInjectScript(srcPath, onError) {
     return;
   }
 
+  const now = Date.now();
+  if (
+    injectScriptIsLoading ||
+    now - lastInjectAttemptAt < INJECT_RETRY_INTERVAL_MS
+  ) {
+    return;
+  }
+
+  const scriptUrl = extensionApi.runtime.getURL(srcPath);
+  const existingInjectScript = document.querySelector(
+    `script[${INJECT_SCRIPT_MARKER_ATTRIBUTE}="true"][src="${scriptUrl}"]`
+  );
+  if (existingInjectScript) {
+    return;
+  }
+
+  injectScriptIsLoading = true;
+  lastInjectAttemptAt = now;
+
   const script = document.createElement('script');
-  script.src = extensionApi.runtime.getURL(srcPath);
+  script.src = scriptUrl;
+  script.setAttribute(INJECT_SCRIPT_MARKER_ATTRIBUTE, 'true');
   script.onload = function () {
+    injectScriptIsLoading = false;
     this.remove();
   };
 
   script.onerror = function (event) {
+    injectScriptIsLoading = false;
     this.remove();
     if (onError) onError(event);
   };

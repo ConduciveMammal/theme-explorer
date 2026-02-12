@@ -355,50 +355,48 @@ const Popup = () => {
       };
 
       const sendPopupOpenMessage = () => {
-        extensionApi.tabs.sendMessage(
-          state.currentTab.id,
-          { popupIsOpen: true },
-          (response) => {
+        extensionApi.tabs
+          .sendMessage(state.currentTab.id, { popupIsOpen: true })
+          .then((response) => {
             if (response && response.type === 'theme' && response.data) {
               registerOnMessage(response);
+            }
+          })
+          .catch((error) => {
+            const errorMessage =
+              error?.message || extensionApi?.runtime?.lastError?.message || '';
+
+            if (
+              errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR) ||
+              errorMessage.includes(RECEIVING_END_MISSING_ERROR)
+            ) {
+              if (errorMessage.includes(RECEIVING_END_MISSING_ERROR)) {
+                ensureContentScriptInjected(state.currentTab.id);
+
+                if (!attemptedMainWorldFallbackRef.current) {
+                  attemptedMainWorldFallbackRef.current = true;
+                  fetchStorefrontDataFromMainWorld(state.currentTab.id).then(
+                    (mainWorldData) => {
+                      if (mainWorldData) {
+                        registerOnMessage(mainWorldData);
+                      }
+                    }
+                  );
+                }
+              }
               return;
             }
 
-            if (extensionApi.runtime.lastError) {
-              const errorMessage = extensionApi.runtime.lastError.message || '';
-              if (
-                errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR) ||
-                errorMessage.includes(RECEIVING_END_MISSING_ERROR)
-              ) {
-                if (errorMessage.includes(RECEIVING_END_MISSING_ERROR)) {
-                  ensureContentScriptInjected(state.currentTab.id);
-
-                  if (!attemptedMainWorldFallbackRef.current) {
-                    attemptedMainWorldFallbackRef.current = true;
-                    fetchStorefrontDataFromMainWorld(state.currentTab.id).then(
-                      (mainWorldData) => {
-                        if (mainWorldData) {
-                          registerOnMessage(mainWorldData);
-                        }
-                      }
-                    );
-                  }
-                }
-                return;
-              }
-
-              console.debug(
-                'Theme Explorer: popup message not delivered:',
-                errorMessage
-              );
-              stopPolling();
-              setLoadError(
-                'Unable to communicate with the page',
-                'Theme Explorer could not read storefront data from this tab. Reload the page and retry.'
-              );
-            }
-          }
-        );
+            console.debug(
+              'Theme Explorer: popup message not delivered:',
+              errorMessage
+            );
+            stopPolling();
+            setLoadError(
+              'Unable to communicate with the page',
+              'Theme Explorer could not read storefront data from this tab. Reload the page and retry.'
+            );
+          });
       };
 
       const timeoutId = window.setTimeout(() => {
