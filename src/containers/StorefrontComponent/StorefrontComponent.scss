@@ -1,7 +1,8 @@
-@import "../../assets/styles/components/buttons";
+@use "../../assets/styles/variables";
+@use "../../assets/styles/components/buttons";
 
 .popup-storefront {
-  --toastify-font-family: $font-primary;
+  --toastify-font-family: #{variables.$font-primary};
 
   .Alert__Icon-container {
     display: flex;

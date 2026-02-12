@@ -91,6 +91,7 @@ typings/
 .DS_Store
 src/.DS_Store
 build/
+build-vite/
 *.zip
 theme-explorer-*/
 Media Assets/
