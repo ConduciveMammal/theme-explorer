@@ -331,6 +331,14 @@ const Popup = () => {
     };
 
     if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
+      let retryIntervalId = null;
+      const stopPolling = () => {
+        if (retryIntervalId) {
+          window.clearInterval(retryIntervalId);
+          retryIntervalId = null;
+        }
+      };
+
       const sendPopupOpenMessage = () => {
         chrome.tabs.sendMessage(
           state.currentTab.id,
@@ -368,6 +376,7 @@ const Popup = () => {
                 'Theme Explorer: popup message not delivered:',
                 errorMessage
               );
+              stopPolling();
               setLoadError(
                 'Unable to communicate with the page',
                 'Theme Explorer could not read storefront data from this tab. Reload the page and retry.'
@@ -384,6 +393,7 @@ const Popup = () => {
               registerOnMessage(mainWorldData);
               return;
             }
+            stopPolling();
             setState((prevState) => ({
               ...prevState,
               storefrontCheckComplete: true,
@@ -391,7 +401,7 @@ const Popup = () => {
           }
         );
       }, STOREFRONT_TIMEOUT_MS);
-      const retryIntervalId = window.setInterval(() => {
+      retryIntervalId = window.setInterval(() => {
         sendPopupOpenMessage();
       }, STOREFRONT_MESSAGE_RETRY_INTERVAL_MS);
 
@@ -400,7 +410,7 @@ const Popup = () => {
 
       return () => {
         window.clearTimeout(timeoutId);
-        window.clearInterval(retryIntervalId);
+        stopPolling();
         chrome.runtime.onMessage.removeListener(handleMessage);
       };
     }
