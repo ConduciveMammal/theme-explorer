@@ -10,6 +10,9 @@ import StorefrontComponent from '../../containers/StorefrontComponent/Storefront
 import NotFound from '../../containers/NotFound/NotFound';
 
 const Popup = () => {
+  const MESSAGE_PORT_CLOSED_ERROR =
+    'The message port closed before a response was received.';
+
   const [state, setState] = useState({
     themes: null,
     themesReady: false,
@@ -212,9 +215,14 @@ const Popup = () => {
         { popupIsOpen: true },
         () => {
           if (chrome.runtime.lastError) {
+            const errorMessage = chrome.runtime.lastError.message || '';
+            if (errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR)) {
+              return;
+            }
+
             console.debug(
               'Theme Explorer: popup message not delivered:',
-              chrome.runtime.lastError.message
+              errorMessage
             );
           }
         }

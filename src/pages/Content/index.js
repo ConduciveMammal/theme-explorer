@@ -1,4 +1,6 @@
 let data = null;
+const MESSAGE_PORT_CLOSED_ERROR =
+  'The message port closed before a response was received.';
 
 function appendInjectScript(srcPath, onError) {
   const script = document.createElement('script');
@@ -32,10 +34,12 @@ function sendMessageToReact(objectData, isPopupOpen = false) {
 
   chrome.runtime.sendMessage(chrome.runtime.id, objectData, () => {
     if (chrome.runtime.lastError) {
-      console.debug(
-        'Theme Explorer: runtime message skipped:',
-        chrome.runtime.lastError.message
-      );
+      const errorMessage = chrome.runtime.lastError.message || '';
+      if (errorMessage.includes(MESSAGE_PORT_CLOSED_ERROR)) {
+        return;
+      }
+
+      console.debug('Theme Explorer: runtime message skipped:', errorMessage);
     }
   });
 
