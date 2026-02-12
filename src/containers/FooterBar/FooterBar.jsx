@@ -1,7 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import Icons from '../../assets/img/icons/icons.svg';
 import Icon from '../Icon/Icon';
-import parse from 'html-react-parser';
 
 import "./FooterBar.scss";
 
@@ -62,21 +60,19 @@ const FooterBar = () => {
             <ul>
               {
                 menuLinks.map((link, index) => {
-                  return parse(`
-                    <li key="${index}">
-                      <a href="${link.link}" target="_blank" rel="noopener">
-                        <svg
-                          className="icon icon-${link.icon}"
-                          fill="currentColor"
-                          width="20"
-                          height="20"
-                        >
-                          <use xlinkHref="${Icons}#icon-${link.icon}" />
-                        </svg>
-                        <span>${link.label}</span>
+                  return (
+                    <li key={index}>
+                      <a href={link.link} target="_blank" rel="noopener noreferrer">
+                        <Icon
+                          name={link.icon}
+                          color="currentColor"
+                          size={20}
+                          classes=""
+                        />
+                        <span>{link.label}</span>
                       </a>
                     </li>
-                  `)
+                  )
                 })
               }
             </ul>

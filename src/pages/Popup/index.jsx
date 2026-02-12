@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import Popup from './Popup';
 import './index.css';
@@ -9,5 +9,6 @@ import '@fontsource-variable/nunito/wght-italic.css'; // Italic variant.
 const mountNode = window.document.querySelector('#app-container');
 
 if (mountNode) {
-  render(<Popup />, mountNode);
+  const root = createRoot(mountNode);
+  root.render(<Popup />);
 }

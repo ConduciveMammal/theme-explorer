@@ -1,3 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 43% 96%;
+  --foreground: 207 16% 24%;
+  --card: 0 0% 100%;
+  --card-foreground: 207 16% 24%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 207 16% 24%;
+  --primary: 237 47% 52%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 33% 94%;
+  --secondary-foreground: 207 16% 24%;
+  --muted: 210 33% 94%;
+  --muted-foreground: 208 16% 49%;
+  --accent: 210 33% 94%;
+  --accent-foreground: 207 16% 24%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 210 31% 90%;
+  --input: 210 31% 90%;
+  --ring: 237 47% 52%;
+  --radius: 0.5rem;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -10,12 +37,14 @@ html {
 
 body {
   margin: 0;
-  font-family: Nunito, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Nunito Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
 
 code {

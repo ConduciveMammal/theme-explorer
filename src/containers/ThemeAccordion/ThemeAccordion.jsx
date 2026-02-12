@@ -1,5 +1,4 @@
 import React from 'react';
-import Collapse from '@kunukn/react-collapse';
 
 import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
@@ -56,12 +55,11 @@ const ThemeAccordion = ({ theme, shop, index, storeUrl, ...additionalAttrs }) =>
             }
           </p>
         </header>
-        <Collapse
+        {isOpen && (
+          <div
           id={`Accordion-${index}`}
           className="Accordion__Body"
           aria-hidden={isOpen ? 'false' : 'true'}
-          isOpen={isOpen}
-          transition={`height .2s cubic-bezier(.4, 0, .2, 1)`}
         >
           <div className="Accordion__Body__Content">
             <p className="Accordion__Detail">
@@ -107,7 +105,8 @@ const ThemeAccordion = ({ theme, shop, index, storeUrl, ...additionalAttrs }) =>
               </p>
             </footer>
           </div>
-        </Collapse>
+          </div>
+        )}
       </div>
   );
 };
