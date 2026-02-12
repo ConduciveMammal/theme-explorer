@@ -19,6 +19,7 @@ const Popup = () => {
     'Could not establish connection. Receiving end does not exist.';
   const STOREFRONT_TIMEOUT_MS = 1000;
   const STOREFRONT_MESSAGE_RETRY_INTERVAL_MS = 300;
+  const POPUP_FIRST_RENDER_BUDGET_MS = 300;
 
   const [state, setState] = useState({
     themes: null,
@@ -39,6 +40,10 @@ const Popup = () => {
   });
   const attemptedContentInjectionRef = useRef(false);
   const attemptedMainWorldFallbackRef = useRef(false);
+  const popupMountStartRef = useRef(
+    typeof performance !== 'undefined' ? performance.now() : Date.now()
+  );
+  const hasReportedFirstRenderRef = useRef(false);
 
   const setLoadError = useCallback((title, message) => {
     setState((prevState) => ({
@@ -439,6 +444,46 @@ const Popup = () => {
   const handleRetry = () => {
     window.location.reload();
   };
+
+  const hasTerminalView =
+    !!state.storefrontInformation ||
+    state.loadError ||
+    (state.adminShown &&
+      state.themesReady &&
+      !state.storeUrl &&
+      !state.storefrontInformation) ||
+    (state.adminShown &&
+      state.themesReady &&
+      state.shop &&
+      !state.storefrontInformation) ||
+    (state.currentTabResolved &&
+      !state.adminShown &&
+      state.storefrontCheckComplete);
+
+  useEffect(() => {
+    if (!hasTerminalView || hasReportedFirstRenderRef.current) {
+      return;
+    }
+
+    hasReportedFirstRenderRef.current = true;
+    const end = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const durationMs = Math.round(end - popupMountStartRef.current);
+
+    window.__THEME_EXPLORER_PERF__ = {
+      ...(window.__THEME_EXPLORER_PERF__ || {}),
+      popupFirstRenderMs: durationMs,
+    };
+    document.documentElement.setAttribute(
+      'data-theme-explorer-popup-first-render-ms',
+      String(durationMs)
+    );
+
+    if (durationMs > POPUP_FIRST_RENDER_BUDGET_MS) {
+      console.warn(
+        `Theme Explorer popup first render exceeded budget: ${durationMs}ms > ${POPUP_FIRST_RENDER_BUDGET_MS}ms`
+      );
+    }
+  }, [hasTerminalView, POPUP_FIRST_RENDER_BUDGET_MS]);
 
   // if (!state.storefrontInformation && state.currentTab && !state.adminShown) {
   //   chrome.runtime.onMessage.addListener((request) =>

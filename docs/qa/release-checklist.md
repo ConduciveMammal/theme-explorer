@@ -5,11 +5,13 @@ Run this checklist for every release candidate.
 Reference runbooks:
 - `docs/qa/release-pipeline.md`
 - `docs/qa/rollback-plan.md`
+- `docs/qa/performance-budget.md`
 
 ## 1. Build and artefact verification
 
 - [ ] `npm ci` completed without errors
 - [ ] `npm run qa:release-candidate` passed
+- [ ] `npm run qa:performance` passed and no budget threshold was exceeded
 - [ ] `build-vite/manifest.json` version matches `package.json`
 - [ ] Extension loads successfully in Chrome and Firefox
 

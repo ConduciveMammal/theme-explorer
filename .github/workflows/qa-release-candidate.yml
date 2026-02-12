@@ -22,7 +22,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set up Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - name: Run QA release candidate checks
+        env:
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
         run: npm run qa:release-candidate
 
       - name: Capture release candidate metadata

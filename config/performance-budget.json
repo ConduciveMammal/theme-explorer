@@ -1,0 +1,34 @@
+{
+  "popupFirstRenderMs": {
+    "budget": 300,
+    "baseline": 20
+  },
+  "popupJsBytes": {
+    "budget": 260000,
+    "baseline": 221709
+  },
+  "popupCssBytes": {
+    "budget": 28000,
+    "baseline": 23065
+  },
+  "popupAssetBytes": {
+    "budget": 330000,
+    "baseline": 294874
+  },
+  "popupFootprintBytes": {
+    "budget": 610000,
+    "baseline": 539648
+  },
+  "contentScriptBytes": {
+    "budget": 5000,
+    "baseline": 2110
+  },
+  "injectScriptBytes": {
+    "budget": 3500,
+    "baseline": 2140
+  },
+  "backgroundScriptBytes": {
+    "budget": 2000,
+    "baseline": 470
+  }
+}

@@ -22,7 +22,8 @@
     "package:bundle:firefox": "node scripts/package-bundles.js firefox",
     "package:bundle": "node scripts/package-bundles.js",
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
-    "qa:verify-build": "node scripts/qa/verify-build.js",
+    "qa:verify-build": "node scripts/qa/verify-build.js && npm run qa:performance",
+    "qa:performance": "node scripts/qa/check-performance-budget.js && node scripts/qa/check-popup-render-time.js",
     "qa:release-candidate": "npm run build:prod && npm run qa:verify-build"
   },
   "dependencies": {
