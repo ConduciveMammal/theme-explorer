@@ -1,5 +1,4 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
 
 import Icon from '../Icon/Icon';
 import DisplayDate from '../Date/FormatDate';
@@ -42,7 +41,7 @@ const ThemeAccordion = ({ theme, shop, index, storeUrl, ...additionalAttrs }) =>
               </Badge>
               {processing && (
                 <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                  <Loader2 className="h-3 w-3 animate-spin" />
+                  <Icon name="spinner" color="currentColor" size={12} classes="animate-spin" />
                   Processing
                 </span>
               )}

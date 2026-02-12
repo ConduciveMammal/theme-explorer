@@ -2,10 +2,10 @@ import React from 'react';
 import DisplayDate from '../Date/FormatDate';
 import ThemeAccordion from '../ThemeAccordion/ThemeAccordion';
 import FooterBar from '../FooterBar/FooterBar';
+import Icon from '../Icon/Icon';
 
 import { useState } from 'react';
 import Fuse from 'fuse.js';
-import { AlertCircle, Braces } from 'lucide-react';
 
 import { Accordion } from '../../components/ui/accordion';
 import { Badge } from '../../components/ui/badge';
@@ -140,7 +140,7 @@ const AdminComponent = ({ state }) => {
           {filteredThemes && filteredThemes.length === 0 && (
             <Card>
               <CardContent className="flex items-center gap-2 p-4 text-sm font-semibold text-muted-foreground">
-                <AlertCircle className="h-4 w-4 text-primary" />
+                <Icon name="error" color="hsl(var(--primary))" size={16} classes="" />
                 No themes found
               </CardContent>
             </Card>
@@ -148,7 +148,7 @@ const AdminComponent = ({ state }) => {
           <Card>
             <CardContent className="flex items-center justify-between gap-3 p-3">
               <div className="flex items-center gap-2 text-sm font-semibold">
-                <Braces className="h-4 w-4 text-primary" />
+                <Icon name="json" color="hsl(var(--primary))" size={16} classes="" />
                 View JSON
               </div>
               <Button asChild size="sm" variant="secondary">

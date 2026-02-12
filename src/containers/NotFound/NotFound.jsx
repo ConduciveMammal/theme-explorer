@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle } from 'lucide-react';
+import Icon from '../Icon/Icon';
 
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert';
 import { Button } from '../../components/ui/button';
@@ -19,7 +19,9 @@ const NotFound = ({
         <CardContent className="space-y-4">
           <Alert className="border-border">
             <div className="flex items-start gap-3">
-              <AlertCircle className="mt-0.5 h-4 w-4 text-primary" />
+              <span className="mt-0.5">
+                <Icon name="error" color="hsl(var(--primary))" size={16} classes="" />
+              </span>
               <div className="space-y-2">
                 <AlertTitle className="text-lg">{title}</AlertTitle>
                 <AlertDescription className="text-sm">{message}</AlertDescription>

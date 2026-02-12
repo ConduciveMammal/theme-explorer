@@ -1,13 +1,14 @@
 import React from 'react';
 import Icon from '../Icon/Icon';
-import { toast } from 'sonner';
 
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
-import { Toaster } from '../../components/ui/sonner';
+import { cn } from '../../lib/utils';
 
 const StorefrontComponent = ({ state }) => {
+  const [notification, setNotification] = React.useState(null);
+  const notificationTimeoutRef = React.useRef(null);
   const theme = state?.storefrontInformation?.theme || null;
   const themeId = theme?.id;
   const shopDomain = state?.storefrontInformation?.shop;
@@ -33,11 +34,27 @@ const StorefrontComponent = ({ state }) => {
   };
 
   const launchSuccessToast = (message) => {
-    toast.success(message, { duration: 1000 });
+    if (notificationTimeoutRef.current) {
+      window.clearTimeout(notificationTimeoutRef.current);
+    }
+
+    setNotification({ variant: 'success', message });
+    notificationTimeoutRef.current = window.setTimeout(() => {
+      setNotification(null);
+      notificationTimeoutRef.current = null;
+    }, 1000);
   };
 
   const launchErrorToast = (message) => {
-    toast.error(message, { duration: 1500 });
+    if (notificationTimeoutRef.current) {
+      window.clearTimeout(notificationTimeoutRef.current);
+    }
+
+    setNotification({ variant: 'error', message });
+    notificationTimeoutRef.current = window.setTimeout(() => {
+      setNotification(null);
+      notificationTimeoutRef.current = null;
+    }, 1500);
   };
 
   const copyPreviewURL = () => {
@@ -93,8 +110,31 @@ const StorefrontComponent = ({ state }) => {
   const previewUrlAvailable = Boolean(getPreviewURL());
   const editorUrlAvailable = Boolean(getEditorURL());
 
+  React.useEffect(() => {
+    return () => {
+      if (notificationTimeoutRef.current) {
+        window.clearTimeout(notificationTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div className="w-[450px] bg-background p-4 text-foreground">
+      {notification && (
+        <div
+          className={cn(
+            'mb-3 flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold',
+            notification.variant === 'success'
+              ? 'border-primary/40 bg-primary text-primary-foreground'
+              : 'border-destructive/40 bg-destructive text-destructive-foreground'
+          )}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="text-xs">{notification.variant === 'success' ? 'OK' : 'ERR'}</span>
+          {notification.message}
+        </div>
+      )}
       <Card>
         <CardHeader className="space-y-4">
           <div className="flex items-center gap-3">
@@ -162,7 +202,6 @@ const StorefrontComponent = ({ state }) => {
           </a>
         </CardFooter>
       </Card>
-      <Toaster />
     </div>
   );
 };

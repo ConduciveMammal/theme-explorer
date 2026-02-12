@@ -1,14 +1,8 @@
 import React from 'react';
 import Icon from '../Icon/Icon';
-import { Info } from 'lucide-react';
 
 import { Button } from '../../components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../../components/ui/dropdown-menu';
+import { Card, CardContent } from '../../components/ui/card';
 
 const menuLinks = [
   {
@@ -34,31 +28,60 @@ const menuLinks = [
 ];
 
 const FooterBar = () => {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const onClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', onClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', onClickOutside);
+    };
+  }, []);
+
   return (
     <footer className="flex items-center justify-between px-1 py-2">
       <p className="text-sm italic text-muted-foreground">Theme Explorer</p>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-primary">
-            <Info className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          {menuLinks.map((link) => (
-            <DropdownMenuItem key={link.label} asChild>
-              <a
-                href={link.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2"
-              >
-                <Icon name={link.icon} color="currentColor" size={18} classes="" />
-                <span>{link.label}</span>
-              </a>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="relative" ref={menuRef}>
+        {menuOpen && (
+          <Card className="absolute bottom-10 right-0 z-20 w-56 border-border shadow-md">
+            <CardContent className="p-1">
+              <ul className="space-y-1">
+                {menuLinks.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      <Icon name={link.icon} color="currentColor" size={18} classes="" />
+                      <span>{link.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 text-primary"
+          aria-expanded={menuOpen}
+          aria-haspopup="menu"
+          onClick={() => setMenuOpen((current) => !current)}
+        >
+          <Icon name="info" color="currentColor" size={20} classes="" />
+        </Button>
+      </div>
     </footer>
   );
 };
