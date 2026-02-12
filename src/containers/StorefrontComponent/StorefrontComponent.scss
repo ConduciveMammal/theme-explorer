@@ -1,4 +1,4 @@
-@import "../../assets/styles/components/buttons";
+@use "../../assets/styles/components/buttons" as *;
 
 .popup-storefront {
   --toastify-font-family: $font-primary;

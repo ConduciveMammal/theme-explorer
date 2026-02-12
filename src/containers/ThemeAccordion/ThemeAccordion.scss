@@ -1,5 +1,5 @@
-@import "../../assets/styles/variables";
-@import "../../assets/styles/mixins";
+@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/mixins" as *;
 
 .Accordion__Container {
   margin-bottom: 5px;
