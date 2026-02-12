@@ -1,4 +1,4 @@
-@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/variables";
 
 .footer {
   display: flex;
@@ -12,7 +12,7 @@
   p {
     font-size: 14px;
     font-style: italic;
-    color: $neutral-700;
+    color: variables.$neutral-700;
     margin: 0;
   }
 }
@@ -42,8 +42,8 @@
   position: absolute;
   bottom: calc(100% + 5px);
   right: 0;
-  background-color: $neutral-100;
-  border: 1px solid $neutral-400;
+  background-color: variables.$neutral-100;
+  border: 1px solid variables.$neutral-400;
   width: fit-content;
   white-space: nowrap;
   z-index: 1;
@@ -84,7 +84,7 @@
     justify-content: flex-start;
     gap: 5px;
     padding: 10px;
-    color: $neutral-800;
+    color: variables.$neutral-800;
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -94,8 +94,8 @@
     user-select: none;
 
     &:hover {
-      color: $primary-500;
-      background-color: $neutral-300;
+      color: variables.$primary-500;
+      background-color: variables.$neutral-300;
     }
   }
 }

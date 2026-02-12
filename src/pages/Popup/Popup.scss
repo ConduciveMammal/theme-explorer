@@ -1,11 +1,11 @@
-@use "../../assets/styles/variables" as *;
+@use "../../assets/styles/variables";
 
 .popup-container {
   position: relative;
   width: 450px;
-  font-family: $font-primary;
-  color: $neutral-800;
-  background-color: $neutral-300;
+  font-family: variables.$font-primary;
+  color: variables.$neutral-800;
+  background-color: variables.$neutral-300;
 }
 
 .AdminComponent__ThemeCount {
@@ -61,18 +61,18 @@
   padding: 5px 10px;
 
   a {
-    color: $neutral-600;
+    color: variables.$neutral-600;
     text-decoration: none;
     transition: color 0.15s ease;
 
     &:hover {
-      color: $neutral-900;
+      color: variables.$neutral-900;
     }
   }
 }
 
 .Panel--error {
-  color: $neutral-600;
+  color: variables.$neutral-600;
   text-align: center;
 }
 
@@ -92,7 +92,7 @@
 
   &:focus {
     outline: none;
-    border-color: $primary-500;
+    border-color: variables.$primary-500;
   }
 
   &::placeholder {
@@ -100,7 +100,7 @@
   }
 
   &:focus::placeholder {
-    color: $neutral-600;
+    color: variables.$neutral-600;
     opacity: 0.1;
   }
 }

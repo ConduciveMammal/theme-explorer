@@ -1,5 +1,5 @@
-@use "../../assets/styles/variables" as *;
-@use "../../assets/styles/mixins" as *;
+@use "../../assets/styles/variables";
+@use "../../assets/styles/mixins";
 
 .Accordion__Container {
   margin-bottom: 5px;
@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: flex-start;
   height: 50px;
-  background-color: $neutral-200;
+  background-color: variables.$neutral-200;
   transition: background-color 0.2s ease-in;
   padding-right: 10px;
   user-select: none;
@@ -33,11 +33,11 @@
 
   &.Accordion__Header--open,
   &:hover:not(.Accordion__Header--no-results) {
-    background-color: $neutral-400;
+    background-color: variables.$neutral-400;
   }
 
   &.Accordion__Header--main {
-    border-bottom: 3px solid $primary-500;
+    border-bottom: 3px solid variables.$primary-500;
   }
 
   &.Accordion__Header--json {
@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $primary-500;
+  background-color: variables.$primary-500;
   margin-right: 10px;
   height: 50px;
   max-width: 50px;
@@ -71,8 +71,8 @@
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.4px;
-  color: $primary-600;
-  @include text-overflow;
+  color: variables.$primary-600;
+  @include mixins.text-overflow;
   flex: 0 1 100%;
   padding-right: 10px;
 
@@ -96,7 +96,7 @@
   }
 
   &:hover {
-    color: $primary-500;
+    color: variables.$primary-500;
   }
 }
 
@@ -106,7 +106,7 @@
 }
 
 .Accordion__Body {
-  background-color: $neutral-100;
+  background-color: variables.$neutral-100;
 }
 
 .Accordion__Body__Content {
@@ -121,11 +121,11 @@
   margin-bottom: 5px;
 
   .Accordion__Label {
-    color: $neutral-800;
+    color: variables.$neutral-800;
   }
 
   .Accordion__Value {
-    color: $neutral-600;
+    color: variables.$neutral-600;
   }
 
   &:last-child {
@@ -145,11 +145,11 @@
 
     a {
       text-decoration: none;
-      color: $primary-500;
+      color: variables.$primary-500;
       transition: color 0.2s ease-in;
 
       &:hover {
-        color: $primary-700;
+        color: variables.$primary-700;
       }
     }
 
